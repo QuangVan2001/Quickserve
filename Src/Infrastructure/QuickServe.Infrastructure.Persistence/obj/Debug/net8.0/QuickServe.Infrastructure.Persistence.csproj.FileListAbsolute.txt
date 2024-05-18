@@ -15,3 +15,4 @@ F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\refint\QuickServe.Infrastructure.Persistence.dll
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.pdb
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\ref\QuickServe.Infrastructure.Persistence.dll
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.sourcelink.json

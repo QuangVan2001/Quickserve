@@ -14,8 +14,8 @@ namespace QuickServe.Infrastructure.Identity.Seeds
             {
                 UserName = "Admin",
                 Email = "Admin@Admin.com",
-                Name = "Saman",
-                PhoneNumber = "09304241296",
+                Name = "QuangVan",
+                PhoneNumber = "0935182029",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
@@ -25,7 +25,7 @@ namespace QuickServe.Infrastructure.Identity.Seeds
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "Sam@12345");
+                    await userManager.CreateAsync(defaultUser, "Van@12345");
                     await userManager.AddToRoleAsync(defaultUser, "Admin");
                 }
 

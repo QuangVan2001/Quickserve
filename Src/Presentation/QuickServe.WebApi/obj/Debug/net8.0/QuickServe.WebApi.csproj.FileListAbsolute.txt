@@ -180,3 +180,4 @@ F:\.Net\QuickServe\Src\Presentation\QuickServe.WebApi\obj\Debug\net8.0\refint\Qu
 F:\.Net\QuickServe\Src\Presentation\QuickServe.WebApi\obj\Debug\net8.0\QuickServe.WebApi.pdb
 F:\.Net\QuickServe\Src\Presentation\QuickServe.WebApi\obj\Debug\net8.0\QuickServe.WebApi.genruntimeconfig.cache
 F:\.Net\QuickServe\Src\Presentation\QuickServe.WebApi\obj\Debug\net8.0\ref\QuickServe.WebApi.dll
+F:\.Net\QuickServe\Src\Presentation\QuickServe.WebApi\obj\Debug\net8.0\QuickServe.WebApi.sourcelink.json

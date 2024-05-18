@@ -17,3 +17,4 @@ F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Identity\obj\Deb
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Identity\obj\Debug\net8.0\QuickServe.Infrastructure.Identity.pdb
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Identity\obj\Debug\net8.0\QuickServe.Infrastructure.Identity.genruntimeconfig.cache
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Identity\obj\Debug\net8.0\ref\QuickServe.Infrastructure.Identity.dll
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Identity\obj\Debug\net8.0\QuickServe.Infrastructure.Identity.sourcelink.json

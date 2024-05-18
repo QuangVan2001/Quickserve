@@ -13,3 +13,4 @@ F:\.Net\QuickServe\Src\Core\QuickServe.Application\obj\Debug\net8.0\QuickServe.A
 F:\.Net\QuickServe\Src\Core\QuickServe.Application\obj\Debug\net8.0\refint\QuickServe.Application.dll
 F:\.Net\QuickServe\Src\Core\QuickServe.Application\obj\Debug\net8.0\QuickServe.Application.pdb
 F:\.Net\QuickServe\Src\Core\QuickServe.Application\obj\Debug\net8.0\ref\QuickServe.Application.dll
+F:\.Net\QuickServe\Src\Core\QuickServe.Application\obj\Debug\net8.0\QuickServe.Application.sourcelink.json
