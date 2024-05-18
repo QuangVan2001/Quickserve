@@ -1,0 +1,81 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{1A7EC8AF-05DF-4A56-A8C8-936DE1D58504}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{A9A42C02-D34E-4E5D-8A3E-7102C0931E43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickServe.WebApi", "Src\Presentation\QuickServe.WebApi\QuickServe.WebApi.csproj", "{334F8241-B198-415A-9772-E368CF9B046E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{754D0E67-01F5-4945-8918-CC433C5E83F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickServe.Application", "Src\Core\QuickServe.Application\QuickServe.Application.csproj", "{3DA842CC-96F0-47B4-AC6B-0F8ADC4460A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickServe.Domain", "Src\Core\QuickServe.Domain\QuickServe.Domain.csproj", "{581CCD17-4C3D-456B-A55C-650E4431107E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{7C325DEE-F0E2-4E10-AD21-FF3B5BC629EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickServe.Infrastructure.FileManager", "Src\Infrastructure\QuickServe.Infrastructure.FileManager\QuickServe.Infrastructure.FileManager.csproj", "{EFF63502-0B5D-4AF5-9029-7DCB65F075CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickServe.Infrastructure.Identity", "Src\Infrastructure\QuickServe.Infrastructure.Identity\QuickServe.Infrastructure.Identity.csproj", "{AC3F8E7D-136A-42A8-B963-F4AC67F4A43D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickServe.Infrastructure.Persistence", "Src\Infrastructure\QuickServe.Infrastructure.Persistence\QuickServe.Infrastructure.Persistence.csproj", "{3E11A7E1-7BB3-47E3-BACA-D9FDB924DD07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickServe.Infrastructure.Resources", "Src\Infrastructure\QuickServe.Infrastructure.Resources\QuickServe.Infrastructure.Resources.csproj", "{EE9C3CF4-A059-48BC-A21E-14DD87AF6D7B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{334F8241-B198-415A-9772-E368CF9B046E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{334F8241-B198-415A-9772-E368CF9B046E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{334F8241-B198-415A-9772-E368CF9B046E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{334F8241-B198-415A-9772-E368CF9B046E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DA842CC-96F0-47B4-AC6B-0F8ADC4460A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA842CC-96F0-47B4-AC6B-0F8ADC4460A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA842CC-96F0-47B4-AC6B-0F8ADC4460A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA842CC-96F0-47B4-AC6B-0F8ADC4460A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{581CCD17-4C3D-456B-A55C-650E4431107E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{581CCD17-4C3D-456B-A55C-650E4431107E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{581CCD17-4C3D-456B-A55C-650E4431107E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{581CCD17-4C3D-456B-A55C-650E4431107E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFF63502-0B5D-4AF5-9029-7DCB65F075CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF63502-0B5D-4AF5-9029-7DCB65F075CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFF63502-0B5D-4AF5-9029-7DCB65F075CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFF63502-0B5D-4AF5-9029-7DCB65F075CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC3F8E7D-136A-42A8-B963-F4AC67F4A43D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC3F8E7D-136A-42A8-B963-F4AC67F4A43D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC3F8E7D-136A-42A8-B963-F4AC67F4A43D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC3F8E7D-136A-42A8-B963-F4AC67F4A43D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E11A7E1-7BB3-47E3-BACA-D9FDB924DD07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E11A7E1-7BB3-47E3-BACA-D9FDB924DD07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E11A7E1-7BB3-47E3-BACA-D9FDB924DD07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E11A7E1-7BB3-47E3-BACA-D9FDB924DD07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE9C3CF4-A059-48BC-A21E-14DD87AF6D7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE9C3CF4-A059-48BC-A21E-14DD87AF6D7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE9C3CF4-A059-48BC-A21E-14DD87AF6D7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE9C3CF4-A059-48BC-A21E-14DD87AF6D7B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A9A42C02-D34E-4E5D-8A3E-7102C0931E43} = {1A7EC8AF-05DF-4A56-A8C8-936DE1D58504}
+		{334F8241-B198-415A-9772-E368CF9B046E} = {A9A42C02-D34E-4E5D-8A3E-7102C0931E43}
+		{754D0E67-01F5-4945-8918-CC433C5E83F3} = {1A7EC8AF-05DF-4A56-A8C8-936DE1D58504}
+		{3DA842CC-96F0-47B4-AC6B-0F8ADC4460A2} = {754D0E67-01F5-4945-8918-CC433C5E83F3}
+		{581CCD17-4C3D-456B-A55C-650E4431107E} = {754D0E67-01F5-4945-8918-CC433C5E83F3}
+		{7C325DEE-F0E2-4E10-AD21-FF3B5BC629EB} = {1A7EC8AF-05DF-4A56-A8C8-936DE1D58504}
+		{EFF63502-0B5D-4AF5-9029-7DCB65F075CA} = {7C325DEE-F0E2-4E10-AD21-FF3B5BC629EB}
+		{AC3F8E7D-136A-42A8-B963-F4AC67F4A43D} = {7C325DEE-F0E2-4E10-AD21-FF3B5BC629EB}
+		{3E11A7E1-7BB3-47E3-BACA-D9FDB924DD07} = {7C325DEE-F0E2-4E10-AD21-FF3B5BC629EB}
+		{EE9C3CF4-A059-48BC-A21E-14DD87AF6D7B} = {7C325DEE-F0E2-4E10-AD21-FF3B5BC629EB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {703AD5A2-4C2D-47B4-BD0E-FF246D8BF2EA}
+	EndGlobalSection
+EndGlobal

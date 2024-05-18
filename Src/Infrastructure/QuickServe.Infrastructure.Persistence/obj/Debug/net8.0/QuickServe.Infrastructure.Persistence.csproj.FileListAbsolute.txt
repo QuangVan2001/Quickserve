@@ -1,0 +1,17 @@
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Infrastructure.Persistence.deps.json
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Infrastructure.Persistence.dll
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Infrastructure.Persistence.pdb
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Application.dll
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Domain.dll
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Application.pdb
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Domain.pdb
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.csproj.AssemblyReference.cache
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.AssemblyInfoInputs.cache
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.AssemblyInfo.cs
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.csproj.CoreCompileInputs.cache
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickSer.03B3B131.Up2Date
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.dll
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\refint\QuickServe.Infrastructure.Persistence.dll
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.pdb
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\ref\QuickServe.Infrastructure.Persistence.dll
