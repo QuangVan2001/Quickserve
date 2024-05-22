@@ -6,35 +6,36 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuickServe.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class createDB : Migration
+    public partial class data : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Account",
+                name: "Accounts",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
-                    Username = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
-                    Role = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
-                    Status = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
-                    Phone = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
-                    Avatar = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    ConfirmationToken = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    IsConfirmed = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "((0))"),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 255, nullable: false),
-                    Created = table.Column<DateTime>(type: "date", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 255, nullable: true),
-                    LastModified = table.Column<DateTime>(type: "date", nullable: true)
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Avatar = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ConfirmationToken = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    IsConfirmed = table.Column<bool>(type: "bit", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Account", x => x.Id);
+                    table.PrimaryKey("PK_Accounts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -43,11 +44,11 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", unicode: false, maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "varchar(40)", unicode: false, maxLength: 40, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", unicode: false, maxLength: 40, nullable: false),
                     Created = table.Column<DateTime>(type: "datetime", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", unicode: false, maxLength: 255, nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime", nullable: true)
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", unicode: false, maxLength: 40, nullable: false),
+                    LastModified = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,10 +61,10 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 40, nullable: false),
                     Created = table.Column<DateTime>(type: "date", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 255, nullable: true),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 40, nullable: true),
                     LastModified = table.Column<DateTime>(type: "date", nullable: true)
                 },
                 constraints: table =>
@@ -78,8 +79,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
-                    Payment_type = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
-                    IsDelete = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "('0')"),
+                    Payment_type = table.Column<int>(type: "int", unicode: false, maxLength: 255, nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -91,18 +91,36 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    BarCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Session",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "varchar(40)", unicode: false, maxLength: 40, nullable: false),
                     Ingredient_Id = table.Column<long>(type: "bigint", nullable: false),
                     Order_Id = table.Column<long>(type: "bigint", nullable: false),
                     Store_Id = table.Column<long>(type: "bigint", nullable: false),
                     Start_Time = table.Column<TimeSpan>(type: "time", nullable: false),
                     End_Time = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Is_Delete = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "('0')"),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -132,13 +150,13 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeedBack",
+                name: "FeedBacks",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Account_Id = table.Column<long>(type: "bigint", nullable: true),
-                    Comment = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    AccountId = table.Column<long>(type: "bigint", nullable: true),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -146,11 +164,11 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FeedBack", x => x.Id);
+                    table.PrimaryKey("PK_FeedBacks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK__FeedBack__Accoun__06CD04F7",
-                        column: x => x.Account_Id,
-                        principalTable: "Account",
+                        name: "FK_FeedBacks_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
                         principalColumn: "Id");
                 });
 
@@ -160,24 +178,25 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Account_Id = table.Column<long>(type: "bigint", nullable: false),
+                    AccountId = table.Column<long>(type: "bigint", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "((1))"),
-                    Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 255, nullable: false),
-                    Created = table.Column<DateTime>(type: "date", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 255, nullable: true),
-                    LastModified = table.Column<DateTime>(type: "date", nullable: true)
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_News", x => x.Id);
                     table.ForeignKey(
-                        name: "news_account_id_foreign",
-                        column: x => x.Account_Id,
-                        principalTable: "Account",
-                        principalColumn: "Id");
+                        name: "FK_News_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,15 +227,15 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Order",
+                name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Payment_method_id = table.Column<long>(type: "bigint", nullable: false),
-                    Account_id = table.Column<long>(type: "bigint", nullable: false),
+                    Customer_id = table.Column<long>(type: "bigint", nullable: false),
                     Status = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
-                    Total_price = table.Column<double>(type: "float", nullable: false),
+                    TotalPrice = table.Column<double>(type: "float", nullable: false),
                     Store_id = table.Column<long>(type: "bigint", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Created = table.Column<DateTime>(type: "date", nullable: false),
@@ -225,11 +244,11 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Order", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "order_account_id_foreign",
-                        column: x => x.Account_id,
-                        principalTable: "Account",
+                        name: "order_customer_id_foreign",
+                        column: x => x.Customer_id,
+                        principalTable: "Accounts",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "order_payment_method_id_foreign",
@@ -250,16 +269,16 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Category_Id = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: true),
                     Size = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
-                    Image_url = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Image_url = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
                     Store_id = table.Column<long>(type: "bigint", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 255, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 40, nullable: false),
                     Created = table.Column<DateTime>(type: "date", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 255, nullable: true),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 40, nullable: true),
                     LastModified = table.Column<DateTime>(type: "date", nullable: true)
                 },
                 constraints: table =>
@@ -307,14 +326,14 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ingredient_id = table.Column<long>(type: "bigint", nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Vitamin = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    HealthValue = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Vitamin = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    HealthValue = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Nutrition = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 255, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 40, nullable: false),
                     Created = table.Column<DateTime>(type: "date", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 255, nullable: true),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 40, nullable: true),
                     LastModified = table.Column<DateTime>(type: "date", nullable: true)
                 },
                 constraints: table =>
@@ -412,7 +431,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     table.ForeignKey(
                         name: "FK__OrderProd__Order__2A164134",
                         column: x => x.OrderID,
-                        principalTable: "Order",
+                        principalTable: "Orders",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK__OrderProd__Produ__2B0A656D",
@@ -451,9 +470,9 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedBack_Account_Id",
-                table: "FeedBack",
-                column: "Account_Id");
+                name: "IX_FeedBacks_AccountId",
+                table: "FeedBacks",
+                column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredient_IngredientType_id",
@@ -476,9 +495,9 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 column: "TemplateStep_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_News_Account_Id",
+                name: "IX_News_AccountId",
                 table: "News",
-                column: "Account_Id");
+                column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "UQ__Nutritio__C90398E29135F4A4",
@@ -488,24 +507,24 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 filter: "[Ingredient_id] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_Account_id",
-                table: "Order",
-                column: "Account_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Order_Payment_method_id",
-                table: "Order",
-                column: "Payment_method_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Order_Store_id",
-                table: "Order",
-                column: "Store_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OrderProduct_ProductID",
                 table: "OrderProduct",
                 column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_Customer_id",
+                table: "Orders",
+                column: "Customer_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_Payment_method_id",
+                table: "Orders",
+                column: "Payment_method_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_Store_id",
+                table: "Orders",
+                column: "Store_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_ProductTemplate_Id",
@@ -532,7 +551,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FeedBack");
+                name: "FeedBacks");
 
             migrationBuilder.DropTable(
                 name: "IngredientProduct");
@@ -553,6 +572,9 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 name: "OrderProduct");
 
             migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
                 name: "Session");
 
             migrationBuilder.DropTable(
@@ -562,7 +584,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 name: "Ingredient");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Product");
@@ -571,7 +593,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 name: "IngredientType");
 
             migrationBuilder.DropTable(
-                name: "Account");
+                name: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "Payment");
