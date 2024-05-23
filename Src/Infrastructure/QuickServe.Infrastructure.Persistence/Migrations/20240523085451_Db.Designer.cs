@@ -12,8 +12,8 @@ using QuickServe.Infrastructure.Persistence.Contexts;
 namespace QuickServe.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240522070812_data")]
-    partial class data
+    [Migration("20240523085451_Db")]
+    partial class Db
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,82 +45,67 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("QuickServe.Domain.Accounts.Entities.Account", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Avatar")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ConfirmationToken")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<bool?>("IsConfirmed")
+                    b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
 
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(40)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(40)");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Account");
-
-                    b.UseTphMappingStrategy();
+                    b.ToTable("Account");
                 });
 
             modelBuilder.Entity("QuickServe.Domain.Categories.Entities.Category", b =>
@@ -160,7 +145,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.ToTable("Category", (string)null);
                 });
 
-            modelBuilder.Entity("QuickServe.Domain.FeedBacks.Entities.FeedBack", b =>
+            modelBuilder.Entity("QuickServe.Domain.IngredientProducts.Entities.IngredientProduct", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -168,17 +153,14 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AccountId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("IngredientId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
@@ -186,32 +168,19 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("FeedBacks");
-                });
-
-            modelBuilder.Entity("QuickServe.Domain.IngredientProducts.Entities.IngredientProduct", b =>
-                {
-                    b.Property<long>("IngredientId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Ingredient_id");
-
                     b.Property<long>("ProductId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Product_id");
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("IngredientId", "ProductId")
-                        .HasName("PK__Ingredie__F080A71ADF39F2B5");
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("IngredientProduct", (string)null);
+                    b.ToTable("IngredientProducts");
                 });
 
             modelBuilder.Entity("QuickServe.Domain.IngredientTypeTemplateSteps.Entities.IngredientTypeTemplateStep", b =>
@@ -350,8 +319,8 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("AccountId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -447,6 +416,24 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("QuickServe.Domain.OrderProducts.Entities.OrderProduct", b =>
                 {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint")
                         .HasColumnName("OrderID");
@@ -458,8 +445,9 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("OrderId", "ProductId")
-                        .HasName("PK__OrderPro__08D097C182F2AEC7");
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
@@ -480,8 +468,8 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint")
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Customer_id");
 
                     b.Property<DateTime?>("LastModified")
@@ -508,8 +496,6 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("PaymentMethodId");
 
@@ -828,13 +814,6 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.ToTable("TemplateStep", (string)null);
                 });
 
-            modelBuilder.Entity("QuickServe.Domain.Customers.Entities.Customer", b =>
-                {
-                    b.HasBaseType("QuickServe.Domain.Accounts.Entities.Account");
-
-                    b.HasDiscriminator().HasValue("Customer");
-                });
-
             modelBuilder.Entity("IngredientSession", b =>
                 {
                     b.HasOne("QuickServe.Domain.Ingredients.Entities.Ingredient", null)
@@ -850,28 +829,19 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .HasConstraintName("FK__Ingredien__Sessi__619B8048");
                 });
 
-            modelBuilder.Entity("QuickServe.Domain.FeedBacks.Entities.FeedBack", b =>
-                {
-                    b.HasOne("QuickServe.Domain.Accounts.Entities.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId");
-
-                    b.Navigation("Account");
-                });
-
             modelBuilder.Entity("QuickServe.Domain.IngredientProducts.Entities.IngredientProduct", b =>
                 {
                     b.HasOne("QuickServe.Domain.Ingredients.Entities.Ingredient", "Ingredient")
                         .WithMany("IngredientProducts")
                         .HasForeignKey("IngredientId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Ingredien__Ingre__5EBF139D");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("QuickServe.Domain.Products.Entities.ProDucts", "Product")
                         .WithMany("IngredientProducts")
                         .HasForeignKey("ProductId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Ingredien__Produ__5FB337D6");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Ingredient");
 
@@ -950,12 +920,6 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("QuickServe.Domain.Orders.Entities.Order", b =>
                 {
-                    b.HasOne("QuickServe.Domain.Customers.Entities.Customer", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .IsRequired()
-                        .HasConstraintName("order_customer_id_foreign");
-
                     b.HasOne("QuickServe.Domain.Payments.Entities.Payment", "PaymentMethod")
                         .WithMany("Orders")
                         .HasForeignKey("PaymentMethodId")
@@ -967,8 +931,6 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .HasForeignKey("StoreId")
                         .IsRequired()
                         .HasConstraintName("order_store_id_foreign");
-
-                    b.Navigation("Customer");
 
                     b.Navigation("PaymentMethod");
 
@@ -1069,11 +1031,6 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("QuickServe.Domain.TemplateSteps.Entities.TemplateStep", b =>
                 {
                     b.Navigation("IngredientTypeTemplateSteps");
-                });
-
-            modelBuilder.Entity("QuickServe.Domain.Customers.Entities.Customer", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

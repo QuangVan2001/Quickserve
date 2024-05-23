@@ -6,36 +6,36 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuickServe.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class data : Migration
+    public partial class Db : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Accounts",
+                name: "Account",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Avatar = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    ConfirmationToken = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    IsConfirmed = table.Column<bool>(type: "bit", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "varchar(40)", unicode: false, maxLength: 40, nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Accounts", x => x.Id);
+                    table.PrimaryKey("PK_Account", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -150,35 +150,12 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeedBacks",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountId = table.Column<long>(type: "bigint", nullable: true),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FeedBacks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FeedBacks_Accounts_AccountId",
-                        column: x => x.AccountId,
-                        principalTable: "Accounts",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "News",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountId = table.Column<long>(type: "bigint", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: true),
@@ -192,9 +169,9 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_News", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_News_Accounts_AccountId",
+                        name: "FK_News_Account_AccountId",
                         column: x => x.AccountId,
-                        principalTable: "Accounts",
+                        principalTable: "Account",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -233,7 +210,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Payment_method_id = table.Column<long>(type: "bigint", nullable: false),
-                    Customer_id = table.Column<long>(type: "bigint", nullable: false),
+                    Customer_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
                     TotalPrice = table.Column<double>(type: "float", nullable: false),
                     Store_id = table.Column<long>(type: "bigint", nullable: false),
@@ -245,11 +222,6 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "order_customer_id_foreign",
-                        column: x => x.Customer_id,
-                        principalTable: "Accounts",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "order_payment_method_id_foreign",
                         column: x => x.Payment_method_id,
@@ -395,39 +367,53 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IngredientProduct",
+                name: "IngredientProducts",
                 columns: table => new
                 {
-                    Product_id = table.Column<long>(type: "bigint", nullable: false),
-                    Ingredient_id = table.Column<long>(type: "bigint", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IngredientId = table.Column<long>(type: "bigint", nullable: false),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Ingredie__F080A71ADF39F2B5", x => new { x.Ingredient_id, x.Product_id });
+                    table.PrimaryKey("PK_IngredientProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK__Ingredien__Ingre__5EBF139D",
-                        column: x => x.Ingredient_id,
+                        name: "FK_IngredientProducts_Ingredient_IngredientId",
+                        column: x => x.IngredientId,
                         principalTable: "Ingredient",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK__Ingredien__Produ__5FB337D6",
-                        column: x => x.Product_id,
+                        name: "FK_IngredientProducts_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "OrderProduct",
                 columns: table => new
                 {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     OrderID = table.Column<long>(type: "bigint", nullable: false),
                     ProductID = table.Column<long>(type: "bigint", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: true)
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__OrderPro__08D097C182F2AEC7", x => new { x.OrderID, x.ProductID });
+                    table.PrimaryKey("PK_OrderProduct", x => x.Id);
                     table.ForeignKey(
                         name: "FK__OrderProd__Order__2A164134",
                         column: x => x.OrderID,
@@ -470,19 +456,19 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedBacks_AccountId",
-                table: "FeedBacks",
-                column: "AccountId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Ingredient_IngredientType_id",
                 table: "Ingredient",
                 column: "IngredientType_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngredientProduct_Product_id",
-                table: "IngredientProduct",
-                column: "Product_id");
+                name: "IX_IngredientProducts_IngredientId",
+                table: "IngredientProducts",
+                column: "IngredientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IngredientProducts_ProductId",
+                table: "IngredientProducts",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IngredientSession_Ingredient_Id",
@@ -507,14 +493,14 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 filter: "[Ingredient_id] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderProduct_OrderID",
+                table: "OrderProduct",
+                column: "OrderID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderProduct_ProductID",
                 table: "OrderProduct",
                 column: "ProductID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_Customer_id",
-                table: "Orders",
-                column: "Customer_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_Payment_method_id",
@@ -551,10 +537,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FeedBacks");
-
-            migrationBuilder.DropTable(
-                name: "IngredientProduct");
+                name: "IngredientProducts");
 
             migrationBuilder.DropTable(
                 name: "IngredientSession");
@@ -581,6 +564,9 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 name: "TemplateStep");
 
             migrationBuilder.DropTable(
+                name: "Account");
+
+            migrationBuilder.DropTable(
                 name: "Ingredient");
 
             migrationBuilder.DropTable(
@@ -591,9 +577,6 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "IngredientType");
-
-            migrationBuilder.DropTable(
-                name: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "Payment");
