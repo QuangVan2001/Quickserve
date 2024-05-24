@@ -30,7 +30,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
-builder.Services.AddFileManagerInfrastructure(builder.Configuration);
+//builder.Services.AddFileManagerInfrastructure(builder.Configuration);
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddResourcesInfrastructure();
 
