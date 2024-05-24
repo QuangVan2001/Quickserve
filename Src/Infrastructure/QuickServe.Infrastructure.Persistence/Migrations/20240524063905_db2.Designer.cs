@@ -12,8 +12,8 @@ using QuickServe.Infrastructure.Persistence.Contexts;
 namespace QuickServe.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240523085451_Db")]
-    partial class Db
+    [Migration("20240524063905_db2")]
+    partial class db2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
