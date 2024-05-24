@@ -15,5 +15,11 @@ namespace QuickServe.Application.Helpers
             public static TranslatorMessageDto Product_notfound_with_id(long id)
                 => new(nameof(Product_notfound_with_id), [id.ToString()]);
         }
+        
+        public static class StoreMessages
+        {
+            public static TranslatorMessageDto Store_notfound_with_id(long id)
+                => new(nameof(Store_notfound_with_id), [id.ToString()]);
+        }
     }
 }

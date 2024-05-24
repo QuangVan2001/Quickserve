@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using QuickServe.Application;
 using QuickServe.Application.Interfaces;
 using QuickServe.Infrastructure.FileManager;
-using QuickServe.Infrastructure.FileManager.Contexts;
+
 using QuickServe.Infrastructure.Identity;
 using QuickServe.Infrastructure.Identity.Contexts;
 using QuickServe.Infrastructure.Identity.Models;
@@ -21,6 +21,9 @@ using QuickServe.WebApi.Infrastracture.Middlewares;
 using QuickServe.WebApi.Infrastracture.Services;
 using Serilog;
 using System.Reflection;
+using QuickServe.Domain.Accounts.Entities;
+using QuickServe.Domain.Roles.Entities;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,7 +71,7 @@ using (var scope = app.Services.CreateScope())
 
     await services.GetRequiredService<IdentityContext>().Database.MigrateAsync();
     await services.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
-    await services.GetRequiredService<FileManagerDbContext>().Database.MigrateAsync();
+   // await services.GetRequiredService<FileManagerDbContext>().Database.MigrateAsync();
 
     //Seed Data
     await DefaultRoles.SeedAsync(services.GetRequiredService<RoleManager<ApplicationRole>>());

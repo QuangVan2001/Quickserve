@@ -120,6 +120,12 @@
       "frameworks": {
         "netstandard2.1": {
           "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "Microsoft.Extensions.Identity.Stores": {
+              "target": "Package",
+              "version": "[8.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -354,6 +360,15 @@
               },
               "F:\\.Net\\QuickServe\\Src\\Core\\QuickServe.Domain\\QuickServe.Domain.csproj": {
                 "projectPath": "F:\\.Net\\QuickServe\\Src\\Core\\QuickServe.Domain\\QuickServe.Domain.csproj"
+              },
+              "F:\\.Net\\QuickServe\\Src\\Infrastructure\\QuickServe.Infrastructure.FileManager\\QuickServe.Infrastructure.FileManager.csproj": {
+                "projectPath": "F:\\.Net\\QuickServe\\Src\\Infrastructure\\QuickServe.Infrastructure.FileManager\\QuickServe.Infrastructure.FileManager.csproj"
+              },
+              "F:\\.Net\\QuickServe\\Src\\Infrastructure\\QuickServe.Infrastructure.Identity\\QuickServe.Infrastructure.Identity.csproj": {
+                "projectPath": "F:\\.Net\\QuickServe\\Src\\Infrastructure\\QuickServe.Infrastructure.Identity\\QuickServe.Infrastructure.Identity.csproj"
+              },
+              "F:\\.Net\\QuickServe\\Src\\Infrastructure\\QuickServe.Infrastructure.Resources\\QuickServe.Infrastructure.Resources.csproj": {
+                "projectPath": "F:\\.Net\\QuickServe\\Src\\Infrastructure\\QuickServe.Infrastructure.Resources\\QuickServe.Infrastructure.Resources.csproj"
               }
             }
           }
@@ -373,6 +388,12 @@
               "version": "[8.0.3, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.3, )"
             }

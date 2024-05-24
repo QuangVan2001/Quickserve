@@ -27,7 +27,7 @@ namespace QuickServe.Infrastructure.Identity
         {
             var identitySettings = configuration.GetSection(nameof(IdentitySettings)).Get<IdentitySettings>();
             services.AddSingleton(identitySettings);
-            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+             services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
 
                 options.SignIn.RequireConfirmedAccount = false;
@@ -41,13 +41,13 @@ namespace QuickServe.Infrastructure.Identity
                 options.Password.RequireLowercase = identitySettings.PasswordRequireLowercase;
             })
                 .AddEntityFrameworkStores<IdentityContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders(); 
         }
         public static void AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<IdentityContext>(options =>
             options.UseSqlServer(
-                configuration.GetConnectionString("IdentityConnection"),
+                configuration.GetConnectionString("IdentityServer"),//"IdentityConnection"
                 b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
 
             services.AddTransient<IGetUserServices, GetUserServices>();

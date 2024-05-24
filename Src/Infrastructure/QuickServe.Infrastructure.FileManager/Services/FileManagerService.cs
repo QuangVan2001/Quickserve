@@ -37,7 +37,7 @@ namespace QuickServe.Infrastructure.FileManager.Services
                 file.UpdateContent(content);
             }
         }
-        public async Task<int> SaveChangesAsync() =>
+        public async Task<int> SaveChangesAsync() => 
             await fileManagerDbContext.SaveChangesAsync();
     }
 }

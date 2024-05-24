@@ -12,7 +12,7 @@ namespace QuickServe.Application.Features.Products.Commands.CreateProduct
     {
         public async Task<BaseResult<long>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = new Product(request.Name, request.Price, request.BarCode);
+            var product = new Domain.Products.Entities.Product(request.Name, request.Price, request.BarCode);
 
             await productRepository.AddAsync(product);
             await unitOfWork.SaveChangesAsync();

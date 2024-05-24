@@ -1,6 +1,10 @@
-﻿namespace QuickServe.Application.Features.Store.Queries.GetStoreById;
+﻿using MediatR;
+using QuickServe.Application.Wrappers;
+using QuickServe.Domain.Stores.Dtos;
 
-public class GetStoreByIdQuery
+namespace QuickServe.Application.Features.Store.Queries.GetStoreById;
+
+public class GetStoreByIdQuery : IRequest<BaseResult<StoreDto>>
 {
-    
+    public long Id { get; set; }
 }

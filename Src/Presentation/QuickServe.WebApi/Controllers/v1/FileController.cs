@@ -32,5 +32,27 @@ namespace QuickServe.WebApi.Controllers.v1
                 return new(name);
             }
         }
+
+        [HttpDelete]
+        public async Task<BaseResult<string>> DeleteFile(string name)
+        {
+            await fileManagerService.Delete(name);
+            await fileManagerService.SaveChangesAsync();
+            return  new BaseResult<string>(name);
+        }
+
+        [HttpPut]
+        public async Task<BaseResult<string>> UpdateFile(string name, IFormFile file)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                file.CopyTo(memoryStream);
+                await fileManagerService.Update(name, memoryStream.ToArray());
+                await fileManagerService.SaveChangesAsync();
+
+                return new BaseResult<string>(name);
+
+            }
+        }
     }
 }

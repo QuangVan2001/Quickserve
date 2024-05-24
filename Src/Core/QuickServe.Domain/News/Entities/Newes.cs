@@ -1,11 +1,12 @@
 ﻿using QuickServe.Domain.Accounts.Entities;
 using QuickServe.Domain.Common;
+using System;
 
 namespace QuickServe.Domain.News.Entities
 {
-    public class News : AuditableBaseEntity
+    public class Newes : AuditableBaseEntity
     {
-        public int AccountId { get; set; }
+        public Guid AccountId { get; set; }
         public string? Description { get; set; }
         public string Image { get; set; } = null!;
         public bool? Status { get; set; }

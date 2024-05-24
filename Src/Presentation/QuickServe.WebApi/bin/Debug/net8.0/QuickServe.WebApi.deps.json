@@ -1247,6 +1247,9 @@
         }
       },
       "QuickServe.Domain/1.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Identity.Stores": "8.0.3"
+        },
         "runtime": {
           "QuickServe.Domain.dll": {}
         }
@@ -1282,7 +1285,10 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.3",
           "QuickServe.Application": "1.0.0",
-          "QuickServe.Domain": "1.0.0"
+          "QuickServe.Domain": "1.0.0",
+          "QuickServe.Infrastructure.FileManager": "1.0.0",
+          "QuickServe.Infrastructure.Identity": "1.0.0",
+          "QuickServe.Infrastructure.Resources": "1.0.0"
         },
         "runtime": {
           "QuickServe.Infrastructure.Persistence.dll": {}

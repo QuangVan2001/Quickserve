@@ -16,3 +16,16 @@ F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.pdb
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\ref\QuickServe.Infrastructure.Persistence.dll
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.sourcelink.json
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Infrastructure.Persistence.runtimeconfig.json
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\obj\Debug\net8.0\QuickServe.Infrastructure.Persistence.genruntimeconfig.cache
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Infrastructure.Identity.dll
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Infrastructure.Identity.pdb
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\ProjectResources\ResourceGeneral.resx
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\ProjectResources\ResourceMessages.resx
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\ProjectResources\ResourceGeneral.fa.resx
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\ProjectResources\ResourceMessages.fa.resx
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Infrastructure.FileManager.dll
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Infrastructure.Resources.dll
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Infrastructure.FileManager.pdb
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\QuickServe.Infrastructure.Resources.pdb
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Persistence\bin\Debug\net8.0\fa\QuickServe.Infrastructure.Resources.resources.dll

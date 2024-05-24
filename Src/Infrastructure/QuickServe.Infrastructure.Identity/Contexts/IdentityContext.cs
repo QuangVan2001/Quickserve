@@ -49,6 +49,7 @@ namespace QuickServe.Infrastructure.Identity.Contexts
             {
                 entity.ToTable("UserTokens");
             });
+
         }
     }
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuickServe.Infrastructure.FileManager")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9f21631f23e65260ea47a23682d025ee2baf0c43")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+702faf57592eee2527661df3b1bfe90e1e4ed182")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuickServe.Infrastructure.FileManager")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuickServe.Infrastructure.FileManager")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

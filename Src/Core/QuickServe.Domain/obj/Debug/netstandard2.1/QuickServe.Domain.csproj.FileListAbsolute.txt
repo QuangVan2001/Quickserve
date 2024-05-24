@@ -8,3 +8,4 @@ F:\.Net\QuickServe\Src\Core\QuickServe.Domain\obj\Debug\netstandard2.1\QuickServ
 F:\.Net\QuickServe\Src\Core\QuickServe.Domain\obj\Debug\netstandard2.1\QuickServe.Domain.dll
 F:\.Net\QuickServe\Src\Core\QuickServe.Domain\obj\Debug\netstandard2.1\QuickServe.Domain.pdb
 F:\.Net\QuickServe\Src\Core\QuickServe.Domain\obj\Debug\netstandard2.1\QuickServe.Domain.sourcelink.json
+F:\.Net\QuickServe\Src\Core\QuickServe.Domain\obj\Debug\netstandard2.1\QuickServe.Domain.csproj.AssemblyReference.cache
