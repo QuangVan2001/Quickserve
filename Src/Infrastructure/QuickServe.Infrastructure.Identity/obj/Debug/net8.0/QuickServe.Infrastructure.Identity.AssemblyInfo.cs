@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuickServe.Infrastructure.Identity")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+01a295ed23e89ca58aafe801bc820a651f5b7ab3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0b9cdfccafecb70f450f7a04ecd941a6b78fe1e7")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuickServe.Infrastructure.Identity")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuickServe.Infrastructure.Identity")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
