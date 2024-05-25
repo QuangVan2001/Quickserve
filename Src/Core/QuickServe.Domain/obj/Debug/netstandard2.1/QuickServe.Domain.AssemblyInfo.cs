@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuickServe.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f9b794893c1aa5bb64a12654d844e0a42b01faf1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+01a295ed23e89ca58aafe801bc820a651f5b7ab3")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuickServe.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuickServe.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

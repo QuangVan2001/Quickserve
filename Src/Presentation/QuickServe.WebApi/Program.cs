@@ -69,7 +69,7 @@ using (var scope = app.Services.CreateScope())
 
     await services.GetRequiredService<IdentityContext>().Database.MigrateAsync();
     await services.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
-    await services.GetRequiredService<FileManagerDbContext>().Database.MigrateAsync();
+   // await services.GetRequiredService<FileManagerDbContext>().Database.MigrateAsync();
 
     //Seed Data
     await DefaultRoles.SeedAsync(services.GetRequiredService<RoleManager<ApplicationRole>>());
