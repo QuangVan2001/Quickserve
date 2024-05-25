@@ -19,8 +19,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Features\Accounts\Commands\" />
-	  <Folder Include="Features\Roles\Commands\" />
-	  <Folder Include="Features\Roles\Queries\" />
 	</ItemGroup>
 
 </Project>

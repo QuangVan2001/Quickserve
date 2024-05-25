@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 
 using System.Threading.Tasks;
-using QuickServe.Domain.Roles.Entities;
+
 using QuickServe.Infrastructure.Identity.Models;
 
 namespace QuickServe.Infrastructure.Identity.Seeds

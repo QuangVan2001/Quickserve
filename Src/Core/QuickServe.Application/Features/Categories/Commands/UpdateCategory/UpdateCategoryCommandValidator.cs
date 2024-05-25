@@ -1,6 +1,16 @@
-﻿namespace QuickServe.Application.Features.Categories.Commands.UpdateCategory;
+﻿using FluentValidation;
+using QuickServe.Application.Interfaces;
 
-public class UpdateCategoryCommandValidator
+namespace QuickServe.Application.Features.Categories.Commands.UpdateCategory;
+
+public class UpdateCategoryCommandValidator :  AbstractValidator<UpdateCategoryCommand>
 {
-    
+    public UpdateCategoryCommandValidator(ITranslator translator)
+    {
+        RuleFor(p => p.Name)
+            .NotNull()
+            .NotEmpty()
+            .MaximumLength(40)
+            .WithName(p => translator[nameof(p.Name)]);
+    }
 }

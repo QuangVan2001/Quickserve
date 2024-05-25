@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using QuickServe.Domain.Orders.Entities;
 
 namespace QuickServe.Infrastructure.Identity.Models;
 
 public class Customer : ApplicationUser
 {
-    public Customer()
+    public Customer() 
     {
         Orders = new HashSet<Order>();
     }

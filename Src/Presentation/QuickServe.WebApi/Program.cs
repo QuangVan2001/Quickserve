@@ -21,16 +21,14 @@ using QuickServe.WebApi.Infrastracture.Middlewares;
 using QuickServe.WebApi.Infrastracture.Services;
 using Serilog;
 using System.Reflection;
-using QuickServe.Domain.Accounts.Entities;
-using QuickServe.Domain.Roles.Entities;
-
+using QuickServe.Infrastructure.FileManager.Contexts;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
-//builder.Services.AddFileManagerInfrastructure(builder.Configuration);
+builder.Services.AddFileManagerInfrastructure(builder.Configuration);
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddResourcesInfrastructure();
 
@@ -71,7 +69,7 @@ using (var scope = app.Services.CreateScope())
 
     await services.GetRequiredService<IdentityContext>().Database.MigrateAsync();
     await services.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
-   // await services.GetRequiredService<FileManagerDbContext>().Database.MigrateAsync();
+    await services.GetRequiredService<FileManagerDbContext>().Database.MigrateAsync();
 
     //Seed Data
     await DefaultRoles.SeedAsync(services.GetRequiredService<RoleManager<ApplicationRole>>());

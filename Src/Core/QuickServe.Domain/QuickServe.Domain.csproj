@@ -5,11 +5,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <Folder Include="Accounts\Dtos\" />
-	  <Folder Include="Categories\Dtos\" />
 	  <Folder Include="Customers\Dtos\" />
 	  <Folder Include="Customers\Entities\" />
-	  <Folder Include="FeedBacks\Dtos\" />
-	  <Folder Include="FeedBacks\Entities\" />
 	  <Folder Include="IngredientProducts\Dtos\" />
 	  <Folder Include="Ingredients\Dtos\" />
 	  <Folder Include="IngredientTypes\Dtos\" />
@@ -19,8 +16,6 @@
 	  <Folder Include="OrderProducts\Dtos\" />
 	  <Folder Include="Orders\Dtos\" />
 	  <Folder Include="Payments\Dtos\" />
-	  <Folder Include="ProductTemplates\Dtos\" />
-	  <Folder Include="Roles\Dtos\" />
 	  <Folder Include="Sessions\Dtos\" />
 	  <Folder Include="TemplateSteps\Dtos\" />
 	</ItemGroup>

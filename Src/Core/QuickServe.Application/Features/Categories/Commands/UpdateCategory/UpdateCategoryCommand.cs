@@ -1,6 +1,10 @@
-﻿namespace QuickServe.Application.Features.Categories.Commands.UpdateCategory;
+﻿using MediatR;
+using QuickServe.Application.Wrappers;
 
-public class UpdateCategoryCommand
+namespace QuickServe.Application.Features.Categories.Commands.UpdateCategory;
+
+public class UpdateCategoryCommand : IRequest<BaseResult>
 {
-    
+    public long Id { get; set;  }
+    public string Name { get; set; }
 }

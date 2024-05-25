@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using QuickServe.Domain.Common;
 using QuickServe.Domain.ProductTemplates.Entities;
 
@@ -6,7 +7,7 @@ namespace QuickServe.Domain.Categories.Entities
 {
     public class Category : AuditableBaseEntity
     {
-        public string? Name { get; private set; }
+        public string Name { get; set; } = null!;
 
         public Category()
         {
@@ -16,11 +17,13 @@ namespace QuickServe.Domain.Categories.Entities
         public Category(string name)
         {
             Name = name;
+            
         }
 
         public void Update(string name)
         {
             Name = name;
+         
         }
 
         

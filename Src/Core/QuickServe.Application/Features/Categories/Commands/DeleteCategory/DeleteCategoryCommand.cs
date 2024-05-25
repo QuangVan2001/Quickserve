@@ -1,6 +1,9 @@
-﻿namespace QuickServe.Application.Features.Categories.Commands.DeleteCategory;
+﻿using MediatR;
+using QuickServe.Application.Wrappers;
 
-public class DeleteCategoryCommand
+namespace QuickServe.Application.Features.Categories.Commands.DeleteCategory;
+
+public class DeleteCategoryCommand : IRequest<BaseResult>
 {
-    
+    public long Id { get; set; }
 }

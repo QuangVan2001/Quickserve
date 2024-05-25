@@ -7,11 +7,7 @@ using QuickServe.Infrastructure.Persistence.Contexts;
 using QuickServe.Infrastructure.Persistence.Repositories;
 using System.Linq;
 using System.Reflection;
-using Microsoft.AspNetCore.Identity;
-using QuickServe.Domain.Accounts.Entities;
-using QuickServe.Domain.Roles.Entities;
-using QuickServe.Domain.Settings;
-using QuickServe.Infrastructure.Identity.Models;
+
 
 namespace QuickServe.Infrastructure.Persistence
 {
