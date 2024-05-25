@@ -91,7 +91,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseSwaggerWithVersioning();
 app.UseMiddleware<ErrorHandlerMiddleware>();
-app.UseHealthChecks("/health");
+//app.UseHealthChecks("/health");
 
 app.MapControllers();
 app.UseSerilogRequestLogging();
