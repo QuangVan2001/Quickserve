@@ -47,7 +47,7 @@ namespace QuickServe.Infrastructure.Identity
         {
             services.AddDbContext<IdentityContext>(options =>
             options.UseSqlServer(
-                configuration.GetConnectionString("IdentityConnection"),//"IdentityConnection"
+                configuration.GetConnectionString("IdentityServer"),//"IdentityConnection"
                 b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
 
             services.AddTransient<IGetUserServices, GetUserServices>();
