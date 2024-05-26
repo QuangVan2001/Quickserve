@@ -1,4 +1,5 @@
 ﻿using QuickServe.Application.DTOs;
+using QuickServe.Domain.News.Entities;
 
 namespace QuickServe.Application.Helpers
 {
@@ -26,6 +27,12 @@ namespace QuickServe.Application.Helpers
         {
             public static TranslatorMessageDto Category_not_Found_with_id(long id)
                 => new(nameof(Category_not_Found_with_id), [id.ToString()]);
+        }
+
+        public static class ProductTemplateMessages
+        {
+            public static TranslatorMessageDto ProductTemplate_not_found_with_id(long id)
+                => new(nameof(ProductTemplate_not_found_with_id), [id.ToString()]);
         }
     }
 }

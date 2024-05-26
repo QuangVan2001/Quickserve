@@ -1,4 +1,6 @@
-﻿namespace QuickServe.Domain.ProductTemplates.Dtos
+﻿using QuickServe.Domain.ProductTemplates.Entities;
+
+namespace QuickServe.Domain.ProductTemplates.Dtos
 {
     public class ProductTemplateDto
     {
@@ -6,17 +8,17 @@
         {
         }
 
-        public ProductTemplateDto(long id, long categoryId, string name, int quantity, string size, string imageUrl, decimal price, long storeId, string description)
+        public ProductTemplateDto(ProductTemplate productTemplate)
         {
-            Id = id;
-            CategoryId = categoryId;
-            Name = name;
-            Quantity = quantity;
-            Size = size;
-            ImageUrl = imageUrl;
-            Price = price;
-            StoreId = storeId;
-            Description = description;
+            Id = productTemplate.Id;
+            CategoryId = productTemplate.CategoryId;
+            Name = productTemplate.Name;
+            Quantity = productTemplate.Quantity ?? 0;
+            Size = productTemplate.Size;
+            ImageUrl = productTemplate.ImageUrl;
+            Price = productTemplate.Price;
+            StoreId = productTemplate.StoreId;
+            Description = productTemplate.Description;
         }
 
         public long Id { get; set; }
