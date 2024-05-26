@@ -20,11 +20,11 @@ F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\De
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\QuickServe.Infrastructure.Resources.AssemblyInfoInputs.cache
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\QuickServe.Infrastructure.Resources.AssemblyInfo.cs
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\QuickServe.Infrastructure.Resources.csproj.CoreCompileInputs.cache
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\QuickServe.Infrastructure.Resources.sourcelink.json
+F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\fa\QuickServe.Infrastructure.Resources.resources.cs
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\fa\QuickServe.Infrastructure.Resources.resources.dll
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\QuickSer.D6163D32.Up2Date
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\QuickServe.Infrastructure.Resources.dll
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\refint\QuickServe.Infrastructure.Resources.dll
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\QuickServe.Infrastructure.Resources.pdb
 F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\ref\QuickServe.Infrastructure.Resources.dll
-F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\QuickServe.Infrastructure.Resources.sourcelink.json
-F:\.Net\QuickServe\Src\Infrastructure\QuickServe.Infrastructure.Resources\obj\Debug\net8.0\fa\QuickServe.Infrastructure.Resources.resources.cs

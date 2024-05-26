@@ -8,4 +8,5 @@ namespace QuickServe.Application.Features.ProductTemplates.Queries.GetPagedListP
 public class GetPagedListProductTemplateQuery : PagenationRequestParameter, IRequest<PagedResponse<ProductTemplateDto>>
 {
     public string Name { get; set; }
+    
 }

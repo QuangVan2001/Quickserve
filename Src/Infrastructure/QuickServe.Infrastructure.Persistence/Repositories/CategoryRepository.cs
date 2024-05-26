@@ -26,9 +26,19 @@ public class CategoryRepository : GenericRepository<Category>, ICategoryReposito
             query = query.Where(c => c.Name.Contains(name));
         }
 
+      
         return await Paged(
-            query.Select(c => new CategoryDto(c)),
+            query.Select(c => new CategoryDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Created = c.Created,
+                CreatedBy = c.CreatedBy,
+                LastModified = c.LastModified ?? null,  // Xử lý giá trị NULL
+                LastModifiedBy = c.LastModifiedBy ?? null // Xử lý giá trị NULL
+            }),
             pageNumber,
             pageSize);
     }
+    
 }
