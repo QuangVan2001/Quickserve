@@ -62,7 +62,7 @@ namespace QuickServe.Infrastructure.Identity
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
 
-            //services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
             var jwtSettings = configuration.GetSection(nameof(JWTSettings)).Get<JWTSettings>();
             services.AddSingleton(jwtSettings);
