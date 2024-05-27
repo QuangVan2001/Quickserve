@@ -43,6 +43,7 @@ builder.Services.AddControllers().AddFluentValidation(options =>
     options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 });
 #pragma warning restore CS0618 // Type or member is obsolete
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerWithVersioning();
 builder.Services.AddCors(x =>
@@ -80,20 +81,22 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuickServe.WebApi v1"));
 }
+
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuickServe.WebApi v1"));
 
 app.UseCustomLocalization();
 app.UseCors("Any");
 app.UseRouting();
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSwaggerWithVersioning();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 //app.UseHealthChecks("/health");
+app.UseSerilogRequestLogging();
 
 app.MapControllers();
-app.UseSerilogRequestLogging();
 
 app.Run();
