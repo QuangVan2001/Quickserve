@@ -32,9 +32,9 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddIdentityInfrastructure(builder.Configuration);
 //builder.Services.AddResourcesInfrastructure();
 
-//builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
+builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 //builder.Services.AddDistributedMemoryCache();
-//builder.Services.AddJwt(builder.Configuration);
+builder.Services.AddJwt(builder.Configuration);
 
 #pragma warning disable CS0618 // Type or member is obsolete
 builder.Services.AddControllers().AddFluentValidation(options =>
