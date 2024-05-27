@@ -64,19 +64,19 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
 
-    await services.GetRequiredService<IdentityContext>().Database.MigrateAsync();
-    await services.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
-    // await services.GetRequiredService<FileManagerDbContext>().Database.MigrateAsync();
+//    await services.GetRequiredService<IdentityContext>().Database.MigrateAsync();
+//    await services.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
+//    // await services.GetRequiredService<FileManagerDbContext>().Database.MigrateAsync();
 
-    //Seed Data
-    await DefaultRoles.SeedAsync(services.GetRequiredService<RoleManager<ApplicationRole>>());
-    await DefaultBasicUser.SeedAsync(services.GetRequiredService<UserManager<ApplicationUser>>());
-    await DefaultData.SeedAsync(services.GetRequiredService<ApplicationDbContext>());
-}
+//    //Seed Data
+//    await DefaultRoles.SeedAsync(services.GetRequiredService<RoleManager<ApplicationRole>>());
+//    await DefaultBasicUser.SeedAsync(services.GetRequiredService<UserManager<ApplicationUser>>());
+//    await DefaultData.SeedAsync(services.GetRequiredService<ApplicationDbContext>());
+//}
 
 if (app.Environment.IsDevelopment())
 {
