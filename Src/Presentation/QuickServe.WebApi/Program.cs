@@ -32,9 +32,9 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddIdentityInfrastructure(builder.Configuration);
 //builder.Services.AddResourcesInfrastructure();
 
-builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
+//builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 //builder.Services.AddDistributedMemoryCache();
-builder.Services.AddJwt(builder.Configuration);
+//builder.Services.AddJwt(builder.Configuration);
 
 #pragma warning disable CS0618 // Type or member is obsolete
 builder.Services.AddControllers().AddFluentValidation(options =>
@@ -56,7 +56,7 @@ builder.Services.AddCors(x =>
 
     });
 });
-builder.Services.AddCustomLocalization(builder.Configuration);
+//builder.Services.AddCustomLocalization(builder.Configuration);
 
 //builder.Services.AddHealthChecks();
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
@@ -86,7 +86,7 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuickServe.WebApi v1"));
 
-app.UseCustomLocalization();
+//app.UseCustomLocalization();
 app.UseCors("Any");
 app.UseRouting();
 app.UseHttpsRedirection();
