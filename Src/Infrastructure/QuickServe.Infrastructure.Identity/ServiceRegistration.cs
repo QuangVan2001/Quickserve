@@ -17,6 +17,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace QuickServe.Infrastructure.Identity
 {
@@ -66,13 +67,12 @@ namespace QuickServe.Infrastructure.Identity
             var jwtSettings = configuration.GetSection(nameof(JWTSettings)).Get<JWTSettings>();
             services.AddSingleton(jwtSettings);
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(async o =>
+                .AddJwtBearer(o =>
                 {
                     o.RequireHttpsMetadata = false;
                     o.SaveToken = false;
@@ -95,14 +95,14 @@ namespace QuickServe.Infrastructure.Identity
                             context.Response.StatusCode = 401;
                             context.Response.ContentType = "application/json";
                             var result = JsonConvert.SerializeObject(new BaseResult(new Error(ErrorCode.AccessDenied, "You are not Authorized")), serializerSettings);
-                            return context.Response.WriteAsync(result);
+                            return Task.FromResult(context.Response.WriteAsync(result)).Result;
                         },
                         OnForbidden = context =>
                         {
                             context.Response.StatusCode = 403;
                             context.Response.ContentType = "application/json";
                             var result = JsonConvert.SerializeObject(new BaseResult(new Error(ErrorCode.AccessDenied, "You are not authorized to access this resource")), serializerSettings);
-                            return context.Response.WriteAsync(result);
+                            return Task.FromResult(context.Response.WriteAsync(result)).Result;
                         },
                         OnTokenValidated = async context =>
                         {
@@ -122,7 +122,6 @@ namespace QuickServe.Infrastructure.Identity
 
                     };
                 });
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
         }
 
