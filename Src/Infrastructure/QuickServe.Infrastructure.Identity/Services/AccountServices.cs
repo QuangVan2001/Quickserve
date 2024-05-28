@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using QuickServe.Application.DTOs.Account.Requests;
@@ -73,11 +74,6 @@ namespace QuickServe.Infrastructure.Identity.Services
             }
 
             var responseData = await response.Content.ReadAsStringAsync();
-            var responseJson = JsonSerializer.Deserialize<AuthenticationResponse>(responseData, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                PropertyNameCaseInsensitive = true
-            });
 
             var user = await userManager.FindByEmailAsync(login.Email);
             var roles = await userManager.GetRolesAsync(user);
@@ -91,8 +87,13 @@ namespace QuickServe.Infrastructure.Identity.Services
                 IsVerified = user.EmailConfirmed
             };
 
-            if (responseJson != null)
+            if (!string.IsNullOrEmpty(responseData))
             {
+                var responseJson = JsonSerializer.Deserialize<AuthenticationResponse>(responseData, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    PropertyNameCaseInsensitive = true
+                });
                 result.AccessToken = responseJson.AccessToken;
                 result.RefreshToken = responseJson.RefreshToken;
                 result.TokenType = responseJson.TokenType;
