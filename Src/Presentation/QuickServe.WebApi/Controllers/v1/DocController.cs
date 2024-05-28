@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace QuickServe.WebApi.Controllers.v1
 {
-    [ApiVersion("1")]
+    //[ApiVersion("1")]
     public class DocController : BaseApiController
     {
         [HttpGet]

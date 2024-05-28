@@ -16,8 +16,8 @@ namespace QuickServe.Infrastructure.Persistence
         public static void AddPersistenceInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-           options.UseSqlServer(
-               configuration.GetConnectionString("Server"),//cũ là GetConnectionString("SqlServer")
+           options.UseNpgsql(
+               configuration.GetConnectionString("PostgresEntity"),//cũ là GetConnectionString("SqlServer")
                b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();

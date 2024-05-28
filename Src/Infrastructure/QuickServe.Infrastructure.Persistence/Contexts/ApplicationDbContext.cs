@@ -95,7 +95,8 @@ namespace QuickServe.Infrastructure.Persistence.Contexts
         {
             property.SetColumnType("decimal(18,6)");
         }
-        builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+
+        //builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
            
         base.OnModelCreating(builder);
 

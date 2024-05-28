@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using QuickServe.Domain.Stores.Entities;
 
 namespace QuickServe.Domain.Stores.Dtos

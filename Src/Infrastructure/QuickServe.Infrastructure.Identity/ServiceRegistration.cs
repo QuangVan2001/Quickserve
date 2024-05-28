@@ -46,15 +46,18 @@ namespace QuickServe.Infrastructure.Identity
         }
         public static void AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<IdentityContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("IdentityServer"),//"IdentityConnection"
-                b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
+            //services.AddDbContext<IdentityContext>(options =>
+            //options.UseSqlServer(
+            //    configuration.GetConnectionString("IdentityServer"),//"IdentityConnection"
+            //    b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
+            services.AddDbContext<AppIdentityContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("PostgresIdentity"), b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
 
-            services.AddTransient<IGetUserServices, GetUserServices>();
-            services.AddTransient<IUpdateUserServices, UpdateUserServices>();
+            //services.AddTransient<IGetUserServices, GetUserServices>();
+            //services.AddTransient<IUpdateUserServices, UpdateUserServices>();
             //services.AddTransient<IAccountServices, AccountServices>();
         }
+
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var serializerSettings = new JsonSerializerSettings()

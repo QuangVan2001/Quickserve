@@ -13,17 +13,17 @@ namespace QuickServe.WebApi.Infrastracture.Extensions
     {
         public static IApplicationBuilder UseSwaggerWithVersioning(this IApplicationBuilder app)
         {
-            IServiceProvider services = app.ApplicationServices;
-            var provider = services.GetRequiredService<IApiVersionDescriptionProvider>();
+            //IServiceProvider services = app.ApplicationServices;
+            //var provider = services.GetRequiredService<IApiVersionDescriptionProvider>();
 
             app.UseSwagger();
 
             app.UseSwaggerUI(options =>
             {
-                foreach (var description in provider.ApiVersionDescriptions)
-                {
-                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                }
+                //foreach (var description in provider.ApiVersionDescriptions)
+                //{
+                //    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                //}
             });
 
             return app;
@@ -31,18 +31,18 @@ namespace QuickServe.WebApi.Infrastracture.Extensions
 
         public static IServiceCollection AddSwaggerWithVersioning(this IServiceCollection services)
         {
-            services.AddApiVersioning(setup =>
-            {
-                setup.DefaultApiVersion = new ApiVersion(1, 0);
-                setup.AssumeDefaultVersionWhenUnspecified = true;
-                setup.ReportApiVersions = true;
-            });
+            //services.AddApiVersioning(setup =>
+            //{
+            //    setup.DefaultApiVersion = new ApiVersion(1, 0);
+            //    setup.AssumeDefaultVersionWhenUnspecified = true;
+            //    setup.ReportApiVersions = true;
+            //});
 
-            services.AddVersionedApiExplorer(setup =>
-            {
-                setup.GroupNameFormat = "'v'VVV";
-                setup.SubstituteApiVersionInUrl = true;
-            });
+            //services.AddVersionedApiExplorer(setup =>
+            //{
+            //    setup.GroupNameFormat = "'v'VVV";
+            //    setup.SubstituteApiVersionInUrl = true;
+            //});
 
             services.AddSwaggerGen(setup =>
             {
@@ -73,7 +73,7 @@ namespace QuickServe.WebApi.Infrastracture.Extensions
                 });
 
             });
-            services.ConfigureOptions<ConfigureSwaggerOptions>();
+            //services.ConfigureOptions<ConfigureSwaggerOptions>();
 
             return services;
         }
