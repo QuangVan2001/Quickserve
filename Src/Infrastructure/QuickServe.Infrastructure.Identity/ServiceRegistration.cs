@@ -55,7 +55,7 @@ namespace QuickServe.Infrastructure.Identity
 
             //services.AddTransient<IGetUserServices, GetUserServices>();
             //services.AddTransient<IUpdateUserServices, UpdateUserServices>();
-            //services.AddTransient<IAccountServices, AccountServices>();
+            services.AddTransient<IAccountServices, AccountServices>();
         }
 
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)

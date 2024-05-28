@@ -6,18 +6,22 @@ namespace QuickServe.Application.DTOs.Account.Requests
 {
     public class AuthenticationRequest
     {
-        public string UserName { get; set; }
+        public string Email { get; set; }
 
         public string Password { get; set; }
+
+        public string TwoFactorCode { get; set; }
+
+        public string TwoFactorRecoveryCode { get; set; }
     }
     public class AuthenticationRequestValidator : AbstractValidator<AuthenticationRequest>
     {
         public AuthenticationRequestValidator(ITranslator translator)
         {
-            RuleFor(x => x.UserName)
+            RuleFor(x => x.Email)
                 .NotEmpty()
                 .NotNull()
-                .WithName(p => translator[nameof(p.UserName)]);
+                .WithName(p => translator[nameof(p.Email)]);
 
             RuleFor(x => x.Password)
                 .NotEmpty()

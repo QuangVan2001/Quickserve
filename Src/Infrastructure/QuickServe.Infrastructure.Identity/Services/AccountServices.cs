@@ -1,24 +1,24 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using QuickServe.Application.DTOs.Account.Requests;
 using QuickServe.Application.DTOs.Account.Responses;
 using QuickServe.Application.Helpers;
 using QuickServe.Application.Interfaces;
 using QuickServe.Application.Interfaces.UserInterfaces;
 using QuickServe.Application.Wrappers;
-using QuickServe.Domain.Settings;
-using QuickServe.Infrastructure.Identity.Models;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Error = QuickServe.Application.Wrappers.Error;
 
 namespace QuickServe.Infrastructure.Identity.Services
 {
-    public class AccountServices(UserManager<ApplicationUser> userManager, IAuthenticatedUserService authenticatedUser, SignInManager<ApplicationUser> signInManager, JWTSettings jwtSettings, ITranslator translator) : IAccountServices
+    public class AccountServices(UserManager<IdentityUser> userManager, IAuthenticatedUserService authenticatedUser, SignInManager<IdentityUser> signInManager, ITranslator translator, HttpClient httpClient, IConfiguration configuration) : IAccountServices
     {
         public async Task<BaseResult> ChangePassword(ChangePasswordRequest model)
         {
@@ -48,34 +48,58 @@ namespace QuickServe.Infrastructure.Identity.Services
             return new BaseResult(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
         }
 
-        public async Task<BaseResult<AuthenticationResponse>> Authenticate(AuthenticationRequest request)
+        public async Task<BaseResult<AuthenticationResponse>> Authenticate(AuthenticationRequest login, bool? useCookies, bool? useSessionCookies)
         {
-            var user = await userManager.FindByNameAsync(request.UserName);
-            if (user == null)
+            var endpoint = $"{configuration["ApiBaseUrl"]}/api/v1/identity/login";
+            if (useCookies.HasValue)
+                endpoint += $"?useCookies={useCookies.Value}";
+            if (useSessionCookies.HasValue)
+                endpoint += $"&useSessionCookies={useSessionCookies.Value}";
+
+            var jsonContent = new StringContent(
+            JsonSerializer.Serialize(new
             {
-                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_UserName(request.UserName)), nameof(request.UserName)));
+                email = login.Email,
+                password = login.Password
+            }),
+            Encoding.UTF8,
+            "application/json");
+            var response = await httpClient.PostAsync(endpoint, jsonContent);
+            response.EnsureSuccessStatusCode();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.AccessDenied, response.ReasonPhrase));
             }
-            var result = await signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
-            if (!result.Succeeded)
+
+            var responseData = await response.Content.ReadAsStringAsync();
+            var responseJson = JsonSerializer.Deserialize<AuthenticationResponse>(responseData, new JsonSerializerOptions
             {
-                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.AccountMessages.Invalid_password()), nameof(request.Password)));
-            }
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                PropertyNameCaseInsensitive = true
+            });
 
-            var rolesList = await userManager.GetRolesAsync(user).ConfigureAwait(false);
+            var user = await userManager.FindByEmailAsync(login.Email);
+            var roles = await userManager.GetRolesAsync(user);
 
-            var jwToken = await GenerateJwtToken(user);
-
-            AuthenticationResponse response = new AuthenticationResponse()
+            var result = new AuthenticationResponse()
             {
-                Id = user.Id.ToString(),
-                JWToken = new JwtSecurityTokenHandler().WriteToken(jwToken),
+                Id = user.Id,
                 Email = user.Email,
-                UserName = user.UserName,
-                Roles = rolesList.ToList(),
-                IsVerified = user.EmailConfirmed,
+                UserName = user.Email,
+                Roles = [.. roles],
+                IsVerified = user.EmailConfirmed
             };
 
-            return new BaseResult<AuthenticationResponse>(response);
+            if (responseJson != null)
+            {
+                result.AccessToken = responseJson.AccessToken;
+                result.RefreshToken = responseJson.RefreshToken;
+                result.TokenType = responseJson.TokenType;
+                result.ExpiresIn = responseJson.ExpiresIn;
+            }
+
+            return new BaseResult<AuthenticationResponse>(result);
         }
 
         public async Task<BaseResult<AuthenticationResponse>> AuthenticateByUserName(string username)
@@ -88,12 +112,12 @@ namespace QuickServe.Infrastructure.Identity.Services
 
             var rolesList = await userManager.GetRolesAsync(user).ConfigureAwait(false);
 
-            var jwToken = await GenerateJwtToken(user);
+            //var jwToken = await GenerateJwtToken(user); 
 
             AuthenticationResponse response = new AuthenticationResponse()
             {
                 Id = user.Id.ToString(),
-                JWToken = new JwtSecurityTokenHandler().WriteToken(jwToken),
+                //JWToken = new JwtSecurityTokenHandler().WriteToken(jwToken),
                 Email = user.Email,
                 UserName = user.UserName,
                 Roles = rolesList.ToList(),
@@ -105,7 +129,7 @@ namespace QuickServe.Infrastructure.Identity.Services
 
         public async Task<BaseResult<string>> RegisterGostAccount()
         {
-            var user = new ApplicationUser()
+            var user = new IdentityUser()
             {
                 UserName = GenerateRandomString(7)
             };
@@ -132,27 +156,27 @@ namespace QuickServe.Infrastructure.Identity.Services
                 return result.ToString();
             }
         }
-        private async Task<JwtSecurityToken> GenerateJwtToken(ApplicationUser user)
-        {
-            await userManager.UpdateSecurityStampAsync(user);
+        //private async Task<JwtSecurityToken> GenerateJwtToken(IdentityUser user)
+        //{
+        //    await userManager.UpdateSecurityStampAsync(user);
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
-            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+        //    var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
+        //    var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
-            var jwtSecurityToken = new JwtSecurityToken(
-                issuer: jwtSettings.Issuer,
-                audience: jwtSettings.Audience,
-                claims: await GetClaimsAsync(),
-                expires: DateTime.UtcNow.AddMinutes(jwtSettings.DurationInMinutes),
-                signingCredentials: signingCredentials);
-            return jwtSecurityToken;
+        //    var jwtSecurityToken = new JwtSecurityToken(
+        //        issuer: jwtSettings.Issuer,
+        //        audience: jwtSettings.Audience,
+        //        claims: await GetClaimsAsync(),
+        //        expires: DateTime.UtcNow.AddMinutes(jwtSettings.DurationInMinutes),
+        //        signingCredentials: signingCredentials);
+        //    return jwtSecurityToken;
 
-            async Task<IList<Claim>> GetClaimsAsync()
-            {
-                var result = await signInManager.ClaimsFactory.CreateAsync(user);
-                return result.Claims.ToList();
-            }
-        }
+        //    async Task<IList<Claim>> GetClaimsAsync()
+        //    {
+        //        var result = await signInManager.ClaimsFactory.CreateAsync(user);
+        //        return result.Claims.ToList();
+        //    }
+        //}
 
     }
 }

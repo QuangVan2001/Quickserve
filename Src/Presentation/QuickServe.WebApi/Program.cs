@@ -71,6 +71,8 @@ builder.Services.AddIdentityCore<IdentityUser>()
     .AddEntityFrameworkStores<AppIdentityContext>()
     .AddApiEndpoints();
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 app.MapGroup("api/v1/identity").MapIdentityApi<IdentityUser>();

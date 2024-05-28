@@ -4,6 +4,8 @@ namespace QuickServe.Application.Wrappers
 {
     public class BaseResult
     {
+        private string v;
+
         public BaseResult()
         {
             Success = true;
@@ -21,6 +23,11 @@ namespace QuickServe.Application.Wrappers
             Errors ??= new List<Error>();
             Errors.AddRange(errors);
             Success = false;
+        }
+
+        public BaseResult(string v)
+        {
+            this.v = v;
         }
 
         public bool Success { get; set; }
