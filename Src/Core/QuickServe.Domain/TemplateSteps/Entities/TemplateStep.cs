@@ -15,6 +15,7 @@ namespace QuickServe.Domain.TemplateSteps.Entities
 
         public long ProductTemplateId { get; set; }
         public string Name { get; set; } = null!;
+        public int Status { get; set; }
 
 
         public virtual ProductTemplate ProductTemplate { get; set; } = null!;

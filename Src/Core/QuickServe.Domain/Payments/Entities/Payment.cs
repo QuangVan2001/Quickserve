@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using QuickServe.Domain.Common;
+﻿using QuickServe.Domain.Common;
 using QuickServe.Domain.Orders.Entities;
 
 namespace QuickServe.Domain.Payments.Entities
@@ -8,12 +7,13 @@ namespace QuickServe.Domain.Payments.Entities
     {
         public Payment()
         {
-            Orders = new HashSet<Order>();
+            
         }
 
         public string Name { get; set; } = null!;
-        public PaymentMethod PaymentType ;
-       
-        public virtual ICollection<Order> Orders { get; set; }
+        public int PaymentType { get; set; }
+        public int RefOrderId { get; set; }
+
+        public virtual Order Order { get; set; } = null!;
     }
 }

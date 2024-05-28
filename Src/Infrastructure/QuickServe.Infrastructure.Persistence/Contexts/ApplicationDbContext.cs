@@ -24,6 +24,8 @@ using QuickServe.Domain.ProductTemplates.Entities;
 using QuickServe.Domain.Sessions.Entities;
 using QuickServe.Domain.Stores.Entities;
 using QuickServe.Domain.TemplateSteps.Entities;
+using QuickServe.Domain.IngredientSessions.Entities;
+using QuickServe.Domain.IngredientNutritions.Entities;
 
 
 
@@ -40,14 +42,16 @@ namespace QuickServe.Infrastructure.Persistence.Contexts
         this.authenticatedUser = authenticatedUser;
     }
 
-    public virtual DbSet<ProDucts> ProDucts { get; set; }  
+    public virtual DbSet<Product> ProDucts { get; set; }  
  
     public virtual DbSet<Category> Categories { get; set; }
  
     public virtual DbSet<Ingredient> Ingredients { get; set; } 
     public virtual DbSet<IngredientProduct> IngredientProducts { get; set; }
+    public virtual DbSet<IngredientSession> IngredientSessions { get; set; }
     public virtual DbSet<IngredientType> IngredientTypes { get; set; } 
     public virtual DbSet<IngredientTypeTemplateStep> IngredientTypeTemplateSteps { get; set; }
+    public virtual DbSet<IngredientNutrition> IngredientNutritions { get; set; }
     public virtual DbSet<Newes> News { get; set; }
     public virtual DbSet<Nutrition> Nutritions { get; set; } 
     public virtual DbSet<Order> Orders { get; set; }

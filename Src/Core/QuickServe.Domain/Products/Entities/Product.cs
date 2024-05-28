@@ -6,9 +6,9 @@ using QuickServe.Domain.ProductTemplates.Entities;
 
 namespace QuickServe.Domain.Products.Entities
 {
-    public class ProDucts : AuditableBaseEntity
+    public class Product : AuditableBaseEntity
     {
-        public ProDucts()
+        public Product()
         {
             IngredientProducts = new HashSet<IngredientProduct>();
             OrderProducts = new HashSet<OrderProduct>();

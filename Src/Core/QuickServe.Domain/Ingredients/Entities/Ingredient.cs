@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using QuickServe.Domain.Common;
+using QuickServe.Domain.IngredientNutritions.Entities;
 using QuickServe.Domain.IngredientProducts.Entities;
+using QuickServe.Domain.IngredientSessions.Entities;
 using QuickServe.Domain.IngredientTypes.Entities;
-using QuickServe.Domain.Nutritions.Entities;
-using QuickServe.Domain.Sessions.Entities;
 
 namespace QuickServe.Domain.Ingredients.Entities
 {
@@ -12,7 +12,8 @@ namespace QuickServe.Domain.Ingredients.Entities
         public Ingredient()
         {
             IngredientProducts = new HashSet<IngredientProduct>();
-            Sessions = new HashSet<Session>();
+            IngredientSessions = new HashSet<IngredientSession>();
+            IngredientNutritions = new HashSet<IngredientNutrition>();
         }
 
     
@@ -22,12 +23,12 @@ namespace QuickServe.Domain.Ingredients.Entities
         public string Description { get; set; } = null!;
         public string ImageUrl { get; set; } = null!;
         public long IngredientTypeId { get; set; }
-
+        public int Status { get; set; }
 
         public virtual IngredientType IngredientType { get; set; } = null!;
-        public virtual Nutrition? Nutrition { get; set; }
-        public virtual ICollection<IngredientProduct> IngredientProducts { get; set; }
 
-        public virtual ICollection<Session> Sessions { get; set; }
+        public virtual ICollection<IngredientNutrition>? IngredientNutritions { get; set; }
+        public virtual ICollection<IngredientProduct> IngredientProducts { get; set; }
+        public virtual ICollection<IngredientSession> IngredientSessions { get; set; }
     }
 }

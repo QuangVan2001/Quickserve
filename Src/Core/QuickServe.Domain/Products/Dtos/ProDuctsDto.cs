@@ -8,7 +8,7 @@ namespace QuickServe.Domain.Products.Dtos
         {
         }
 
-        public ProDuctsDto(ProDucts proDucts)
+        public ProDuctsDto(Product proDucts)
         {
             Id = proDucts.Id;
             Name = proDucts.Name;

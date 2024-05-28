@@ -23,11 +23,15 @@ public class OrderConfiguration :  IEntityTypeConfiguration<Order>
 
         entity.Property(e => e.StoreId).HasColumnName("Store_id");
 
+        entity.HasMany(d => d.OrderProducts)
+            .WithOne(p => p.Order)
+            .HasForeignKey(d => d.OrderId)
+            .OnDelete(DeleteBehavior.ClientSetNull)
+            .HasConstraintName("order_order_product_id_foreign");
 
-
-        entity.HasOne(d => d.PaymentMethod)
-            .WithMany(p => p.Orders)
-            .HasForeignKey(d => d.PaymentMethodId)
+        entity.HasMany(d => d.PaymentMethods)
+            .WithOne(p => p.Order)
+            .HasForeignKey(d => d.RefOrderId)
             .OnDelete(DeleteBehavior.ClientSetNull)
             .HasConstraintName("order_payment_method_id_foreign");
 
@@ -37,9 +41,9 @@ public class OrderConfiguration :  IEntityTypeConfiguration<Order>
             .OnDelete(DeleteBehavior.ClientSetNull)
             .HasConstraintName("order_store_id_foreign");
 
-        entity.HasOne(d => d.Session)
-            .WithMany(p => p.Orders)
-            .HasForeignKey(d => d.SessionId)
+        entity.HasMany(d => d.Sessions)
+            .WithOne(p => p.Order)
+            .HasForeignKey(d => d.OrderId)
             .OnDelete(DeleteBehavior.ClientSetNull)
             .HasConstraintName("order_session_id_foreign");
 

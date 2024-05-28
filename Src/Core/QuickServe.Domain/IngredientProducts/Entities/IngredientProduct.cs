@@ -11,6 +11,6 @@ namespace QuickServe.Domain.IngredientProducts.Entities
         public int Quantity { get; set; }
 
         public virtual Ingredient Ingredient { get; set; } = null!;
-        public virtual ProDucts Product { get; set; } = null!;
+        public virtual Product Product { get; set; } = null!;
     }
 }

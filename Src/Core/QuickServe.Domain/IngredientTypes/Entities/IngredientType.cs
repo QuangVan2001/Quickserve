@@ -13,9 +13,8 @@ namespace QuickServe.Domain.IngredientTypes.Entities
             Ingredients = new HashSet<Ingredient>();
         }
 
-
         public string Name { get; set; } = null!;
-
+        public int Status { get; set; }
 
         public virtual ICollection<IngredientTypeTemplateStep> IngredientTypeTemplateSteps { get; set; }
         public virtual ICollection<Ingredient> Ingredients { get; set; }

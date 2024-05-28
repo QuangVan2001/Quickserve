@@ -15,6 +15,8 @@ namespace QuickServe.Domain.Orders.Entities
         public Order()
         {
             OrderProducts = new HashSet<OrderProduct>();
+            PaymentMethods = new HashSet<Payment>();
+            Sessions = new HashSet<Session>();
         }
 
     
@@ -23,11 +25,10 @@ namespace QuickServe.Domain.Orders.Entities
         public string Status { get; set; } = null!;
         public double TotalPrice { get; set; }
         public long StoreId { get; set; }
-        public long SessionId { get; set; }
 
         public virtual Account Customer { get; set; } = null!;
-        public virtual Session Session { get; set; } = null!;
-        public virtual Payment PaymentMethod { get; set; } = null!;
+        public virtual ICollection<Session> Sessions { get; set; }
+        public virtual ICollection<Payment> PaymentMethods { get; set; }
         public virtual Store Store { get; set; } = null!;
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }
     }

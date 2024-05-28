@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using QuickServe.Domain.Common;
-using QuickServe.Domain.Ingredients.Entities;
+using QuickServe.Domain.IngredientSessions.Entities;
 using QuickServe.Domain.Orders.Entities;
 
 namespace QuickServe.Domain.Sessions.Entities
@@ -10,18 +10,17 @@ namespace QuickServe.Domain.Sessions.Entities
     {
         public Session()
         {
-            Ingredients = new HashSet<Ingredient>();
+            IngredientSessions = new HashSet<IngredientSession>();
         }
 
      
         public string Name { get; set; } = null!;
-        public long IngredientId { get; set; }
         public long OrderId { get; set; }
-        public long StoreId { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
+        public int Status { get; set; }
 
-        public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<Ingredient> Ingredients { get; set; }
+        public virtual Order Order { get; set; } = null!;
+        public virtual ICollection<IngredientSession> IngredientSessions { get; set; }
     }
 }

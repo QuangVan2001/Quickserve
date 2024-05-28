@@ -5,10 +5,10 @@ using QuickServe.Domain.Products.Entities;
 namespace QuickServe.Infrastructure.Persistence.Contexts.Configurations;
 
 
-    public class ProDuctsConfiguration : IEntityTypeConfiguration<ProDucts>
+    public class ProDuctsConfiguration : IEntityTypeConfiguration<Product>
     {
 
-        public void Configure(EntityTypeBuilder<ProDucts> entity)
+        public void Configure(EntityTypeBuilder<Product> entity)
         {
        
         entity.ToTable("Product");
