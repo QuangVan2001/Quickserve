@@ -1,6 +1,7 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using QuickServe.Domain.Orders.Entities;
 
 
 namespace QuickServe.Domain.Accounts.Entities
@@ -14,10 +15,6 @@ namespace QuickServe.Domain.Accounts.Entities
         public string Name { get; set; }
         public DateTime Created { get; set; }
         
-    
-        
-       
-     
-        
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

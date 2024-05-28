@@ -24,7 +24,6 @@ using QuickServe.Domain.ProductTemplates.Entities;
 using QuickServe.Domain.Sessions.Entities;
 using QuickServe.Domain.Stores.Entities;
 using QuickServe.Domain.TemplateSteps.Entities;
-using QuickServe.Infrastructure.Identity.Models;
 
 
 
@@ -41,9 +40,7 @@ namespace QuickServe.Infrastructure.Persistence.Contexts
         this.authenticatedUser = authenticatedUser;
     }
 
-    public DbSet<Product> Products { get; set; }
-    public virtual DbSet<ProDucts> ProDucts { get; set; } 
-    
+    public virtual DbSet<ProDucts> ProDucts { get; set; }  
  
     public virtual DbSet<Category> Categories { get; set; }
  
@@ -85,9 +82,7 @@ namespace QuickServe.Infrastructure.Persistence.Contexts
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
-    {
-        
-        
+    {   
         // Product configurations
         foreach (var property in builder.Model.GetEntityTypes()
                      .SelectMany(t => t.GetProperties())

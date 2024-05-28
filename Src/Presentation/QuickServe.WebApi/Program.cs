@@ -1,7 +1,6 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QuickServe.Application;
@@ -10,23 +9,14 @@ using QuickServe.Infrastructure.FileManager;
 
 using QuickServe.Infrastructure.Identity;
 using QuickServe.Infrastructure.Identity.Contexts;
-using QuickServe.Infrastructure.Identity.Models;
-using QuickServe.Infrastructure.Identity.Seeds;
 using QuickServe.Infrastructure.Persistence;
-using QuickServe.Infrastructure.Persistence.Contexts;
-using QuickServe.Infrastructure.Persistence.Seeds;
 using QuickServe.Infrastructure.Resources;
 using QuickServe.WebApi.Infrastracture.Extensions;
 using QuickServe.WebApi.Infrastracture.Middlewares;
 using QuickServe.WebApi.Infrastracture.Services;
 using Serilog;
 using System.Reflection;
-using QuickServe.Infrastructure.FileManager.Contexts;
-using System.Security.Claims;
-using System.Linq;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Configuration;
-using System;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -83,7 +73,7 @@ builder.Services.AddIdentityCore<IdentityUser>()
 
 var app = builder.Build();
 
-app.MapGroup("api/identity").MapIdentityApi<IdentityUser>();
+app.MapGroup("api/v1/identity").MapIdentityApi<IdentityUser>();
 
 //using (var scope = app.Services.CreateScope())
 //{

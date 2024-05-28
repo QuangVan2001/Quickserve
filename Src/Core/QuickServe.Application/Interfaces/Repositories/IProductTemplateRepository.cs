@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using QuickServe.Application.DTOs;
-using QuickServe.Domain.Products.Dtos;
 using QuickServe.Domain.ProductTemplates.Dtos;
 using QuickServe.Domain.ProductTemplates.Entities;
 

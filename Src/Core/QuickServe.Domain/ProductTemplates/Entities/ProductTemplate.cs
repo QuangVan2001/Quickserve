@@ -15,10 +15,8 @@ namespace QuickServe.Domain.ProductTemplates.Entities
         public string Size { get; set; }
         public string ImageUrl { get; set; } = null!;
         public decimal Price { get; set; }
-        public long StoreId { get; set; }
         public string? Description { get; set; }
         public virtual Category Category { get; set; } = null!;
-        public virtual Store Store { get; set; } = null!;
         public virtual ICollection<ProDucts> Products { get; set; }
         public virtual ICollection<TemplateStep> TemplateSteps { get; set; }
     }

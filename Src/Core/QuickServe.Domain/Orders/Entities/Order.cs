@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using QuickServe.Domain.Accounts.Entities;
 using QuickServe.Domain.Common;
 
 using QuickServe.Domain.OrderProducts.Entities;
 using QuickServe.Domain.Payments.Entities;
+using QuickServe.Domain.Sessions.Entities;
 using QuickServe.Domain.Stores.Entities;
 
 namespace QuickServe.Domain.Orders.Entities
@@ -22,9 +23,10 @@ namespace QuickServe.Domain.Orders.Entities
         public string Status { get; set; } = null!;
         public double TotalPrice { get; set; }
         public long StoreId { get; set; }
+        public long SessionId { get; set; }
 
-        
-       
+        public virtual Account Customer { get; set; } = null!;
+        public virtual Session Session { get; set; } = null!;
         public virtual Payment PaymentMethod { get; set; } = null!;
         public virtual Store Store { get; set; } = null!;
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }

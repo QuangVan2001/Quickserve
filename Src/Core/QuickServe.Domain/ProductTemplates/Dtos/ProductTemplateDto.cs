@@ -17,7 +17,6 @@ namespace QuickServe.Domain.ProductTemplates.Dtos
             Size = productTemplate.Size;
             ImageUrl = productTemplate.ImageUrl;
             Price = productTemplate.Price;
-            StoreId = productTemplate.StoreId;
             Description = productTemplate.Description;
         }
 

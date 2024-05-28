@@ -34,18 +34,10 @@ public class ProductTemplateConfiguration : IEntityTypeConfiguration<ProductTemp
             .HasMaxLength(255)
             .IsUnicode(false);
 
-        entity.Property(e => e.StoreId).HasColumnName("Store_id");
-
         entity.HasOne(d => d.Category)
             .WithMany(p => p.ProductTemplates)
             .HasForeignKey(d => d.CategoryId)
             .OnDelete(DeleteBehavior.ClientSetNull)
             .HasConstraintName("producttemplate_categoryid_foreign");
-
-        entity.HasOne(d => d.Store)
-            .WithMany(p => p.ProductTemplates)
-            .HasForeignKey(d => d.StoreId)
-            .OnDelete(DeleteBehavior.ClientSetNull)
-            .HasConstraintName("producttemplate_store_id_foreign");
     }
 }

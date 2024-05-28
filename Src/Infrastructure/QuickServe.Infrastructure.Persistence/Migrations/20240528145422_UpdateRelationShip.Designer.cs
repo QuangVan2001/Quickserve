@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using QuickServe.Infrastructure.Persistence.Contexts;
@@ -11,9 +12,11 @@ using QuickServe.Infrastructure.Persistence.Contexts;
 namespace QuickServe.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240528145422_UpdateRelationShip")]
+    partial class UpdateRelationShip
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -584,6 +587,47 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.ToTable("ProDucts");
                 });
 
+            modelBuilder.Entity("QuickServe.Domain.Products.Entities.Product", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("BarCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<long>("ProductTemplateId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductTemplateId");
+
+                    b.ToTable("Products");
+                });
+
             modelBuilder.Entity("QuickServe.Domain.Sessions.Entities.Session", b =>
                 {
                     b.Property<long>("Id")
@@ -848,6 +892,17 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 {
                     b.HasOne("QuickServe.Domain.ProductTemplates.Entities.ProductTemplate", "ProductTemplate")
                         .WithMany("Products")
+                        .HasForeignKey("ProductTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductTemplate");
+                });
+
+            modelBuilder.Entity("QuickServe.Domain.Products.Entities.Product", b =>
+                {
+                    b.HasOne("QuickServe.Domain.ProductTemplates.Entities.ProductTemplate", "ProductTemplate")
+                        .WithMany()
                         .HasForeignKey("ProductTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

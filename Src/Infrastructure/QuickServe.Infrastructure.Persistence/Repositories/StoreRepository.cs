@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QuickServe.Application.DTOs;
 using QuickServe.Application.Interfaces.Repositories;
-using QuickServe.Domain.Products.Dtos;
 using QuickServe.Domain.Stores.Dtos;
 using QuickServe.Domain.Stores.Entities;
 using QuickServe.Infrastructure.Persistence.Contexts;

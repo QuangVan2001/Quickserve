@@ -10,7 +10,6 @@ namespace QuickServe.Domain.Stores.Entities
         public Store()
         {
             Orders = new HashSet<Order>();
-            ProductTemplates = new HashSet<ProductTemplate>();
         }
 
         public Store(string name, string address)
@@ -31,6 +30,5 @@ namespace QuickServe.Domain.Stores.Entities
 
 
         public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<ProductTemplate> ProductTemplates { get; set; }
     }
 }

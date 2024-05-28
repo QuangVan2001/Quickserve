@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using QuickServe.Domain.Common;
 using QuickServe.Domain.Ingredients.Entities;
+using QuickServe.Domain.Orders.Entities;
 
 namespace QuickServe.Domain.Sessions.Entities
 {
@@ -20,7 +21,7 @@ namespace QuickServe.Domain.Sessions.Entities
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
 
-
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Ingredient> Ingredients { get; set; }
     }
 }
