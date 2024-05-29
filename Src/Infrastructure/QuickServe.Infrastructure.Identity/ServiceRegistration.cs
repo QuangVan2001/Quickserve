@@ -55,11 +55,11 @@ namespace QuickServe.Infrastructure.Identity
 
             //services.AddTransient<IGetUserServices, GetUserServices>();
             //services.AddTransient<IUpdateUserServices, UpdateUserServices>();
-            services.AddTransient<IAccountServices, AccountServices>();
         }
 
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<IAccountServices, AccountServices>();
             services.AddAuthentication(o =>
             {
                 o.DefaultScheme = IdentityConstants.ApplicationScheme;

@@ -4,7 +4,6 @@
 	  	<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Folder Include="Accounts\Dtos\" />
 	  <Folder Include="Customers\Dtos\" />
 	  <Folder Include="Customers\Entities\" />
 	  <Folder Include="IngredientProducts\Dtos\" />

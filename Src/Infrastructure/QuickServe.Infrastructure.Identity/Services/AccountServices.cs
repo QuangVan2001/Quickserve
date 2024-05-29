@@ -9,6 +9,7 @@ using QuickServe.Application.Helpers;
 using QuickServe.Application.Interfaces;
 using QuickServe.Application.Interfaces.UserInterfaces;
 using QuickServe.Application.Wrappers;
+using QuickServe.Domain.Accounts.Dtos;
 using QuickServe.Infrastructure.Identity.Models;
 using System;
 using System.Collections.Generic;
@@ -157,7 +158,11 @@ namespace QuickServe.Infrastructure.Identity.Services
             await userManager.UpdateSecurityStampAsync(user);
 
             var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-            return new TokenDto(accessToken, refreshToken);
+            return new TokenDto
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
+            };
         }
 
         private SigningCredentials GetSigningCredentials()
@@ -210,6 +215,24 @@ namespace QuickServe.Infrastructure.Identity.Services
                 throw new SecurityTokenException("Invalid token");
 
             return principal;
+        }
+
+        public async Task<BaseResult<TokenDto>> RefreshToken(TokenDto token)
+        {
+            try
+            {
+                var principal = GetPrincipalFromExpiredToken(token.AccessToken);
+
+                var user = await userManager.FindByNameAsync(principal.Identity.Name);
+                if (user == null || user.RefreshToken != token.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+                    throw new SecurityTokenException("Invalid token");
+                var newToken = await CreateToken(user, false);
+                return new BaseResult<TokenDto>(newToken);
+            } catch (Exception ex)
+            {
+                return new BaseResult<TokenDto>(new Error(ErrorCode.ErrorInIdentity, ex.Message));
+            }
+
         }
     }
 }
