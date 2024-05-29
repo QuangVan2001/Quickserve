@@ -3,6 +3,7 @@ using QuickServe.Application.DTOs.Account.Requests;
 using QuickServe.Application.DTOs.Account.Responses;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.Accounts.Dtos;
+using System;
 using System.Threading.Tasks;
 
 namespace QuickServe.Application.Interfaces.UserInterfaces
@@ -17,5 +18,6 @@ namespace QuickServe.Application.Interfaces.UserInterfaces
         Task<BaseResult<TokenDto>> RefreshToken(TokenDto token);
         Task<BaseResult> CreateAccount(CreateAccountRequest request);
         Task<PagenationResponseDto<AccountDto>> GetPagedListAsync(int pageNumber, int pageSize, string name, string[] roles);
+        Task<BaseResult<AccountDto>> GetAccountById(Guid id);
     }
 }

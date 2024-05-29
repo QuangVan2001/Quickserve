@@ -316,5 +316,22 @@ namespace QuickServe.Infrastructure.Identity.Services
 
             return new PagenationResponseDto<AccountDto>(result.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(), count);
         }
+
+        public async Task<BaseResult<AccountDto>> GetAccountById(Guid id)
+        {
+            var account = await userManager.FindByIdAsync(id.ToString());
+            return new BaseResult<AccountDto>(new AccountDto
+            {
+                Id = account.Id,
+                UserName = account.UserName,
+                Email = account.Email,
+                Created = account.Created,
+                PhoneNumber = account.PhoneNumber,
+                Name = account.Name,
+                Avatar = null,
+                Address = null,
+                Roles = [.. (await userManager.GetRolesAsync(account))]
+            });
+        }
     }
 }

@@ -8,6 +8,7 @@ using QuickServe.Application.Features.Categories.Queries.GetPagedListCategory;
 using QuickServe.Application.Interfaces.UserInterfaces;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.Accounts.Dtos;
+using System;
 using System.Threading.Tasks;
 
 namespace QuickServe.WebApi.Controllers.v1
@@ -46,9 +47,14 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> CreateAccount([FromBody] CreateAccountRequest request)
             => await accountServices.CreateAccount(request);
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<BaseResult> GetPagedListAccountQuery([FromQuery] GetPagedListAccountQuery query)
             => await Mediator.Send(query);
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<BaseResult<AccountDto>> GetAccountById([FromQuery] Guid id)
+            => await accountServices.GetAccountById(id);
     }
 }
