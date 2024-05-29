@@ -4,7 +4,7 @@ using QuickServe.Application.Wrappers;
 
 namespace QuickServe.Application.Features.Categories.Commands.CreateCategory;
 
-public class CreateCategoryCommand : IRequest<BaseResult<long>>
+public class CreateCategoryCommand : IRequest<BaseResult>
 {
     public string Name { get; set; }
  

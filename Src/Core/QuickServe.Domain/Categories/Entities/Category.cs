@@ -25,8 +25,12 @@ namespace QuickServe.Domain.Categories.Entities
             Name = name;
          
         }
+        public void Update(int status)
+        {
+            Status = status;
 
-        
+        }
+
         public virtual ICollection<ProductTemplate> ProductTemplates { get; set; }
         
    

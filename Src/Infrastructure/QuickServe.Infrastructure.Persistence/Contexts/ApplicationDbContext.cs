@@ -72,11 +72,11 @@ namespace QuickServe.Infrastructure.Persistence.Contexts
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Entity.Created = DateTime.Now;
+                    entry.Entity.Created = DateTime.Now.ToUniversalTime();
                     entry.Entity.CreatedBy = userId;
                     break;
                 case EntityState.Modified:
-                    entry.Entity.LastModified = DateTime.Now;
+                    entry.Entity.LastModified = DateTime.Now.ToUniversalTime();
                     entry.Entity.LastModifiedBy = userId;
                     break;
             }

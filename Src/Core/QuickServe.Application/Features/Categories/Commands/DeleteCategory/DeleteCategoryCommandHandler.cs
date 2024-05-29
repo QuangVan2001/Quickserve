@@ -18,7 +18,10 @@ public class DeleteCategoryCommandHandler(ICategoryRepository categoryRepository
         {
             return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.CategoryMessages.Category_not_Found_with_id(request.Id)), nameof(request.Id)));
         }
-
+        if(category.ProductTemplates.Count != 0)
+        {
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.CategoryMessages.Category_exists_product_templates_with_id(request.Id)), nameof(request.Id)));
+        }
         categoryRepository.Delete(category);
         await unitOfWork.SaveChangesAsync();
 

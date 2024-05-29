@@ -12,5 +12,10 @@ public class UpdateCategoryCommandValidator :  AbstractValidator<UpdateCategoryC
             .NotEmpty()
             .MaximumLength(40)
             .WithName(p => translator[nameof(p.Name)]);
+
+        RuleFor(p => p.Id)
+                .NotNull()
+                .NotEmpty()
+                .WithName(p => translator[nameof(p.Id)]);
     }
 }

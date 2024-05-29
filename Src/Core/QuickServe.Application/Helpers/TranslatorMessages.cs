@@ -27,6 +27,10 @@ namespace QuickServe.Application.Helpers
         {
             public static TranslatorMessageDto Category_not_Found_with_id(long id)
                 => new(nameof(Category_not_Found_with_id), [id.ToString()]);
+            public static TranslatorMessageDto Category_exists_product_templates_with_id(long id)
+                => new(nameof(Category_exists_product_templates_with_id), [id.ToString()]);
+            public static TranslatorMessageDto Category_name_existed_with_name(string name)
+                => new(nameof(Category_name_existed_with_name), [name]);
         }
 
         public static class ProductTemplateMessages

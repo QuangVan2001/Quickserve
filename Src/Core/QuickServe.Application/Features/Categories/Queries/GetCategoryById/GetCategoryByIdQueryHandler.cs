@@ -1,9 +1,11 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using QuickServe.Application.Helpers;
 using QuickServe.Application.Interfaces;
 using QuickServe.Application.Interfaces.Repositories;
+using QuickServe.Application.Utils.Enums;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.Categories.Dtos;
 
@@ -23,6 +25,10 @@ public class GetCategoryByIdQueryHandler(ICategoryRepository categoryRepository,
         }
 
         var result = new CategoryDto(category);
+        result.Created = TimeZoneConverter.ConvertToUserTimeZone(category.Created);
+        result.LastModified = category.LastModified.HasValue
+                ? TimeZoneConverter.ConvertToUserTimeZone(category.LastModified.Value)
+                : (DateTime?)null;
         return new BaseResult<CategoryDto>(result);
     }
 }
