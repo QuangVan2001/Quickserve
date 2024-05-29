@@ -5,7 +5,7 @@ using MediatR;
 using QuickServe.Application.Helpers;
 using QuickServe.Application.Interfaces;
 using QuickServe.Application.Interfaces.Repositories;
-using QuickServe.Application.Utils.Enums;
+using QuickServe.Application.Utils;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.Categories.Dtos;
 

@@ -21,7 +21,7 @@ namespace QuickServe.Domain.Categories.Dtos
             LastModifiedBy = category.LastModifiedBy ?? null;
         }
         public long Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; } 
         public int Status { get; set; }
         public Guid CreatedBy { get; set; }
         public DateTime Created { get; set; }

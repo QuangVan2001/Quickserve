@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuickServe.Application.Utils.Enums
+namespace QuickServe.Application.Utils
 {
     public static class TimeZoneConverter
     {

@@ -32,7 +32,15 @@ namespace QuickServe.Application.Helpers
             public static TranslatorMessageDto Category_name_existed_with_name(string name)
                 => new(nameof(Category_name_existed_with_name), [name]);
         }
-
+        public static class IngredientTypeMessages
+        {
+            public static TranslatorMessageDto IngredientType_not_Found_with_id(long id)
+                => new(nameof(IngredientType_not_Found_with_id), [id.ToString()]);
+            public static TranslatorMessageDto IngredientType_exists_ingredient_with_id(long id)
+                => new(nameof(IngredientType_exists_ingredient_with_id), [id.ToString()]);
+            public static TranslatorMessageDto IngredientType_name_existed_with_name(string name)
+                => new(nameof(IngredientType_name_existed_with_name), [name]);
+        }
         public static class ProductTemplateMessages
         {
             public static TranslatorMessageDto ProductTemplate_not_found_with_id(long id)

@@ -7,11 +7,12 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
 {
     public CreateCategoryCommandValidator(ITranslator translator)
     {
-        RuleFor(p => p.Name)
-            .NotNull()
-            .NotEmpty()
-            .MaximumLength(40)
-            .WithName(p => translator[nameof(p.Name)]);
+        RuleFor(x => x.Name)
+                .NotEmpty().WithMessage(translator["Name is required"])
+                .NotNull().WithMessage(translator["Name is required"])
+                .MaximumLength(40).WithMessage(translator["Name must not exceed 40 characters"])
+                .Must(name => char.IsUpper(name[0])).WithMessage(translator["First letter of Name must be uppercase"])
+                .WithName(p => translator[nameof(p.Name)]);
 
     }
 }
