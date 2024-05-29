@@ -60,7 +60,7 @@ builder.Services.AddCustomLocalization(builder.Configuration);
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
-//builder.Services.AddJwt(builder.Configuration);
+builder.Services.AddJwt(builder.Configuration);
 
 var app = builder.Build();
 
