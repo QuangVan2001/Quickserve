@@ -15,12 +15,6 @@ public class OrderConfiguration :  IEntityTypeConfiguration<Order>
 
         entity.Property(e => e.Created).HasColumnType("date");
 
-        entity.Property(e => e.PaymentMethodId).HasColumnName("Payment_method_id");
-
-        entity.Property(e => e.Status)
-            .HasMaxLength(255)
-            .IsUnicode(false);
-
         entity.Property(e => e.StoreId).HasColumnName("Store_id");
 
         entity.HasMany(d => d.OrderProducts)

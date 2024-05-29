@@ -19,10 +19,8 @@ namespace QuickServe.Domain.Orders.Entities
             Sessions = new HashSet<Session>();
         }
 
-    
-        public long PaymentMethodId { get; set; }
         public Guid CustomerId { get; set; }
-        public string Status { get; set; } = null!;
+        public int Status { get; set; }
         public double TotalPrice { get; set; }
         public long StoreId { get; set; }
 
