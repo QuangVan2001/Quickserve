@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Storage.Blobs;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QuickServe.Application.Interfaces;
@@ -16,6 +17,11 @@ namespace QuickServe.Infrastructure.FileManager
                 options.UseSqlServer(configuration.GetConnectionString("FileManagerConnection"));
             });
             services.AddScoped<IFileManagerService, FileManagerService>();
+
+            services.AddScoped<IStorageService, BlobStorageService>();
+
+            services.AddSingleton(x => new BlobServiceClient(configuration.GetConnectionString("AzureBlobStorage")));
+
             return services;
 
         }
