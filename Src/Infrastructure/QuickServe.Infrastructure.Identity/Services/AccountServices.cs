@@ -1,8 +1,10 @@
 ﻿using Azure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using QuickServe.Application.DTOs;
 using QuickServe.Application.DTOs.Account.Requests;
 using QuickServe.Application.DTOs.Account.Responses;
 using QuickServe.Application.Helpers;
@@ -21,6 +23,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Error = QuickServe.Application.Wrappers.Error;
 
 namespace QuickServe.Infrastructure.Identity.Services
@@ -268,6 +271,67 @@ namespace QuickServe.Infrastructure.Identity.Services
                 return new BaseResult();
 
             return new BaseResult(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
+        }
+
+        public async Task<PagenationResponseDto<AccountDto>> GetPagedListAsync(int pageNumber, int pageSize, string name, string[] roles)
+        {
+            var listRoles = roles.ToList();
+            var query = userManager.Users.AsQueryable()
+                .Select(c => new AccountDto
+                {
+                    Id = c.Id,
+                    UserName = c.UserName,
+                    Email = c.Email,
+                    Created = c.Created,
+                    PhoneNumber = c.PhoneNumber,
+                    Name = c.Name,
+                    Avatar = null,
+                    Address = null
+                });
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(c => c.UserName.Contains(name) || c.Email.Contains(name));
+            }
+
+            var count = await query.CountAsync();
+
+            var accountInListRoles = new List<AccountDto>();
+            foreach (var item in query.ToList())
+            {
+                var user = await userManager.FindByIdAsync(item.Id.ToString());
+                item.Roles = [.. (await userManager.GetRolesAsync(user))];
+                if (listRoles.Any(p => item.Roles.Contains(p)))
+                {
+                    accountInListRoles.Add(item);
+                }
+            }
+
+            var result = query;
+
+            if (roles != null && roles.Length > 0)
+            {
+                result = accountInListRoles.AsQueryable();
+            }
+
+            return new PagenationResponseDto<AccountDto>(result.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(), count);
+        }
+
+        public async Task<BaseResult<AccountDto>> GetAccountById(Guid id)
+        {
+            var account = await userManager.FindByIdAsync(id.ToString());
+            return new BaseResult<AccountDto>(new AccountDto
+            {
+                Id = account.Id,
+                UserName = account.UserName,
+                Email = account.Email,
+                Created = account.Created,
+                PhoneNumber = account.PhoneNumber,
+                Name = account.Name,
+                Avatar = null,
+                Address = null,
+                Roles = [.. (await userManager.GetRolesAsync(account))]
+            });
         }
     }
 }

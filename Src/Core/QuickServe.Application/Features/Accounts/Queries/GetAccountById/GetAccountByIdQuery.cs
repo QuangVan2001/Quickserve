@@ -1,6 +1,11 @@
-﻿namespace QuickServe.Application.Features.Accounts.Queries.GetAccountById;
+﻿using MediatR;
+using QuickServe.Application.Wrappers;
+using QuickServe.Domain.Accounts.Dtos;
+using System;
 
-public class GetAccountByIdQuery
+namespace QuickServe.Application.Features.Accounts.Queries.GetAccountById;
+
+public class GetAccountByIdQuery : IRequest<BaseResult<AccountDto>>
 {
-    
+    public Guid Id { get; set; }
 }
