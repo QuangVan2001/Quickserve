@@ -12,8 +12,8 @@ using QuickServe.Infrastructure.Persistence.Contexts;
 namespace QuickServe.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240529133247_UpdateOrder")]
-    partial class UpdateOrder
+    [Migration("20240529135018_UpdateOrderAddStatusInt")]
+    partial class UpdateOrderAddStatusInt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

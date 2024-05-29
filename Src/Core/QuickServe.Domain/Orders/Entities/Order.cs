@@ -20,8 +20,8 @@ namespace QuickServe.Domain.Orders.Entities
         }
 
         public Guid CustomerId { get; set; }
-        public int Status { get; set; }
         public double TotalPrice { get; set; }
+        public int Status { get; set; }
         public long StoreId { get; set; }
 
         public virtual Account Customer { get; set; } = null!;
