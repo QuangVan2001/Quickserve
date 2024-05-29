@@ -29,6 +29,7 @@
         ErrorInIdentity = 24,
         Exception = 25,
         LicenseException = 26,
-
+        Unauthorized = 27,
+        Duplicate = 28,
     }
 }

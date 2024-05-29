@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickServe.Application.DTOs.Account.Requests;
 using QuickServe.Application.DTOs.Account.Responses;
@@ -37,5 +38,10 @@ namespace QuickServe.WebApi.Controllers.v1
             var tokenReturn = await accountServices.RefreshToken(token);
             return tokenReturn;
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<BaseResult> CreateAccount([FromBody] CreateAccountRequest request)
+            => await accountServices.CreateAccount(request);
     }
 }

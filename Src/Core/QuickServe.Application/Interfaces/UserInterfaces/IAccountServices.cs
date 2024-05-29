@@ -14,5 +14,6 @@ namespace QuickServe.Application.Interfaces.UserInterfaces
         Task<BaseResult<AuthenticationResponse>> Authenticate(AuthenticationRequest login);
         Task<BaseResult<AuthenticationResponse>> AuthenticateByUserName(string username);
         Task<BaseResult<TokenDto>> RefreshToken(TokenDto token);
+        Task<BaseResult> CreateAccount(CreateAccountRequest request);
     }
 }

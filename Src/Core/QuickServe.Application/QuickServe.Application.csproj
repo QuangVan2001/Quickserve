@@ -15,6 +15,7 @@
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\QuickServe.Utils\QuickServe.Utils.csproj" />
 		<ProjectReference Include="..\QuickServe.Domain\QuickServe.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup>
