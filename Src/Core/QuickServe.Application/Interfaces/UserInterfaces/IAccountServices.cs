@@ -1,4 +1,5 @@
-﻿using QuickServe.Application.DTOs.Account.Requests;
+﻿using QuickServe.Application.DTOs;
+using QuickServe.Application.DTOs.Account.Requests;
 using QuickServe.Application.DTOs.Account.Responses;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.Accounts.Dtos;
@@ -15,5 +16,6 @@ namespace QuickServe.Application.Interfaces.UserInterfaces
         Task<BaseResult<AuthenticationResponse>> AuthenticateByUserName(string username);
         Task<BaseResult<TokenDto>> RefreshToken(TokenDto token);
         Task<BaseResult> CreateAccount(CreateAccountRequest request);
+        Task<PagenationResponseDto<AccountDto>> GetPagedListAsync(int pageNumber, int pageSize, string name, string[] roles);
     }
 }
