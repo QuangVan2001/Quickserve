@@ -66,7 +66,7 @@ namespace QuickServe.Infrastructure.Identity
             })
             .AddCookie(IdentityConstants.ApplicationScheme)
             .AddBearerToken(IdentityConstants.BearerScheme);
-            
+
             services.AddAuthorizationBuilder();
 
             services.AddIdentityCore<ApplicationUser>()
@@ -77,25 +77,25 @@ namespace QuickServe.Infrastructure.Identity
             services.AddTransient<RoleManager<ApplicationRole>>();
             services.AddTransient<SignInManager<ApplicationUser>>();
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(o =>
-                {
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //    .AddJwtBearer(o =>
+            //    {
+            //        o.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuerSigningKey = true,
+            //            ValidateIssuer = true,
+            //            ValidateAudience = true,
+            //            ValidateLifetime = true,
 
-                        ValidIssuer = configuration["JWTSettings:Issuer"],
-                        ValidAudience = configuration["JWTSettings:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"]))
-                    };
-                });
+            //            ValidIssuer = configuration["JWTSettings:Issuer"],
+            //            ValidAudience = configuration["JWTSettings:Audience"],
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"]))
+            //        };
+            //    });
 
         }
 
