@@ -11,11 +11,12 @@ using QuickServe.Application.Interfaces.UserInterfaces;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.Accounts.Dtos;
 using QuickServe.Infrastructure.Identity.Models;
+using QuickServe.Utils.Enums;
+using QuickServe.Utils.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -233,6 +234,40 @@ namespace QuickServe.Infrastructure.Identity.Services
                 return new BaseResult<TokenDto>(new Error(ErrorCode.ErrorInIdentity, ex.Message));
             }
 
+        }
+
+        public async Task<BaseResult> CreateAccount(CreateAccountRequest request)
+        {
+            // Assgin role to exist account
+            var existUser = await userManager.FindByEmailAsync(request.Email);
+            if (existUser != null)
+            {
+                var roleExist = await userManager.GetRolesAsync(existUser);
+                if (roleExist.Any(p => p == request.Role))
+                    return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.AccountMessages.Account_already_exist_with_Email(request.Email)), nameof(request.Email)));
+
+                var assignRoleResult = await userManager.AddToRoleAsync(existUser, request.Role);
+                if (assignRoleResult.Succeeded)
+                    return new BaseResult();
+
+                return new BaseResult(assignRoleResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
+            }
+
+            // Create new account
+            var user = new ApplicationUser()
+            {
+                UserName = request.UserName,
+                Email = request.Email
+            };
+            var identityResult = await userManager.CreateAsync(user, request.Password);
+            if (identityResult.Succeeded)
+            {
+                identityResult = await userManager.AddToRoleAsync(user, request.Role);
+            }
+            if (identityResult.Succeeded)
+                return new BaseResult();
+
+            return new BaseResult(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
         }
     }
 }
