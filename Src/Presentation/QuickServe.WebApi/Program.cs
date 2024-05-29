@@ -76,16 +76,16 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
 });
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
 
-//    await services.GetRequiredService<AppIdentityContext>().Database.MigrateAsync();
+    await services.GetRequiredService<AppIdentityContext>().Database.MigrateAsync();
 
-//    //Seed Data
-//    await DefaultRoles.SeedAsync(services.GetRequiredService<RoleManager<ApplicationRole>>());
-//    await DefaultBasicUser.SeedAsync(services.GetRequiredService<UserManager<ApplicationUser>>());
-//}
+    //Seed Data
+    await DefaultRoles.SeedAsync(services.GetRequiredService<RoleManager<ApplicationRole>>());
+    await DefaultBasicUser.SeedAsync(services.GetRequiredService<UserManager<ApplicationUser>>());
+}
 
 app.UseCustomLocalization();
 app.UseCors("Any");
