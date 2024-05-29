@@ -17,6 +17,10 @@ using QuickServe.WebApi.Infrastracture.Services;
 using Serilog;
 using System.Reflection;
 using Microsoft.AspNetCore.Routing;
+using QuickServe.Infrastructure.Identity.Models;
+using Microsoft.EntityFrameworkCore;
+using QuickServe.Infrastructure.Identity.Seeds;
+using QuickServe.Infrastructure.Persistence.Contexts;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +33,6 @@ builder.Services.AddResourcesInfrastructure();
 
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 builder.Services.AddDistributedMemoryCache();
-//builder.Services.AddJwt(builder.Configuration);
 
 #pragma warning disable CS0618 // Type or member is obsolete
 builder.Services.AddControllers().AddFluentValidation(options =>
@@ -57,80 +60,31 @@ builder.Services.AddCustomLocalization(builder.Configuration);
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
-builder.Services.AddAuthentication(o =>
-{
-    o.DefaultScheme = IdentityConstants.ApplicationScheme;
-})
-    .AddCookie(IdentityConstants.ApplicationScheme)
-    .AddBearerToken(IdentityConstants.BearerScheme);
-
-builder.Services.AddAuthorizationBuilder();
-
-builder.Services.AddIdentityCore<IdentityUser>()
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<AppIdentityContext>()
-    .AddApiEndpoints();
-
-builder.Services.AddHttpClient();
+builder.Services.AddJwt(builder.Configuration);
 
 var app = builder.Build();
-
-app.MapGroup("api/v1/identity").MapIdentityApi<IdentityUser>();
-
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-
-//    await services.GetRequiredService<IdentityContext>().Database.MigrateAsync();
-//    await services.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
-//    // await services.GetRequiredService<FileManagerDbContext>().Database.MigrateAsync();
-
-//    //Seed Data
-//    await DefaultRoles.SeedAsync(services.GetRequiredService<RoleManager<ApplicationRole>>());
-//    await DefaultBasicUser.SeedAsync(services.GetRequiredService<UserManager<ApplicationUser>>());
-//    await DefaultData.SeedAsync(services.GetRequiredService<ApplicationDbContext>());
-//}
 
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 
-//app.UseSwagger();
-//app.UseSwaggerUI(c => {
-//    c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuickServe.WebApi v1");
-//    c.RoutePrefix = string.Empty;
-//});
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuickServe.WebApi v1");
+    c.RoutePrefix = string.Empty;
+});
 
 using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var roles = new[] { "Admin", "Customer", "Staff", "Store_Manager", "Brand_Manager" };
-    foreach (var role in roles)
-    {
-        if (!roleManager.RoleExistsAsync(role).Result)
-        {
-            await roleManager.CreateAsync(new IdentityRole { Name = role });
-        }
-    }
-}
+    var services = scope.ServiceProvider;
 
-using (var scope = app.Services.CreateScope())
-{
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-    string email = "sysadmin@quickserve.com";
-    string password = "Admin@123";
-    var user = await userManager.FindByEmailAsync(email);
-    if (user == null)
-    {
-        user = new IdentityUser
-        {
-            UserName = email,
-            Email = email
-        };
-        await userManager.CreateAsync(user, password);
-        await userManager.AddToRoleAsync(user, "Admin");
-    }
+    await services.GetRequiredService<AppIdentityContext>().Database.MigrateAsync();
+
+    //Seed Data
+    await DefaultRoles.SeedAsync(services.GetRequiredService<RoleManager<ApplicationRole>>());
+    await DefaultBasicUser.SeedAsync(services.GetRequiredService<UserManager<ApplicationUser>>());
 }
 
 app.UseCustomLocalization();

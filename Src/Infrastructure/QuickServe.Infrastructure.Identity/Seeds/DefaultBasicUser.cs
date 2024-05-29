@@ -17,7 +17,7 @@ namespace QuickServe.Infrastructure.Identity.Seeds
             new ApplicationUser
             {
                 UserName = "Admin",
-                Email = "Admin@Admin.com",
+                Email = "sysadmin@quickserve.com",
                 Name = "QuangVan",
                 PhoneNumber = "0935182029",
                 EmailConfirmed = true,
@@ -26,7 +26,7 @@ namespace QuickServe.Infrastructure.Identity.Seeds
             new ApplicationUser
             {
                 UserName = "CustomerUser",
-                Email = "customer@domain.com",
+                Email = "customer@quickserve.com",
                 Name = "Customer Name",
                 PhoneNumber = "0935111111",
                 EmailConfirmed = true,
@@ -35,7 +35,7 @@ namespace QuickServe.Infrastructure.Identity.Seeds
             new ApplicationUser
             {
                 UserName = "StaffUser",
-                Email = "staff@domain.com",
+                Email = "staff@quickserve.com",
                 Name = "Staff Name",
                 PhoneNumber = "0935222222",
                 EmailConfirmed = true,
@@ -44,7 +44,7 @@ namespace QuickServe.Infrastructure.Identity.Seeds
             new ApplicationUser
             {
                 UserName = "StoreManagerUser",
-                Email = "storemanager@domain.com",
+                Email = "storemanager@quickserve.com",
                 Name = "Store Manager Name",
                 PhoneNumber = "0935333333",
                 EmailConfirmed = true,
@@ -53,7 +53,7 @@ namespace QuickServe.Infrastructure.Identity.Seeds
             new ApplicationUser
             {
                 UserName = "BrandManagerUser",
-                Email = "brandmanager@domain.com",
+                Email = "brandmanager@quickserve.com",
                 Name = "Brand Manager Name",
                 PhoneNumber = "0935444444",
                 EmailConfirmed = true,
@@ -64,11 +64,11 @@ namespace QuickServe.Infrastructure.Identity.Seeds
         var roles = new List<string> { "Admin", "Customer", "Staff", "Store_Manager", "Brand_Manager" };
         var userPasswords = new Dictionary<string, string>
         {
-            { "Admin", "Van@12345" },
-            { "CustomerUser", "Customer@12345" },
-            { "StaffUser", "Staff@12345" },
-            { "StoreManagerUser", "StoreManager@12345" },
-            { "BrandManagerUser", "BrandManager@12345" }
+            { "Admin", "Admin@123" },
+            { "CustomerUser", "Customer@123" },
+            { "StaffUser", "Staff@123" },
+            { "StoreManagerUser", "StoreManager@123" },
+            { "BrandManagerUser", "BrandManager@123" }
         };
 
         foreach (var user in users)

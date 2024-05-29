@@ -60,15 +60,24 @@ namespace QuickServe.Infrastructure.Identity
 
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
-            var serializerSettings = new JsonSerializerSettings()
+            services.AddAuthentication(o =>
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
+                o.DefaultScheme = IdentityConstants.ApplicationScheme;
+            })
+            .AddCookie(IdentityConstants.ApplicationScheme)
+            .AddBearerToken(IdentityConstants.BearerScheme);
+            
+            services.AddAuthorizationBuilder();
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
+            services.AddIdentityCore<ApplicationUser>()
+            .AddRoles<ApplicationRole>()
+            .AddEntityFrameworkStores<AppIdentityContext>();
+
+            services.AddTransient<UserManager<ApplicationUser>>();
+            services.AddTransient<RoleManager<ApplicationRole>>();
+            services.AddTransient<SignInManager<ApplicationUser>>();
 
             var jwtSettings = configuration.GetSection(nameof(JWTSettings)).Get<JWTSettings>();
-            services.AddSingleton(jwtSettings);
 
             services.AddAuthentication(options =>
             {
@@ -77,52 +86,16 @@ namespace QuickServe.Infrastructure.Identity
             })
                 .AddJwtBearer(o =>
                 {
-                    o.RequireHttpsMetadata = false;
-                    o.SaveToken = false;
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
-                        ClockSkew = TimeSpan.Zero,
+
                         ValidIssuer = jwtSettings.Issuer,
                         ValidAudience = jwtSettings.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
-                    };
-                    o.Events = new JwtBearerEvents()
-                    {
-                        OnChallenge = context =>
-                        {
-                            context.HandleResponse();
-                            context.Response.StatusCode = 401;
-                            context.Response.ContentType = "application/json";
-                            var result = JsonConvert.SerializeObject(new BaseResult(new Error(ErrorCode.AccessDenied, "You are not Authorized")), serializerSettings);
-                            return Task.FromResult(context.Response.WriteAsync(result)).Result;
-                        },
-                        OnForbidden = context =>
-                        {
-                            context.Response.StatusCode = 403;
-                            context.Response.ContentType = "application/json";
-                            var result = JsonConvert.SerializeObject(new BaseResult(new Error(ErrorCode.AccessDenied, "You are not authorized to access this resource")), serializerSettings);
-                            return Task.FromResult(context.Response.WriteAsync(result)).Result;
-                        },
-                        OnTokenValidated = async context =>
-                        {
-                            var signInManager = context.HttpContext.RequestServices.GetRequiredService<SignInManager<ApplicationUser>>();
-                            var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
-                            if (claimsIdentity.Claims?.Any() != true)
-                                context.Fail("This token has no claims.");
-
-                            var securityStamp = claimsIdentity.FindFirst("AspNet.Identity.SecurityStamp");
-                            if (securityStamp is null)
-                                context.Fail("This token has no secuirty stamp");
-
-                            var validatedUser = await signInManager.ValidateSecurityStampAsync(context.Principal);
-                            if (validatedUser == null)
-                                context.Fail("Token secuirty stamp is not valid.");
-                        },
-
                     };
                 });
 

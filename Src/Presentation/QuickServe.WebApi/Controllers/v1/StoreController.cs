@@ -11,7 +11,7 @@ using QuickServe.Application.Wrappers;
 using QuickServe.Domain.Stores.Dtos;
 
 namespace QuickServe.WebApi.Controllers.v1;
-//[ApiVersion("1")]
+[ApiVersion("1")]
 public class StoreController : BaseApiController
 {
     [HttpGet]
