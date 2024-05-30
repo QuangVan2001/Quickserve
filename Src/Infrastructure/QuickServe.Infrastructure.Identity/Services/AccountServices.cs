@@ -297,7 +297,8 @@ namespace QuickServe.Infrastructure.Identity.Services
             var count = await query.CountAsync();
 
             var accountInListRoles = new List<AccountDto>();
-            foreach (var item in query.ToList())
+            var listAccount = query.ToList();
+            foreach (var item in listAccount)
             {
                 var user = await userManager.FindByIdAsync(item.Id.ToString());
                 item.Roles = [.. (await userManager.GetRolesAsync(user))];
@@ -307,7 +308,7 @@ namespace QuickServe.Infrastructure.Identity.Services
                 }
             }
 
-            var result = query;
+            var result = listAccount.AsQueryable();
 
             if (roles != null && roles.Length > 0)
             {
