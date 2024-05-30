@@ -1,7 +1,6 @@
-﻿using Azure.Core;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using QuickServe.Application.DTOs;
@@ -13,8 +12,6 @@ using QuickServe.Application.Interfaces.UserInterfaces;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.Accounts.Dtos;
 using QuickServe.Infrastructure.Identity.Models;
-using QuickServe.Utils.Enums;
-using QuickServe.Utils.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -23,7 +20,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Error = QuickServe.Application.Wrappers.Error;
 
 namespace QuickServe.Infrastructure.Identity.Services
@@ -150,7 +146,15 @@ namespace QuickServe.Infrastructure.Identity.Services
         {
             var signingCredentials = GetSigningCredentials();
             var claims = await GetClaims(user);
-            var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddMinutes(double.Parse(configuration["JWTSettings:DurationInMinutes"])),
+                SigningCredentials = signingCredentials,
+                Audience = configuration["JWTSettings:Audience"],
+                Issuer = configuration["JWTSettings:Issuer"],
+                TokenType = "Bearer",
+            };
 
             var refreshToken = GenerateRefreshToken();
 
@@ -161,10 +165,11 @@ namespace QuickServe.Infrastructure.Identity.Services
             await userManager.UpdateAsync(user);
             await userManager.UpdateSecurityStampAsync(user);
 
-            var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
             return new TokenDto
             {
-                AccessToken = accessToken,
+                AccessToken = tokenHandler.WriteToken(token),
                 RefreshToken = refreshToken
             };
         }
@@ -176,20 +181,20 @@ namespace QuickServe.Infrastructure.Identity.Services
 
         private async Task<List<Claim>> GetClaims(ApplicationUser user)
         {
-            var result = await userManager.GetClaimsAsync(user);
-            return result.ToList();
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Name, user.UserName),
+                new(ClaimTypes.Email, user.Email),
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Role, string.Join(",", await userManager.GetRolesAsync(user))),
+                new(ClaimTypes.AuthenticationMethod, "Bearer"),
+                new(ClaimTypes.Expiration, DateTime.UtcNow.AddMinutes(double.Parse(configuration["JWTSettings:DurationInMinutes"])).ToString()),
+            };
+
+            return claims;
         }
 
-        private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
-        {
-            return new JwtSecurityToken(
-                issuer: configuration["JWTSettings:Issuer"],
-                audience: configuration["JWTSettings:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(configuration["JWTSettings:DurationInMinutes"])),
-                signingCredentials: signingCredentials
-           );
-        }
 
         private string GenerateRefreshToken()
         {
