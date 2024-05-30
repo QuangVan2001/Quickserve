@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using QuickServe.Application.DTOs;
@@ -14,13 +14,13 @@ using QuickServe.Domain.Accounts.Dtos;
 using QuickServe.Infrastructure.Identity.Models;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Error = QuickServe.Application.Wrappers.Error;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace QuickServe.Infrastructure.Identity.Services
 {
@@ -218,6 +218,7 @@ namespace QuickServe.Infrastructure.Identity.Services
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
+            
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
