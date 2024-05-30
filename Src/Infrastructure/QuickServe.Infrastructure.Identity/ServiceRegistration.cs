@@ -53,11 +53,6 @@ namespace QuickServe.Infrastructure.Identity
         {
             services.AddTransient<IAccountServices, AccountServices>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/Account/Unauthorized/";
-                options.AccessDeniedPath = "/Account/Forbidden/";
-            })
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
