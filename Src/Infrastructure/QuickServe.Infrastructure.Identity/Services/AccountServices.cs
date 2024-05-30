@@ -176,8 +176,8 @@ namespace QuickServe.Infrastructure.Identity.Services
 
         private async Task<List<Claim>> GetClaims(ApplicationUser user)
         {
-            var result = await signInManager.ClaimsFactory.CreateAsync(user);
-            return result.Claims.ToList();
+            var result = await userManager.GetClaimsAsync(user);
+            return result.ToList();
         }
 
         private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
