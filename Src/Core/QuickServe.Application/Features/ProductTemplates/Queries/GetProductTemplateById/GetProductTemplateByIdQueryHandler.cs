@@ -13,7 +13,7 @@ public class GetProductTemplateByIdQueryHandler(IProductTemplateRepository produ
 {
     public async Task<BaseResult<ProductTemplateDto>> Handle(GetProductTemplateByIdQuery request, CancellationToken cancellationToken)
     {
-        var productTemplate = await productTemplateRepository.GetByIdAsync(request.Id);
+        var productTemplate = await productTemplateRepository.GetProductTemplateByIdAsync(request.Id);
         if (productTemplate is null)
         {
             return new BaseResult<ProductTemplateDto>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.ProductTemplateMessages.ProductTemplate_not_found_with_id(request.Id)), nameof(request.Id)));

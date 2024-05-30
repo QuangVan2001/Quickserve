@@ -57,6 +57,11 @@ namespace QuickServe.Application.Helpers
         {
             public static TranslatorMessageDto ProductTemplate_not_found_with_id(long id)
                 => new(nameof(ProductTemplate_not_found_with_id), [id.ToString()]);
+            public static TranslatorMessageDto ProductTemplate_name_existed_with_name(string name)
+               => new(nameof(ProductTemplate_name_existed_with_name), [name]);
+
+            public static TranslatorMessageDto ProductTemplate_exists_products_and_templatesteps(long id)
+                => new(nameof(ProductTemplate_exists_products_and_templatesteps), [id.ToString()]);
         }
     }
 }
