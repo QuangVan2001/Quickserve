@@ -18,7 +18,7 @@ namespace QuickServe.Application.Features.IngredientTypes.Commands.UpdateIngredi
     {
         public async Task<BaseResult> Handle(UpdateIngredientTypeStatusCommand request, CancellationToken cancellationToken)
         {
-            var ingredientType = await ingredientTypeRepository.GetByIdAsync(request.Id);
+            var ingredientType = await ingredientTypeRepository.GetIngredientTypeByIdAsync(request.Id);
 
             if (ingredientType is null)
             {
@@ -39,7 +39,7 @@ namespace QuickServe.Application.Features.IngredientTypes.Commands.UpdateIngredi
                     t.Status = ingredientType.Status;
                 }
             }
-            if(ingredientType.IngredientTypeTemplateSteps.Count != 0)
+            if(ingredientType.IngredientTypeTemplateSteps.Count != 0 && ingredientType.Status ==(int) IngredientTypeStatus.Inactive)
             {
                 foreach (var t in ingredientType.IngredientTypeTemplateSteps)
                 {

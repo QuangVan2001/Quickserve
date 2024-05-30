@@ -6,7 +6,6 @@ using QuickServe.Application.Interfaces;
 using QuickServe.Application.Interfaces.Repositories;
 using QuickServe.Application.Utils.Enums;
 using QuickServe.Application.Wrappers;
-using QuickServe.Domain.Categories.Dtos;
 using QuickServe.Domain.Categories.Entities;
 
 namespace QuickServe.Application.Features.Categories.Commands.CreateCategory;

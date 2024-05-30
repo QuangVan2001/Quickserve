@@ -1,6 +1,8 @@
-﻿namespace QuickServe.Application.Interfaces.Repositories;
+﻿using QuickServe.Domain.Nutritions.Entities;
 
-public interface INutritionRepository
+namespace QuickServe.Application.Interfaces.Repositories;
+
+public interface INutritionRepository : IGenericRepository<Nutrition>
 {
     
 }

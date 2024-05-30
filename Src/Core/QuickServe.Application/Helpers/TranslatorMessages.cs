@@ -1,5 +1,7 @@
 ﻿using QuickServe.Application.DTOs;
+using QuickServe.Domain.Ingredients.Entities;
 using QuickServe.Domain.News.Entities;
+using QuickServe.Domain.Products.Entities;
 
 namespace QuickServe.Application.Helpers
 {
@@ -41,6 +43,16 @@ namespace QuickServe.Application.Helpers
             public static TranslatorMessageDto IngredientType_name_existed_with_name(string name)
                 => new(nameof(IngredientType_name_existed_with_name), [name]);
         }
+        public static class IngredientMessages
+        {
+            public static TranslatorMessageDto Ingredient_not_Found_with_id(long id)
+                => new(nameof(Ingredient_not_Found_with_id), [id.ToString()]);
+            public static TranslatorMessageDto Ingredient_exists_between_product_and_session_with_id(long id)
+                => new(nameof(Ingredient_exists_between_product_and_session_with_id), [id.ToString()]);
+            public static TranslatorMessageDto Ingredient_name_existed_with_name(string name)
+                => new(nameof(Ingredient_name_existed_with_name), [name]);
+        }
+
         public static class ProductTemplateMessages
         {
             public static TranslatorMessageDto ProductTemplate_not_found_with_id(long id)

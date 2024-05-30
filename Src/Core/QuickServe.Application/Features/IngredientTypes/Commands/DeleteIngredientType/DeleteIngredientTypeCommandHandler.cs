@@ -12,7 +12,7 @@ public class DeleteIngredientTypeCommandHandler(IIngredientTypeRepository ingred
 {
     public async Task<BaseResult> Handle(DeleteIngredientTypeCommand request, CancellationToken cancellationToken)
     {
-        var ingredientType = await ingredientTypeRepository.GetByIdAsync(request.Id);
+        var ingredientType = await ingredientTypeRepository.GetIngredientTypeByIdAsync(request.Id);
 
         if (ingredientType is null)
         {

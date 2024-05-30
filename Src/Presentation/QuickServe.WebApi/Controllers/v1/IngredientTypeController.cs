@@ -19,7 +19,7 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<PagedResponse<IngredientTypeDTO>> GetPagedListIngredientType([FromQuery] GetPagedListIngredientTypeQuery model)
             => await Mediator.Send(model);
         [HttpGet]
-        public async Task<PagedResponse<IngredientTypeDTO>> GetPagedListByActiveStatusCategory([FromQuery] GetPagedListIngredientTypeByActiveStatusQuery model)
+        public async Task<PagedResponse<IngredientTypeDTO>> GetPagedListByActiveStatus([FromQuery] GetPagedListIngredientTypeByActiveStatusQuery model)
           => await Mediator.Send(model);
 
         [HttpGet]
@@ -39,7 +39,7 @@ namespace QuickServe.WebApi.Controllers.v1
             => await Mediator.Send(model);
 
         [HttpDelete]
-        public async Task<BaseResult> DeleteCategory([FromQuery] DeleteIngredientTypeCommand model)
+        public async Task<BaseResult> DeleteIngredientType([FromQuery] DeleteIngredientTypeCommand model)
             => await Mediator.Send(model);
     }
 }

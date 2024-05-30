@@ -18,7 +18,7 @@ namespace QuickServe.Application.Features.Categories.Commands.UpdateCategoryStat
     {
         public async Task<BaseResult> Handle(UpdateCategoryStatusCommand request, CancellationToken cancellationToken)
         {
-            var category = await categoryRepository.GetByIdAsync(request.Id);
+            var category = await categoryRepository.FindByIdAsync(request.Id);
 
             if (category is null)
             {

@@ -1,6 +1,7 @@
-﻿namespace QuickServe.Application.Interfaces.Repositories;
+﻿using QuickServe.Domain.IngredientProducts.Entities;
+namespace QuickServe.Application.Interfaces.Repositories;
 
-public interface IIngredientProductRepository
+public interface IIngredientProductRepository 
 {
     
 }

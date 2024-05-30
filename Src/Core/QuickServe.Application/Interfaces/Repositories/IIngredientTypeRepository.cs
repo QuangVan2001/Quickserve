@@ -7,6 +7,7 @@ namespace QuickServe.Application.Interfaces.Repositories;
 
 public interface IIngredientTypeRepository : IGenericRepository<IngredientType>
 {
+    Task<IngredientType> GetIngredientTypeByIdAsync(long id);
     Task<PagenationResponseDto<IngredientTypeDTO>> GetPagedListAsync(int pageNumber, int pageSize, string name);
     Task<PagenationResponseDto<IngredientTypeDTO>> GetPagedListByAcitveStatusAsync(int pageNumber, int pageSize, string name);
     Task<bool> ExistByNameAsync(string name);

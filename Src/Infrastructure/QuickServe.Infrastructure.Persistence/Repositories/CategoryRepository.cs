@@ -27,6 +27,13 @@ public class CategoryRepository : GenericRepository<Category>, ICategoryReposito
         return await categories.AnyAsync(c => c.Name.ToLower() == name.ToLower());
     }
 
+    public async Task<Category> FindByIdAsync(long id)
+    {
+       return await categories.Include(c=>c.ProductTemplates)
+            .ThenInclude(pt=> pt.Products)
+            .FirstOrDefaultAsync(c=>c.Id == id);
+    }
+
     public async Task<PagenationResponseDto<CategoryDto>> GetPagedListAsync(int pageNumber, int pageSize, string name)
     {
         var query = categories.OrderBy(c => c.Created).AsQueryable();

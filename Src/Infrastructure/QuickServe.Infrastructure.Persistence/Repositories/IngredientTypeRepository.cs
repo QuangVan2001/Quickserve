@@ -27,6 +27,11 @@ public class IngredientTypeRepository : GenericRepository<IngredientType>, IIngr
         return await ingredientTypes.AnyAsync(c => c.Name.ToLower() == name.ToLower());
     }
 
+    public async Task<IngredientType> GetIngredientTypeByIdAsync(long id)
+    {
+        return await ingredientTypes.Include(c=> c.Ingredients).FirstOrDefaultAsync(c=> c.Id == id);
+    }
+
     public async Task<PagenationResponseDto<IngredientTypeDTO>> GetPagedListAsync(int pageNumber, int pageSize, string name)
     {
         var query = ingredientTypes.OrderBy(c => c.Created).AsQueryable();

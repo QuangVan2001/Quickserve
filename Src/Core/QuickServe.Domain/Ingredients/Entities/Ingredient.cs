@@ -15,8 +15,33 @@ namespace QuickServe.Domain.Ingredients.Entities
             IngredientSessions = new HashSet<IngredientSession>();
             IngredientNutritions = new HashSet<IngredientNutrition>();
         }
+        public Ingredient(string name, decimal price, int calo, string description, string imageUrl, long ingredientTypeId, int status, IngredientType ingredientType)
+        {
+            Name = name;
+            Price = price;
+            Calo = calo;
+            Description = description;
+            ImageUrl = imageUrl;
+            IngredientTypeId = ingredientTypeId;
+            Status = status;
+            IngredientType = ingredientType;
+            IngredientNutritions = new HashSet<IngredientNutrition>();
+            IngredientProducts = new HashSet<IngredientProduct>();
+            IngredientSessions = new HashSet<IngredientSession>(); 
+        }
+        public void Update(string name, decimal price, int calo, string description, long ingredientTypeId)
+        {
+            Name = name;
+            Price = price;
+            Calo = calo;
+            Description = description;
+            IngredientTypeId = ingredientTypeId;
+        }
+        public void Update(int status)
+        {
+            Status = status;
 
-    
+        }
         public string Name { get; set; } = null!;
         public decimal Price { get; set; }
         public int Calo { get; set; }

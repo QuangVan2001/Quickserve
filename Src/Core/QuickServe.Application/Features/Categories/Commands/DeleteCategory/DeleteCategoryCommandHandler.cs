@@ -12,7 +12,7 @@ public class DeleteCategoryCommandHandler(ICategoryRepository categoryRepository
 {
     public async Task<BaseResult> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await categoryRepository.GetByIdAsync(request.Id);
+        var category = await categoryRepository.FindByIdAsync(request.Id);
 
         if (category is null)
         {
