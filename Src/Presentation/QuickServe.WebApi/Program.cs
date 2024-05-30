@@ -59,7 +59,6 @@ builder.Services.AddCors(x =>
         b.AllowAnyOrigin();
         b.AllowAnyHeader();
         b.AllowAnyMethod();
-
     });
 });
 builder.Services.AddCustomLocalization(builder.Configuration);
@@ -99,8 +98,8 @@ app.UseCustomLocalization();
 app.UseCors("Any");
 //app.UseRouting();
 app.UseHttpsRedirection();
-//app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseSwaggerWithVersioning();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 //app.UseHealthChecks("/health");
