@@ -66,8 +66,8 @@ namespace QuickServe.Infrastructure.Identity.Services
                 return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_UserName(login.Email)), nameof(login.Email)));
             }
 
-            var result = await signInManager.PasswordSignInAsync(user.UserName, login.Password, false, lockoutOnFailure: false);
-            if (!result.Succeeded)
+            var result = await userManager.CheckPasswordAsync(user, login.Password);
+            if (!result)
             {
                 return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.AccountMessages.Invalid_password()), nameof(login.Password)));
             }

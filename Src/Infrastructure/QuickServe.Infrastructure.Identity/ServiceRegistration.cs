@@ -52,7 +52,7 @@ namespace QuickServe.Infrastructure.Identity
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IAccountServices, AccountServices>();
-            services.AddAuthentication()
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
                 options.LoginPath = "/Account/Unauthorized/";
