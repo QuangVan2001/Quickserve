@@ -4,7 +4,6 @@ using MediatR;
 using QuickServe.Application.Interfaces.Repositories;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.Categories.Dtos;
-using QuickServe.Domain.Categories.Entities;
 
 namespace QuickServe.Application.Features.Categories.Queries.GetPagedListCategory;
 

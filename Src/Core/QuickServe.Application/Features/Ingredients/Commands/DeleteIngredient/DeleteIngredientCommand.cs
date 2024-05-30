@@ -1,6 +1,9 @@
-﻿namespace QuickServe.Application.Features.Ingredients.Commands.DeleteIngredient;
+﻿using MediatR;
+using QuickServe.Application.Wrappers;
 
-public class DeleteIngredientCommand
+namespace QuickServe.Application.Features.Ingredients.Commands.DeleteIngredient;
+
+public class DeleteIngredientCommand : IRequest<BaseResult>
 {
-    
+    public long Id { get; set; }
 }

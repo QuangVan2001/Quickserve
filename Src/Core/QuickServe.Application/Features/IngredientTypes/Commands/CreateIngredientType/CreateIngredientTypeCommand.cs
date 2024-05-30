@@ -1,6 +1,10 @@
-﻿namespace QuickServe.Application.Features.IngredientTypes.Commands.CreateIngredientType;
+﻿using MediatR;
+using QuickServe.Application.Wrappers;
 
-public class CreateIngredientTypeCommand
+namespace QuickServe.Application.Features.IngredientTypes.Commands.CreateIngredientType;
+
+public class CreateIngredientTypeCommand : IRequest<BaseResult>
 {
-    
+    public string Name { get; set; }
+
 }

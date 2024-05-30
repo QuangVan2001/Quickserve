@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using QuickServe.Application.Helpers;
@@ -19,7 +20,10 @@ public class UpdateCategoryCommandHandler(ICategoryRepository categoryRepository
         {
             return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.CategoryMessages.Category_not_Found_with_id(request.Id)), nameof(request.Id)));
         }
-        category.Update(request.Name);
+        if(await categoryRepository.ExistsCategoryByNameAsync(request.Name.Trim())) { 
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.CategoryMessages.Category_name_existed_with_name(request.Name)), nameof(request.Name)));
+        }
+        category.Update(request.Name.Trim());
         await unitOfWork.SaveChangesAsync();
         return new  BaseResult();
     }

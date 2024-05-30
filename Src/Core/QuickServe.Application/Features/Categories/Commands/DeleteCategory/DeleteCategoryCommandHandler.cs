@@ -12,13 +12,16 @@ public class DeleteCategoryCommandHandler(ICategoryRepository categoryRepository
 {
     public async Task<BaseResult> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await categoryRepository.GetByIdAsync(request.Id);
+        var category = await categoryRepository.FindByIdAsync(request.Id);
 
         if (category is null)
         {
             return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.CategoryMessages.Category_not_Found_with_id(request.Id)), nameof(request.Id)));
         }
-
+        if(category.ProductTemplates.Count != 0)
+        {
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.CategoryMessages.Category_exists_product_templates_with_id(request.Id)), nameof(request.Id)));
+        }
         categoryRepository.Delete(category);
         await unitOfWork.SaveChangesAsync();
 

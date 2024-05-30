@@ -21,6 +21,11 @@ using QuickServe.Infrastructure.Identity.Models;
 using Microsoft.EntityFrameworkCore;
 using QuickServe.Infrastructure.Identity.Seeds;
 using QuickServe.Infrastructure.Persistence.Contexts;
+using QuickServe.Application.Interfaces.IngredientInterfaces;
+using QuickServe.Infrastructure.Persistence.Services;
+using QuickServe.Infrastructure.FileManager.Services;
+using QuickServe.Application.Interfaces.ImageInterfaces;
+using QuickServe.Application.Interfaces.IProductTemplateServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +37,9 @@ builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddResourcesInfrastructure();
 
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
+builder.Services.AddScoped<IIngredientService, IngredientService>();
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IProductTemplateService,  ProductTemplateService>();
 builder.Services.AddDistributedMemoryCache();
 
 #pragma warning disable CS0618 // Type or member is obsolete

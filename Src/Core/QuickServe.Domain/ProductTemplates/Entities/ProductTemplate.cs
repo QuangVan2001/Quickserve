@@ -13,9 +13,35 @@ namespace QuickServe.Domain.ProductTemplates.Entities
             Products = new HashSet<Product>();
             TemplateSteps = new HashSet<TemplateStep>();
         }
+        public ProductTemplate(long categoryId, string name, int? quantity, string size, string imageUrl, decimal price, string? description, int status, Category category, ICollection<Product> products, ICollection<TemplateStep> templateSteps)
+        {
+            CategoryId = categoryId;
+            Name = name;
+            Quantity = quantity;
+            Size = size;
+            ImageUrl = imageUrl;
+            Price = price;
+            Description = description;
+            Status = status;
+            Category = category;
+            Products = new HashSet<Product>();
+            TemplateSteps = new HashSet<TemplateStep>();
+        }
+        public void Update(string name, decimal price, string size, string description, long categoryId)
+        {
+            Name = name;
+            Price = price;
+            Size = size;
+            Description = description;
+            CategoryId = categoryId;
+        }
+        public void Update(int status)
+        {
+            Status = status;
 
-        public long CategoryId { get; private set; }
-        public string Name { get; private set; } = null!;
+        }
+        public long CategoryId { get;  set; }
+        public string Name { get;  set; } = null!;
         public int? Quantity { get; set; }
         public string Size { get; set; } = null!;
         public string ImageUrl { get; set; } = null!;
