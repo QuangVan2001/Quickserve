@@ -52,7 +52,7 @@ namespace QuickServe.Infrastructure.Identity
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IAccountServices, AccountServices>();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication()
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
