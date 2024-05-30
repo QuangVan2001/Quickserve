@@ -53,6 +53,7 @@ namespace QuickServe.Infrastructure.Identity
         {
             services.AddTransient<IAccountServices, AccountServices>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddCookie(IdentityConstants.ApplicationScheme)
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
