@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickServe.Application.Features.IngredientTypes.Commands.CreateIngredientType;
 using QuickServe.Application.Features.IngredientTypes.Commands.DeleteIngredientType;
@@ -26,19 +27,19 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult<IngredientTypeDTO>> GetIngredientTypeById([FromQuery] GetIngredientTypeByIdQuery model)
             => await Mediator.Send(model);
 
-        [HttpPost, Authorize]
+        [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> CreateIngredientType(CreateIngredientTypeCommand model)
             => await Mediator.Send(model);
 
-        [HttpPut, Authorize]
+        [HttpPut, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> UpdateIngredientType(UpdateIngredientTypeCommand model)
             => await Mediator.Send(model);
 
-        [HttpPut, Authorize]
+        [HttpPut, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> UpdateIngredientTypeStatus(UpdateIngredientTypeStatusCommand model)
             => await Mediator.Send(model);
 
-        [HttpDelete]
+        [HttpDelete, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> DeleteIngredientType([FromQuery] DeleteIngredientTypeCommand model)
             => await Mediator.Send(model);
     }

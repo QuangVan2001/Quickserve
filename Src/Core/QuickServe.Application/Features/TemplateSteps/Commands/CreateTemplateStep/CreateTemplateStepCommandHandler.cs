@@ -26,6 +26,7 @@ namespace QuickServe.Application.Features.TemplateSteps.Commands.CreateTemplateS
             }
             var templateStep = new TemplateStep(request.Name.Trim());
             templateStep.Status = (int)CategoryStatus.Inactive;
+            templateStep.ProductTemplateId = request.ProductTemplateId;
             await templateStepRepository.AddAsync(templateStep);
             await unitOfWork.SaveChangesAsync();
             return new BaseResult<long>(templateStep.Id);

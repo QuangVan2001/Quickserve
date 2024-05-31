@@ -27,7 +27,7 @@ namespace QuickServe.Infrastructure.Persistence.Repositories
         }
         public async Task<bool> ExistNameAsync(long productTemplateId, string name)
         {
-            return await templateSteps.AnyAsync(t => t.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)
+            return await templateSteps.AnyAsync(t => t.Name.ToLower() == name.ToLower()
             && t.ProductTemplateId == productTemplateId);
         }
 

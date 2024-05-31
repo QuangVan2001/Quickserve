@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickServe.Application.DTOs.ProductTemplates;
@@ -35,18 +36,18 @@ public class ProductTemplateController : BaseApiController
     public async Task<BaseResult<ProductTemplateDto>> GetProductTemplateById([FromQuery] GetProductTemplateByIdQuery model)
         => await Mediator.Send(model);
 
-    [HttpPost]
+    [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
     public async Task<BaseResult> CreateProductTemplate([FromForm] CreateProductTemplateRequest request)
           => await _productTemplateService.CreateProductTemplateAsync(request);
-    [HttpPut, Authorize]
+    [HttpPut, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
     public async Task<BaseResult> UpdateProductTemplate(UpdateProductTemplateCommand model)
            => await Mediator.Send(model);
 
-    [HttpPut]
+    [HttpPut, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
     public async Task<BaseResult> UpdateProductTemplateImage([FromQuery] int id, [FromForm] UpdateProductTemplateImageRequest request)
            => await _productTemplateService.UpdateProductTemplateImageAsync(id, request);
 
-    [HttpDelete]
+    [HttpDelete, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
     public async Task<BaseResult> DeleteProductTemplate([FromQuery] DeleteProductTemplateCommand model)
             => await Mediator.Send(model);
 }

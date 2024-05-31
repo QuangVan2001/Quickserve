@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickServe.Application.Features.TemplateSteps.Commands.CreateTemplateStep;
 using QuickServe.Application.Features.TemplateSteps.Commands.DeleteTemplateStep;
@@ -26,15 +27,15 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult<TemplateStepDTO>> GetTemplateStepById([FromQuery] GetTemplateStepByIdQuery model)
         => await Mediator.Send(model);
 
-        [HttpPost, Authorize]
+        [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> CreateTemplateStep(CreateTemplateStepCommand model)
         => await Mediator.Send(model);
 
-        [HttpPut, Authorize]
+        [HttpPut, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> UpdateTemplateStep(UpdateTemplateStepCommand model)
         => await Mediator.Send(model);
 
-        [HttpDelete]
+        [HttpDelete, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> DeleteTemplateStep([FromQuery] DeleteTemplateStepCommand model)
         => await Mediator.Send(model);
     }

@@ -15,7 +15,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="DTOs\Ingredients\Responses\" />
-	  <Folder Include="DTOs\IngredientTypes\Request\" />
 	  <Folder Include="DTOs\IngredientTypes\Response\" />
 	  <Folder Include="Features\Accounts\Commands\" />
 	  <Folder Include="Features\TemplateSteps\Commands\UpdateTemplateStepStatus\" />
