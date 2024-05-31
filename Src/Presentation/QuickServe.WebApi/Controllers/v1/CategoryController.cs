@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickServe.Application.Features.Categories.Commands.CreateCategory;
@@ -26,19 +27,19 @@ public class CategoryController : BaseApiController
     public async Task<BaseResult<CategoryDto>> GetCategoryById([FromQuery] GetCategoryByIdQuery model)
         => await Mediator.Send(model);
     
-    [HttpPost, Authorize]
+    [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
     public async Task<BaseResult> CreateCategory(CreateCategoryCommand model)
         => await Mediator.Send(model);
 
-    [HttpPut, Authorize]
+    [HttpPut, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles ="Brand_Manager")]
     public async Task<BaseResult> UpdateCategory(UpdateCategoryCommand model)
         => await Mediator.Send(model);
 
-    [HttpPut, Authorize]
+    [HttpPut, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
     public async Task<BaseResult> UpdateStatusCategory(UpdateCategoryStatusCommand model)
         => await Mediator.Send(model);
 
-    [HttpDelete]
+    [HttpDelete, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
     public async Task<BaseResult> DeleteCategory([FromQuery] DeleteCategoryCommand model)
         => await Mediator.Send(model);
 }

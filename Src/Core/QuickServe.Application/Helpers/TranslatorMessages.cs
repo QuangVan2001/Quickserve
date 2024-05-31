@@ -45,6 +45,7 @@ namespace QuickServe.Application.Helpers
             public static TranslatorMessageDto IngredientType_name_existed_with_name(string name)
                 => new(nameof(IngredientType_name_existed_with_name), [name]);
         }
+       
         public static class IngredientMessages
         {
             public static TranslatorMessageDto Ingredient_not_Found_with_id(long id)
@@ -61,9 +62,19 @@ namespace QuickServe.Application.Helpers
                 => new(nameof(ProductTemplate_not_found_with_id), [id.ToString()]);
             public static TranslatorMessageDto ProductTemplate_name_existed_with_name(string name)
                => new(nameof(ProductTemplate_name_existed_with_name), [name]);
-
+            public static TranslatorMessageDto ProductTemplate_existed_inative_step(long id)
+              => new(nameof(ProductTemplate_existed_inative_step), [id.ToString()]);
             public static TranslatorMessageDto ProductTemplate_exists_products_and_templatesteps(long id)
                 => new(nameof(ProductTemplate_exists_products_and_templatesteps), [id.ToString()]);
+        }
+        public static class TemplateStepMessages
+        {
+            public static TranslatorMessageDto TemplateStep_not_found_with_id(long id)
+                => new(nameof(TemplateStep_not_found_with_id), [id.ToString()]);
+            public static TranslatorMessageDto TemplateStep_existed_with_name(string name)
+               => new(nameof(TemplateStep_existed_with_name), [name]);
+            public static TranslatorMessageDto TemplateStep_existed_ingredienttype_templatestep(long id)
+               => new(nameof(TemplateStep_existed_ingredienttype_templatestep), [id.ToString()]);
         }
     }
 }
