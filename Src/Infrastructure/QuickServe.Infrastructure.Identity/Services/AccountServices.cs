@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using QuickServe.Application.DTOs;
@@ -20,12 +19,13 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Error = QuickServe.Application.Wrappers.Error;
-using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace QuickServe.Infrastructure.Identity.Services
 {
-    public class AccountServices(UserManager<ApplicationUser> userManager, IAuthenticatedUserService authenticatedUser, SignInManager<ApplicationUser> signInManager, ITranslator translator, IConfiguration configuration) : IAccountServices
+    public class AccountServices(UserManager<ApplicationUser> userManager, IAuthenticatedUserService authenticatedUser, ITranslator translator, IConfiguration configuration) : IAccountServices
     {
+       
         public async Task<BaseResult> ChangePassword(ChangePasswordRequest model)
         {
             var user = await userManager.FindByIdAsync(authenticatedUser.UserId);
@@ -165,11 +165,12 @@ namespace QuickServe.Infrastructure.Identity.Services
             await userManager.UpdateAsync(user);
             await userManager.UpdateSecurityStampAsync(user);
 
-            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var tokenHandler = new JsonWebTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return new TokenDto
             {
-                AccessToken = tokenHandler.WriteToken(token),
+                AccessToken = token,
                 RefreshToken = refreshToken
             };
         }
@@ -204,7 +205,7 @@ namespace QuickServe.Infrastructure.Identity.Services
             return Convert.ToBase64String(random);
         }
 
-        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        private async Task<ClaimsIdentity> GetPrincipalFromExpiredToken(string token)
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -217,23 +218,23 @@ namespace QuickServe.Infrastructure.Identity.Services
                 ValidAudience = configuration["JWTSettings:Audience"]
             };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
-            var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            var tokenHandler = new JsonWebTokenHandler();
+            var securityToken = await tokenHandler.ValidateTokenAsync(token, tokenValidationParameters);
+            if (!securityToken.IsValid)
+            {
                 throw new SecurityTokenException("Invalid token");
+            }
 
-            return principal;
+            return securityToken.ClaimsIdentity;
         }
 
         public async Task<BaseResult<TokenDto>> RefreshToken(TokenDto token)
         {
             try
             {
-                var principal = GetPrincipalFromExpiredToken(token.AccessToken);
+                var principal = await GetPrincipalFromExpiredToken(token.AccessToken);
 
-                var user = await userManager.FindByNameAsync(principal.Identity.Name);
+                var user = await userManager.FindByNameAsync(principal.Name);
                 if (user == null || user.RefreshToken != token.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
                     throw new SecurityTokenException("Invalid token");
                 var newToken = await CreateToken(user, false);
