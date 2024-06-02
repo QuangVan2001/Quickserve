@@ -1,12 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickServe.Application.DTOs.Account.Responses;
+using QuickServe.Application.Features.Store.Commands.AddEmployee;
 using QuickServe.Application.Features.Store.Commands.CreateStore;
 using QuickServe.Application.Features.Store.Commands.DeleteStore;
 using QuickServe.Application.Features.Store.Commands.UpdateStore;
 using QuickServe.Application.Features.Store.Queries.GetPagedListStore;
 using QuickServe.Application.Features.Store.Queries.GetStoreById;
+using QuickServe.Application.Features.Store.Queries.GetStoreEmployees;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.Stores.Dtos;
 
@@ -32,5 +36,15 @@ public class StoreController : BaseApiController
 
     [HttpDelete, Authorize]
     public async Task<BaseResult> DeleteStore([FromQuery] DeleteStoreCommand model)
+        => await Mediator.Send(model);
+
+    [Authorize(Roles = "Admin, Store_Manager")]
+    [HttpGet]
+    public async Task<PagedResponse<EmployeeDto>> GetEmployees([FromQuery] GetPagedListStoreEmployeesQuery model)
+        => await Mediator.Send(model);
+
+    [Authorize(Roles = "Admin, Store_Manager")]
+    [HttpPost]
+    public async Task<BaseResult<Guid>> AddEmployee([FromBody] AddEmployeeCommand model)
         => await Mediator.Send(model);
 }

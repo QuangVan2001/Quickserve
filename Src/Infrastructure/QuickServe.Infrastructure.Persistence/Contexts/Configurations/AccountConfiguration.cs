@@ -20,7 +20,7 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
             .IsRequired();
 
         builder.Property(a => a.Created)
-            .HasColumnType("datetime")
+            .HasColumnType("timestamp without time zone")
             .IsRequired();
 
     

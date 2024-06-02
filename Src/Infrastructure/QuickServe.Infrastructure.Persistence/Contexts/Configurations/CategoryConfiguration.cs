@@ -15,7 +15,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
             .IsUnicode(false)
             .IsRequired();
 
-        entity.Property(e => e.Created).HasColumnType("datetime").IsRequired();
+        entity.Property(e => e.Created).HasColumnType("timestamp with time zone").IsRequired();
 
 
         
@@ -24,7 +24,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
             .IsUnicode(false)
             .IsRequired();
 
-        entity.Property(e => e.LastModified).HasColumnType("datetime").IsRequired();
+        entity.Property(e => e.LastModified).HasColumnType("timestamp with time zone").IsRequired();
 
         entity.Property(e => e.Name)
             .HasMaxLength(40)

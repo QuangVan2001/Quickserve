@@ -60,12 +60,25 @@ namespace QuickServe.Infrastructure.Identity
         public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IAccountServices, AccountServices>();
-            services.AddAuthentication(o =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //.AddCookie(options =>
+            //{
+            //    options.LoginPath = "/Account/Login";
+            //    options.AccessDeniedPath = "/Account/AccessDenied";
+            //})
+            .AddJwtBearer(options =>
             {
-                o.DefaultScheme = IdentityConstants.ApplicationScheme;
-            })
-            .AddCookie(IdentityConstants.ApplicationScheme)
-            .AddBearerToken(IdentityConstants.BearerScheme);
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = configuration["JWTSettings:Issuer"],
+                    ValidAudience = configuration["JWTSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"])),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true
+                };
+            });
 
             services.AddAuthorizationBuilder();
 

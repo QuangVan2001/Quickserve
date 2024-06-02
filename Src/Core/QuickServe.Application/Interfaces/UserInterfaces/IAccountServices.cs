@@ -19,5 +19,6 @@ namespace QuickServe.Application.Interfaces.UserInterfaces
         Task<BaseResult> CreateAccount(CreateAccountRequest request);
         Task<PagenationResponseDto<AccountDto>> GetPagedListAsync(int pageNumber, int pageSize, string name, string[] roles);
         Task<BaseResult<AccountDto>> GetAccountById(Guid id);
+        Task<BaseResult<AccountDto>> FindByEmailAsync(string email);
     }
 }

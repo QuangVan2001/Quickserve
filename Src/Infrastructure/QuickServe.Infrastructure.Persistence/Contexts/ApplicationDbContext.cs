@@ -26,6 +26,8 @@ using QuickServe.Domain.Stores.Entities;
 using QuickServe.Domain.TemplateSteps.Entities;
 using QuickServe.Domain.IngredientSessions.Entities;
 using QuickServe.Domain.IngredientNutritions.Entities;
+using QuickServe.Domain.Staffs.Entities;
+using QuickServe.Domain.Customers.Entities;
 
 
 
@@ -61,10 +63,12 @@ namespace QuickServe.Infrastructure.Persistence.Contexts
     public virtual DbSet<ProductTemplate> ProductTemplates { get; set; } 
     public virtual DbSet<Session> Sessions { get; set; }
     public virtual DbSet<Store> Stores { get; set; } 
-    public virtual DbSet<TemplateStep> TemplateSteps { get; set; } 
+    public virtual DbSet<TemplateStep> TemplateSteps { get; set; }
+    public virtual DbSet<Staff> Staffs { get; set; }
+    public virtual DbSet<Customer> Customers { get; set; }
 
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         var userId = Guid.Parse(authenticatedUser.UserId ?? "00000000-0000-0000-0000-000000000000");
         foreach (var entry in ChangeTracker.Entries<AuditableBaseEntity>())
@@ -95,12 +99,9 @@ namespace QuickServe.Infrastructure.Persistence.Contexts
             property.SetColumnType("decimal(18,6)");
         }
 
-        //builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
-           
-        base.OnModelCreating(builder);
+        builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
 
-        
-        
+        base.OnModelCreating(builder);
     }
     }
 }

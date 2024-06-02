@@ -20,6 +20,9 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Features\Accounts\Commands\" />
+	  <Folder Include="DTOs\Ingredients\Responses\" />
+	  <Folder Include="DTOs\IngredientTypes\Request\" />
+	  <Folder Include="DTOs\IngredientTypes\Response\" />
 	</ItemGroup>
 
 </Project>

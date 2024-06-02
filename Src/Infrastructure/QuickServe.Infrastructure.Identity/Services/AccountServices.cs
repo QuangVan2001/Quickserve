@@ -333,5 +333,24 @@ namespace QuickServe.Infrastructure.Identity.Services
                 Roles = [.. (await userManager.GetRolesAsync(account))]
             });
         }
+
+        public async Task<BaseResult<AccountDto>> FindByEmailAsync(string email)
+        {
+            var account = await userManager.FindByEmailAsync(email);
+            if (account == null)
+                return new BaseResult<AccountDto>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_Email(email)), nameof(email)));
+            return new BaseResult<AccountDto>(new AccountDto
+            {
+                Id = account.Id,
+                UserName = account.UserName,
+                Email = account.Email,
+                Created = account.Created,
+                PhoneNumber = account.PhoneNumber,
+                Name = account.Name,
+                Avatar = null,
+                Address = null,
+                Roles = [.. (await userManager.GetRolesAsync(account))]
+            });
+        }
     }
 }

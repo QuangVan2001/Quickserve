@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickServe.Application.DTOs.Account.Requests;
 using QuickServe.Application.DTOs.Account.Responses;
+using QuickServe.Application.Features.Accounts.Commands;
 using QuickServe.Application.Features.Accounts.Queries.GetPagedListAccount;
 using QuickServe.Application.Features.Categories.Queries.GetPagedListCategory;
 using QuickServe.Application.Interfaces.UserInterfaces;
@@ -44,8 +45,8 @@ namespace QuickServe.WebApi.Controllers.v1
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<BaseResult> CreateAccount([FromBody] CreateAccountRequest request)
-            => await accountServices.CreateAccount(request);
+        public async Task<BaseResult<Guid>> CreateAccount([FromBody] CreateAccountCommand request)
+            => await Mediator.Send(request);
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
