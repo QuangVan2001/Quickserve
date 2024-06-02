@@ -42,6 +42,8 @@ namespace QuickServe.Infrastructure.Persistence
 
             }
 
+            services.AddTransient<IStaffRepository, StaffRepository>();
+
         }
     }
 }

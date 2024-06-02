@@ -5,7 +5,6 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <Folder Include="Customers\Dtos\" />
-	  <Folder Include="Customers\Entities\" />
 	  <Folder Include="IngredientProducts\Dtos\" />
 	  <Folder Include="IngredientTypeTemplateSteps\Dtos\" />
 	  <Folder Include="News\Dtos\" />

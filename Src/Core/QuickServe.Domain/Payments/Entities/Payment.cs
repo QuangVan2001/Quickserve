@@ -12,7 +12,7 @@ namespace QuickServe.Domain.Payments.Entities
 
         public string Name { get; set; } = null!;
         public int PaymentType { get; set; }
-        public int RefOrderId { get; set; }
+        public long RefOrderId { get; set; }
 
         public virtual Order Order { get; set; } = null!;
     }
