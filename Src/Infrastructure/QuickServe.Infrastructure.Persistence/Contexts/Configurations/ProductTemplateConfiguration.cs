@@ -19,7 +19,6 @@ public class ProductTemplateConfiguration : IEntityTypeConfiguration<ProductTemp
         entity.Property(e => e.Created).HasColumnType("date");
 
         entity.Property(e => e.ImageUrl)
-            .HasMaxLength(40)
             .HasColumnName("Image_url");
 
         entity.Property(e => e.LastModifiedBy).HasMaxLength(40);
