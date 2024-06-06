@@ -59,13 +59,13 @@ namespace QuickServe.Infrastructure.Identity.Services
             var user = await userManager.FindByEmailAsync(login.Email);
             if (user == null)
             {
-                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_UserName(login.Email)), nameof(login.Email)));
+                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_không_tìm_thấy_với_Email(login.Email)), nameof(login.Email)));
             }
 
             var result = await userManager.CheckPasswordAsync(user, login.Password);
             if (!result)
             {
-                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.AccountMessages.Invalid_password()), nameof(login.Password)));
+                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.AccountMessages.Mật_khẩu_không_hợp_lệ()), nameof(login.Password)));
             }
 
             var rolesList = await userManager.GetRolesAsync(user).ConfigureAwait(false);
@@ -91,7 +91,7 @@ namespace QuickServe.Infrastructure.Identity.Services
             var user = await userManager.FindByNameAsync(username);
             if (user == null)
             {
-                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_UserName(username)), nameof(username)));
+                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_không_tìm_thấy_với_UserName(username)), nameof(username)));
             }
 
             var rolesList = await userManager.GetRolesAsync(user).ConfigureAwait(false);
@@ -254,7 +254,7 @@ namespace QuickServe.Infrastructure.Identity.Services
             {
                 var roleExist = await userManager.GetRolesAsync(existUser);
                 if (roleExist.Any(p => p == request.Role))
-                    return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.AccountMessages.Account_already_exist_with_Email(request.Email)), nameof(request.Email)));
+                    return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_đã_tồn_tại_với_Email(request.Email)), nameof(request.Email)));
 
                 var assignRoleResult = await userManager.AddToRoleAsync(existUser, request.Role);
                 if (assignRoleResult.Succeeded)
@@ -346,7 +346,7 @@ namespace QuickServe.Infrastructure.Identity.Services
         {
             var account = await userManager.FindByEmailAsync(email);
             if (account == null)
-                return new BaseResult<AccountDto>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_Email(email)), nameof(email)));
+                return new BaseResult<AccountDto>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_không_tìm_thấy_với_Email(email)), nameof(email)));
             return new BaseResult<AccountDto>(new AccountDto
             {
                 Id = account.Id,

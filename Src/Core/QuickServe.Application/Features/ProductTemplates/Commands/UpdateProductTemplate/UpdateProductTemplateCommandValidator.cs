@@ -9,31 +9,31 @@ public class UpdateProductTemplateCommandValidator : AbstractValidator<UpdatePro
     public UpdateProductTemplateCommandValidator(ITranslator translator)
     {
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage(translator["Name is required"])
-            .NotNull().WithMessage(translator["Name is required"])
-            .MaximumLength(40).WithMessage(translator["Name must not exceed 40 characters"])
-            .Must(name => char.IsUpper(name[0])).WithMessage(translator["First letter of Name must be uppercase"])
-            .WithName(p => translator[nameof(p.Name)]);
+                 .NotEmpty().WithMessage(translator["Tên là bắt buộc"])
+                 .NotNull().WithMessage(translator["Tên là bắt buộc"])
+                 .MaximumLength(40).WithMessage(translator["Tên không vượt quá 40 ký tự"])
+                 .Must(name => char.IsUpper(name[0])).WithMessage(translator["Chữ cái đầu tiên của tên phải viết hoa"])
+                 .WithName(p => translator[nameof(p.Name)]);
 
         RuleFor(p => p.Id)
-            .NotNull().WithMessage(translator["Id is required"])
-            .NotEmpty().WithMessage(translator["Id is required"])
+            .NotNull().WithMessage(translator["Id là bắt buộc"])
+            .NotEmpty().WithMessage(translator["Id là bắt buộc"])
             .WithName(p => translator[nameof(p.Id)]);
 
 
         RuleFor(x => x.Price)
-            .GreaterThan(0).WithMessage(translator["Price must be greater than 0."]);
+            .GreaterThan(0).WithMessage(translator["Giá phải lớn hơn 0"]);
 
         RuleFor(x => x.Description)
-            .NotEmpty().WithMessage(translator["Description is required."])
-            .MaximumLength(200).WithMessage(translator["Description cannot exceed 200 characters."]);
+            .NotEmpty().WithMessage(translator["Mô tả là bắt buộc"])
+            .MaximumLength(200).WithMessage(translator["Mô tả không được vượt quá 200 ký tự"]);
 
         RuleFor(x => x.CategoryId)
-            .GreaterThan(0).WithMessage(translator["CategoryId must be greater than 0."]);
+            .GreaterThan(0).WithMessage(translator["CategoryId phải lớn hơn 0"]);
 
         RuleFor(x => x.Size)
             .NotEmpty()
             .NotNull()
-            .MaximumLength(10).WithMessage(translator["Size must not exceed 10 characters."]);
+            .MaximumLength(10).WithMessage(translator["Kích thước không được vượt quá 10 ký tự"]);
     }
 }

@@ -16,8 +16,8 @@ namespace QuickServe.Application.DTOs.IngredientTypeTemplateSteps.Request
         public GetTemplateByIdRequestValidator()
         {
             RuleFor(x => x.TemplateStepId)
-                .NotEmpty().WithMessage("TemplateStepId is required.")
-                .GreaterThan(0).WithMessage("TemplateStepId must be greater than 0.");
+                .NotEmpty().WithMessage("Id bước mẫu là bắt buộc.")
+                .GreaterThan(0).WithMessage("Id bước mẫu phải lớn hơn 0.");
         }
     }
 }

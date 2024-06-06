@@ -37,9 +37,9 @@ namespace QuickServe.Domain.ProductTemplates.Dtos
         public string ImageUrl { get; set; } = null!;
         public decimal Price { get; set; }
         public string? Description { get; set; } 
-        public Guid CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = null!;
         public DateTime Created { get; set; }
-        public Guid? LastModifiedBy { get; set; }
+        public string? LastModifiedBy { get; set; }
         public DateTime? LastModified { get; set; }
         public virtual CategoryResponse Category { get; set; } = null!;
     }

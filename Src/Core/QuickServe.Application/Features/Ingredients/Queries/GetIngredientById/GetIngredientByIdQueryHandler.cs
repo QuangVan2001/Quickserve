@@ -22,7 +22,7 @@ public class GetIngredientByIdQueryHandler(IIngredientRepository ingredientRepos
         if(result == null)
         {
             return new BaseResult<IngredientDTO>(new Error(ErrorCode.NotFound,
-                translator.GetString(TranslatorMessages.IngredientMessages.Ingredient_not_Found_with_id(request.Id)),
+                translator.GetString(TranslatorMessages.IngredientMessages.Nguyên_liệu_không_tìm_thấy_với_id(request.Id)),
                 nameof(request.Id)));
         }
         result.Created = TimeZoneConverter.ConvertToUserTimeZone(result.Created);

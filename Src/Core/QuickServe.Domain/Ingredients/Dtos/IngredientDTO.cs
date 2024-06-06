@@ -32,9 +32,9 @@ namespace QuickServe.Domain.Ingredients.Dtos
         public string ImageUrl { get; set; } = null!;
         public long IngredientTypeId { get; set; }
         public int Status { get; set; }
-        public Guid CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = null!;
         public DateTime Created { get; set; }
-        public Guid? LastModifiedBy { get; set; }
+        public string? LastModifiedBy { get; set; }
         public DateTime? LastModified { get; set; }
         public virtual SimpleIngredietTypeRespone IngredientType { get; set; } = null!;
 

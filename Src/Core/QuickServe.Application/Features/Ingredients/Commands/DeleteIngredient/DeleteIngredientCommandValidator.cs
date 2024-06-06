@@ -16,6 +16,7 @@ namespace QuickServe.Application.Features.Ingredients.Commands.DeleteIngredient
                     .NotNull()
                     .NotEmpty()
                     .GreaterThan(0)
+                    .WithMessage(p => translator["ID không được để trống và phải lớn hơn 0"])
                     .WithName(p => translator[nameof(p.Id)]);
         }
     }

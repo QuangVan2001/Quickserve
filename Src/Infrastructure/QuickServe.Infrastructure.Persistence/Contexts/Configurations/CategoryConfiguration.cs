@@ -18,13 +18,12 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         entity.Property(e => e.Created).HasColumnType("timestamp with time zone").IsRequired();
 
 
-        
-        entity.Property(e => e.LastModifiedBy)
-            .HasMaxLength(40)
-            .IsUnicode(false)
-            .IsRequired();
 
-        entity.Property(e => e.LastModified).HasColumnType("timestamp with time zone").IsRequired();
+        entity.Property(e => e.LastModifiedBy)
+            .HasMaxLength(40);
+      
+
+        entity.Property(e => e.LastModified).HasColumnType("timestamp with time zone");
 
         entity.Property(e => e.Name)
             .HasMaxLength(40)

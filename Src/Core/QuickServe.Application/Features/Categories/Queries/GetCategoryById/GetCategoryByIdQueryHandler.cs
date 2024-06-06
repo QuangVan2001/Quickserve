@@ -20,7 +20,7 @@ public class GetCategoryByIdQueryHandler(ICategoryRepository categoryRepository,
         if (category is null)
         {
             return new BaseResult<CategoryDto>(new Error(ErrorCode.NotFound,
-                translator.GetString(TranslatorMessages.CategoryMessages.Category_not_Found_with_id(request.Id)),
+                translator.GetString(TranslatorMessages.CategoryMessages.Danh_mục_không_tìm_thấy_với_id(request.Id)),
                 nameof(request.Id)));
         }
 

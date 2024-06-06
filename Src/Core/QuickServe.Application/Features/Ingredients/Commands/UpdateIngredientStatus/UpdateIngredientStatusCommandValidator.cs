@@ -13,9 +13,9 @@ namespace QuickServe.Application.Features.Ingredients.Commands.UpdateIngredientS
         public UpdateIngredientStatusCommandValidator(ITranslator translator)
         {
             RuleFor(p => p.Id)
-                    .NotNull()
-                    .NotEmpty()
-                    .WithName(p => translator[nameof(p.Id)]);
+           .NotNull().WithMessage(translator["ID là bắt buộc"])
+           .NotEmpty().WithMessage(translator["ID là bắt buộc"])
+           .WithName(p => translator[nameof(p.Id)]);
         }
     }
 }

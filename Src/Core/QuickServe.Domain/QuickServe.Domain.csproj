@@ -7,7 +7,6 @@
 	  <Folder Include="Customers\Dtos\" />
 	  <Folder Include="IngredientProducts\Dtos\" />
 	  <Folder Include="IngredientTypeTemplateSteps\Dtos\" />
-	  <Folder Include="News\Dtos\" />
 	  <Folder Include="Nutritions\Dtos\" />
 	  <Folder Include="OrderProducts\Dtos\" />
 	  <Folder Include="Orders\Dtos\" />

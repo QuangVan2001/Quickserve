@@ -15,7 +15,6 @@ using QuickServe.Domain.IngredientProducts.Entities;
 using QuickServe.Domain.Ingredients.Entities;
 using QuickServe.Domain.IngredientTypes.Entities;
 using QuickServe.Domain.IngredientTypeTemplateSteps.Entities;
-using QuickServe.Domain.News.Entities;
 using QuickServe.Domain.Nutritions.Entities;
 using QuickServe.Domain.OrderProducts.Entities;
 using QuickServe.Domain.Orders.Entities;
@@ -54,7 +53,6 @@ namespace QuickServe.Infrastructure.Persistence.Contexts
     public virtual DbSet<IngredientType> IngredientTypes { get; set; } 
     public virtual DbSet<IngredientTypeTemplateStep> IngredientTypeTemplateSteps { get; set; }
     public virtual DbSet<IngredientNutrition> IngredientNutritions { get; set; }
-    public virtual DbSet<Newes> News { get; set; }
     public virtual DbSet<Nutrition> Nutritions { get; set; } 
     public virtual DbSet<Order> Orders { get; set; }
     public virtual DbSet<OrderProduct> OrderProducts { get; set; } 
@@ -70,18 +68,18 @@ namespace QuickServe.Infrastructure.Persistence.Contexts
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
-        var userId = Guid.Parse(authenticatedUser.UserId ?? "00000000-0000-0000-0000-000000000000");
+        var username = authenticatedUser.UserName ?? "";
         foreach (var entry in ChangeTracker.Entries<AuditableBaseEntity>())
         {
             switch (entry.State)
             {
                 case EntityState.Added:
                     entry.Entity.Created = DateTime.Now.ToUniversalTime();
-                    entry.Entity.CreatedBy = userId;
+                    entry.Entity.CreatedBy = username;
                     break;
                 case EntityState.Modified:
                     entry.Entity.LastModified = DateTime.Now.ToUniversalTime();
-                    entry.Entity.LastModifiedBy = userId;
+                    entry.Entity.LastModifiedBy = username;
                     break;
             }
         }

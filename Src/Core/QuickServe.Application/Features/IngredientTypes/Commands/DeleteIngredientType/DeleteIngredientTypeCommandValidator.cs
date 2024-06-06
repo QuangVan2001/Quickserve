@@ -14,9 +14,9 @@ namespace QuickServe.Application.Features.IngredientTypes.Commands.DeleteIngredi
         public DeleteIngredientTypeCommandValidator(ITranslator translator)
         {
             RuleFor(p => p.Id)
-                    .NotNull()
-                    .NotEmpty()
-                    .WithName(p => translator[nameof(p.Id)]);
+                .NotNull().WithMessage(translator["Id là bắt buộc"])
+                .NotEmpty().WithMessage(translator["Id là bắt buộc"])
+                .WithName(p => translator[nameof(p.Id)]);
         }
     }
 }

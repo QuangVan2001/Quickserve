@@ -13,13 +13,12 @@ namespace QuickServe.Application.Features.TemplateSteps.Commands.UpdateTemplateS
         public UpdateTemplateStepCommandValidator(ITranslator translator)
         {
             RuleFor(p => p.Id)
-                .NotEmpty().WithMessage("Id is required.")
-                .GreaterThan(0).WithMessage("Id must be greater than 0.");
+               .NotEmpty().WithMessage("Id là bắt buộc.")
+               .GreaterThan(0).WithMessage("Id phải lớn hơn 0.");
 
             RuleFor(p => p.Name)
-                .NotEmpty().WithMessage("Name is required.")
-                .Length(1, 40).WithMessage("Name must be between 1 and 40 characters.");
-
+                .NotEmpty().WithMessage("Tên là bắt buộc.")
+                .Length(1, 40).WithMessage("Tên phải từ 1 đến 40 ký tự.");
         }
     }
 }
