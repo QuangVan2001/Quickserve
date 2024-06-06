@@ -17,11 +17,11 @@ public class UpdateIngredientCommandHandler(IIngredientRepository ingredientRepo
 
         if (ingredient is null)
         {
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.IngredientMessages.Ingredient_not_Found_with_id(request.Id)), nameof(request.Id)));
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.IngredientMessages.Nguyên_liệu_không_tìm_thấy_với_id(request.Id)), nameof(request.Id)));
         }
         if (await ingredientRepositiry.ExistByNameAsync(request.Name.Trim()))
         {
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.IngredientMessages.Ingredient_name_existed_with_name(request.Name)), nameof(request.Name)));
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.IngredientMessages.Tên_nguyên_liệu_đã_tồn_tại_với_tên(request.Name)), nameof(request.Name)));
         }
         ingredient.Update(request.Name.Trim(), request.Price, request.Calo, request.Description
             ,request.IngredientTypeId);

@@ -22,7 +22,7 @@ namespace QuickServe.Application.Features.TemplateSteps.Commands.CreateTemplateS
         {
             if (await templateStepRepository.ExistNameAsync(request.ProductTemplateId,request.Name.Trim()))
             {
-                return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.TemplateStepMessages.TemplateStep_existed_with_name(request.Name)), nameof(request.Name)));
+                return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.TemplateStepMessages.Tên_bước_mẫu_đã_tồn_tại(request.Name)), nameof(request.Name)));
             }
             var templateStep = new TemplateStep(request.Name.Trim());
             templateStep.Status = (int)CategoryStatus.Inactive;

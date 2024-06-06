@@ -17,10 +17,10 @@ public class UpdateCategoryCommandHandler(ICategoryRepository categoryRepository
 
         if (category is null)
         {
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.CategoryMessages.Category_not_Found_with_id(request.Id)), nameof(request.Id)));
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.CategoryMessages.Danh_mục_không_tìm_thấy_với_id(request.Id)), nameof(request.Id)));
         }
         if(await categoryRepository.ExistsCategoryByNameAsync(request.Name.Trim())) { 
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.CategoryMessages.Category_name_existed_with_name(request.Name)), nameof(request.Name)));
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.CategoryMessages.Tên_danh_mục_đã_tồn_tại_với_tên(request.Name)), nameof(request.Name)));
         }
         category.Update(request.Name.Trim());
         await unitOfWork.SaveChangesAsync();

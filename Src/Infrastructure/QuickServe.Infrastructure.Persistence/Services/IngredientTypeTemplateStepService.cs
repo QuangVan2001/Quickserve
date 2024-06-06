@@ -39,14 +39,14 @@ namespace QuickServe.Infrastructure.Persistence.Services
 
                 if (templateStep == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.TemplateStep_not_found_with_id(request.TemplateStepId)), nameof(request.TemplateStepId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.Bước_mẫu_không_tìm_thấy_với_id(request.TemplateStepId)), nameof(request.TemplateStepId)));
                 }
                 foreach(var ingreType in request.IngredientType)
                 {
                     var ingredientType = await _context.IngredientTypes.FirstOrDefaultAsync(i => i.Id == ingreType.IngredientTypeId);
                     if (ingredientType == null)
                     {
-                        return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.IngredientType_not_Found_with_id(ingreType.IngredientTypeId)), nameof(ingreType.IngredientTypeId)));
+                        return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.Loại_nguyên_liệu_không_tìm_thấy_với_id(ingreType.IngredientTypeId)), nameof(ingreType.IngredientTypeId)));
                     }
                 }
                
@@ -79,7 +79,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 var templateStep = await _context.TemplateSteps.Include(c=> c.ProductTemplate).FirstOrDefaultAsync(c => c.Id == request.TemplateStepId);
                 if (templateStep == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.TemplateStep_not_found_with_id(request.TemplateStepId)), nameof(request.TemplateStepId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.Bước_mẫu_không_tìm_thấy_với_id(request.TemplateStepId)), nameof(request.TemplateStepId)));
                 }
                 var existsTemplate = await _context.IngredientTypeTemplateSteps
                     .Where(c => c.TemplateStepId == request.TemplateStepId).ToListAsync();
@@ -108,7 +108,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 
                 if (productTemplate == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.ProductTemplateMessages.ProductTemplate_not_found_with_id(request.ProductTemplateId)), nameof(request.ProductTemplateId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.ProductTemplateMessages.Mẫu_sản_phẩm_không_tìm_thấy_với_id(request.ProductTemplateId)), nameof(request.ProductTemplateId)));
                 }
                 var templates = new List<TemplateResponse>();
                 foreach(var ts in productTemplate.TemplateSteps)
@@ -147,7 +147,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                     .FirstOrDefaultAsync(c=> c.Id == request.TemplateStepId);
                 if (templateStep == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.TemplateStep_not_found_with_id(request.TemplateStepId)), nameof(request.TemplateStepId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.Bước_mẫu_không_tìm_thấy_với_id(request.TemplateStepId)), nameof(request.TemplateStepId)));
                 }
                 
                 var its = new List<IngredientTypeResponse>();
@@ -174,14 +174,14 @@ namespace QuickServe.Infrastructure.Persistence.Services
 
                 if (templateStep == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.TemplateStep_not_found_with_id(request.TemplateStepId)), nameof(request.TemplateStepId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.Bước_mẫu_không_tìm_thấy_với_id(request.TemplateStepId)), nameof(request.TemplateStepId)));
                 }
                 foreach (var ingreType in request.IngredientType)
                 {
                     var ingredientType = await _context.IngredientTypes.FirstOrDefaultAsync(i => i.Id == ingreType.IngredientTypeId);
                     if (ingredientType == null)
                     {
-                        return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.IngredientType_not_Found_with_id(ingreType.IngredientTypeId)), nameof(ingreType.IngredientTypeId)));
+                        return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.Loại_nguyên_liệu_không_tìm_thấy_với_id(ingreType.IngredientTypeId)), nameof(ingreType.IngredientTypeId)));
                     }
                 }
                 var existsTemplate = await _context.IngredientTypeTemplateSteps
@@ -222,11 +222,11 @@ namespace QuickServe.Infrastructure.Persistence.Services
 
                 if (productTemplate == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.ProductTemplateMessages.ProductTemplate_not_found_with_id(request.ProductTemplateId)), nameof(request.ProductTemplateId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.ProductTemplateMessages.Mẫu_sản_phẩm_không_tìm_thấy_với_id(request.ProductTemplateId)), nameof(request.ProductTemplateId)));
                 }
                 if (productTemplate.TemplateSteps.Any(c => c.Status == (int)TemplateStepStatus.Inactive))
                 {
-                    return new BaseResult(new Error(ErrorCode.Exception, _translator.GetString(TranslatorMessages.ProductTemplateMessages.ProductTemplate_existed_inative_step(request.ProductTemplateId)), nameof(request.ProductTemplateId)));
+                    return new BaseResult(new Error(ErrorCode.Exception, _translator.GetString(TranslatorMessages.ProductTemplateMessages.Mẫu_sản_phẩm_tồn_tại_bước_không_hoạt_động(request.ProductTemplateId)), nameof(request.ProductTemplateId)));
                 }
                 productTemplate.Status = (int)ProductTemplateStatus.Active;
                 await _unitOfWork.SaveChangesAsync();

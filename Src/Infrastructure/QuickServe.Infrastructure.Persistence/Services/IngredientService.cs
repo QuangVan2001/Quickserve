@@ -44,12 +44,12 @@ namespace QuickServe.Infrastructure.Persistence.Services
             try
             {
                 if(await _context.Ingredients.AnyAsync(i=> i.Name.ToLower() == request.Name.Trim().ToLower())) {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientMessages.Ingredient_name_existed_with_name(request.Name)), nameof(request.Name)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientMessages.Tên_nguyên_liệu_đã_tồn_tại_với_tên(request.Name)), nameof(request.Name)));
                 }
                 var ingredientType = await _context.IngredientTypes.FirstOrDefaultAsync(i => i.Id == request.IngredientTypeId);
                 if (ingredientType == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.IngredientType_not_Found_with_id(request.IngredientTypeId)), nameof(request.IngredientTypeId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.Loại_nguyên_liệu_không_tìm_thấy_với_id(request.IngredientTypeId)), nameof(request.IngredientTypeId)));
                 }
                 var ingredient = new Ingredient
                 {
@@ -87,7 +87,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 var ingredient = await _context.Ingredients.FirstOrDefaultAsync(i => i.Id == id);
                 if (ingredient == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientMessages.Ingredient_not_Found_with_id(id)), nameof(id)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientMessages.Nguyên_liệu_không_tìm_thấy_với_id(id)), nameof(id)));
                 }
                 if (request.Image != null)
                 {

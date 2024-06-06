@@ -16,11 +16,11 @@ public class DeleteIngredientCommandHandler(IIngredientRepository ingredientRepo
 
         if (ingredient is null)
         {
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.IngredientMessages.Ingredient_not_Found_with_id(request.Id)), nameof(request.Id)));
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.IngredientMessages.Nguyên_liệu_không_tìm_thấy_với_id(request.Id)), nameof(request.Id)));
         }
         if (ingredient.IngredientSessions.Count !=0 && ingredient.IngredientProducts.Count != 0)
         {
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.IngredientMessages.Ingredient_exists_between_product_and_session_with_id(request.Id)), nameof(request.Id)));
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.IngredientMessages.Nguyên_liệu_tồn_tại_trong_sản_phẩm_và_phiên_với_id(request.Id)), nameof(request.Id)));
         }
         if(ingredient.IngredientNutritions.Count != 0)
         {

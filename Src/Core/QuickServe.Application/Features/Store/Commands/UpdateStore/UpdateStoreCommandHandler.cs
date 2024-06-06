@@ -16,7 +16,7 @@ public class UpdateStoreCommandHandler(IStoreRepository storeRepository, IUnitOf
         if (store is null)
         {
             return new BaseResult(new Error(ErrorCode.NotFound,
-                translator.GetString(TranslatorMessages.StoreMessages.Store_notfound_with_id(request.Id)),
+                translator.GetString(TranslatorMessages.StoreMessages.Cửa_hàng_không_tìm_thấy_với_id(request.Id)),
                 nameof(request.Id)));
         }
 

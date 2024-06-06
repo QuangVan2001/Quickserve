@@ -25,28 +25,29 @@ namespace QuickServe.Application.DTOs.ProductTemplates
         public CreateProductTemplateValidator(ITranslator translator)
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage(translator["Name is required."])
-                .Length(2, 40).WithMessage(translator["Name must be between 2 and 40 characters."]);
+                .NotEmpty().WithMessage(translator["Tên là bắt buộc."])
+                .Length(2, 40).WithMessage(translator["Tên phải từ 2 đến 40 ký tự."]);
 
             RuleFor(x => x.Price)
-                .GreaterThan(0).WithMessage(translator["Price must be greater than 0."]);
+                .GreaterThan(0).WithMessage(translator["Giá phải lớn hơn 0."]);
 
             RuleFor(x => x.Description)
-                .NotEmpty().WithMessage(translator["Description is required."])
-                .MaximumLength(200).WithMessage(translator["Description cannot exceed 200 characters."]);
+                .NotEmpty().WithMessage(translator["Mô tả là bắt buộc."])
+                .MaximumLength(200).WithMessage(translator["Mô tả không được vượt quá 200 ký tự."]);
 
             RuleFor(x => x.Image)
-                .NotNull().WithMessage(translator["Image is required."])
-                .Must(BeAValidImage).WithMessage(translator["Only image files are allowed."])
-                .Must(BeAValidSize).WithMessage(translator["Image size must be less than 2MB."]);
+                .NotNull().WithMessage(translator["Ảnh là bắt buộc."])
+                .Must(BeAValidImage).WithMessage(translator["Chỉ các tệp ảnh được phép."])
+                .Must(BeAValidSize).WithMessage(translator["Kích thước ảnh phải nhỏ hơn 2MB."]);
 
             RuleFor(x => x.CategoryId)
-                .GreaterThan(0).WithMessage(translator["CategoryId must be greater than 0."]);
-            
+                .GreaterThan(0).WithMessage(translator["CategoryId phải lớn hơn 0."]);
+
             RuleFor(x => x.Size)
-                .NotEmpty()
-                .NotNull()
-                .MaximumLength(10).WithMessage(translator["Size must not exceed 10 characters."]);
+                  .NotEmpty().WithMessage(translator["Kích thước là bắt buộc."])
+                  .NotNull().WithMessage(translator["Kích thước là bắt buộc."]) 
+                  .MaximumLength(10).WithMessage(translator["Kích thước không được vượt quá 10 ký tự."]);
+                 
         }
 
         private bool BeAValidImage(IFormFile file)

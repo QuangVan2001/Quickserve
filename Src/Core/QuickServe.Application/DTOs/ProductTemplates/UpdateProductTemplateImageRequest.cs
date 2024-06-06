@@ -19,9 +19,9 @@ namespace QuickServe.Application.DTOs.ProductTemplates
         public UpdateProductTemplateImageValidator(ITranslator translator)
         {
             RuleFor(x => x.Image)
-                .NotNull().WithMessage(translator["Image is required."])
-                .Must(BeAValidImage).WithMessage(translator["Only image files are allowed."])
-                .Must(BeAValidSize).WithMessage(translator["Image size must be less than 2MB."]);
+                 .NotNull().WithMessage(translator["Ảnh là bắt buộc."])
+                 .Must(BeAValidImage).WithMessage(translator["Chỉ các tệp ảnh được phép."])
+                 .Must(BeAValidSize).WithMessage(translator["Kích thước ảnh phải nhỏ hơn 2MB."]);
 
         }
 

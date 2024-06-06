@@ -17,11 +17,11 @@ public class DeleteProductTemplateCommandHandler(IProductTemplateRepository prod
 
         if (ingredientType is null)
         {
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.ProductTemplateMessages.ProductTemplate_not_found_with_id(request.Id)), nameof(request.Id)));
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.ProductTemplateMessages.Mẫu_sản_phẩm_không_tìm_thấy_với_id(request.Id)), nameof(request.Id)));
         }
         if (ingredientType.Products.Count != 0 || ingredientType.TemplateSteps.Count != 0)
         {
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.ProductTemplateMessages.ProductTemplate_exists_products_and_templatesteps(request.Id)), nameof(request.Id)));
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.ProductTemplateMessages.Mẫu_sản_phẩm_tồn_tại_sản_phẩm_và_bước_mẫu(request.Id)), nameof(request.Id)));
         }
         productTemplateRepository.Delete(ingredientType);
         await unitOfWork.SaveChangesAsync();

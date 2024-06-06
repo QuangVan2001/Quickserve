@@ -12,8 +12,8 @@ namespace QuickServe.Application.Features.TemplateSteps.Commands.DeleteTemplateS
         public DeleteTemplateStepCommandValidator()
         {
             RuleFor(p => p.Id)
-                .NotEmpty().WithMessage("Id is required.")
-                .GreaterThan(0).WithMessage("Id must be greater than 0.");
+                .NotEmpty().WithMessage("Id là bắt buộc.")
+                .GreaterThan(0).WithMessage("Id phải lớn hơn 0.");
         }
     }
 }
