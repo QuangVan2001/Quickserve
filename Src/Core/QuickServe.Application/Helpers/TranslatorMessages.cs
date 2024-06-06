@@ -1,7 +1,4 @@
 ﻿using QuickServe.Application.DTOs;
-using QuickServe.Domain.Ingredients.Entities;
-using QuickServe.Domain.News.Entities;
-using QuickServe.Domain.Products.Entities;
 
 namespace QuickServe.Application.Helpers
 {

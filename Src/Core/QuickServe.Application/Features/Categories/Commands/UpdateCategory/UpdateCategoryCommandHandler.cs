@@ -6,7 +6,6 @@ using QuickServe.Application.Helpers;
 using QuickServe.Application.Interfaces;
 using QuickServe.Application.Interfaces.Repositories;
 using QuickServe.Application.Wrappers;
-using QuickServe.Domain.News.Entities;
 
 namespace QuickServe.Application.Features.Categories.Commands.UpdateCategory;
 

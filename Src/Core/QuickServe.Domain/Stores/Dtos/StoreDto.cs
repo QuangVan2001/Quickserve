@@ -24,7 +24,7 @@ namespace QuickServe.Domain.Stores.Dtos
         public long Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
-        public Guid CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = null!;
         public DateTime Created { get; set; }
       
 

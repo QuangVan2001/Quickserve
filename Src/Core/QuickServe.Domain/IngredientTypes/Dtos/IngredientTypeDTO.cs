@@ -21,9 +21,9 @@ namespace QuickServe.Domain.IngredientTypes.Dtos
         public long Id { get; set; }
         public string? Name { get; set; }
         public int Status { get; set; }
-        public Guid CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = null!;
         public DateTime Created { get; set; }
-        public Guid? LastModifiedBy { get; set; }
+        public string? LastModifiedBy { get; set; }
         public DateTime? LastModified { get; set; }
     }
 }
