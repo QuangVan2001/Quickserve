@@ -21,12 +21,12 @@ namespace QuickServe.Infrastructure.Identity.Services
                 .Take(model.PageSize)
                 .Select(p => new UserDto()
                 {
-                    Name = p.Name,
+                    //Name = p.Name,
                     Email = p.Email,
                     UserName = p.UserName,
                     PhoneNumber = p.PhoneNumber,
                     Id = p.Id,
-                    Created = p.Created,
+                    //Created = p.Created,
                 }).ToListAsync();
 
             var result = new PagenationResponseDto<UserDto>(users, await identityContext.Users.CountAsync());

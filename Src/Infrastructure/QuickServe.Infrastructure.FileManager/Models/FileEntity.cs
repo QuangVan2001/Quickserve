@@ -6,7 +6,7 @@ namespace QuickServe.Infrastructure.FileManager.Models
     {
         private FileEntity()
         {
-
+            
         }
         public FileEntity(string name, byte[] content)
         {

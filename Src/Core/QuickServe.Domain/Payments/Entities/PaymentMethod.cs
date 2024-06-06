@@ -2,6 +2,8 @@
 {
     public enum PaymentMethod
     {
-        
+        CASH,
+        ZALOPAY,
+        VNPAY
     }
 }

@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using QuickServe.Infrastructure.Persistence.Contexts;
 
 #nullable disable
@@ -17,103 +17,79 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("IngredientSession", b =>
-                {
-                    b.Property<long>("SessionId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Session_Id");
-
-                    b.Property<long>("IngredientId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Ingredient_Id");
-
-                    b.HasKey("SessionId", "IngredientId")
-                        .HasName("PK__Ingredie__455B9AFE7F7A4C49");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("IngredientSession", (string)null);
-                });
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("QuickServe.Domain.Accounts.Entities.Account", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uuid");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Avatar")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ConfirmationToken")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasColumnType("character varying(8)");
 
                     b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(40)
+                        .IsUnicode(false)
+                        .HasColumnType("character varying(40)");
 
-                    b.Property<string>("Gender")
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<bool?>("IsConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("Account");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Account");
 
@@ -126,89 +102,150 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(40)
                         .IsUnicode(false)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(40)");
 
                     b.Property<DateTime?>("LastModified")
-                        .IsRequired()
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("LastModifiedBy")
-                        .IsRequired()
+                    b.Property<string>("LastModifiedBy")
                         .HasMaxLength(40)
-                        .IsUnicode(false)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(40)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(40)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(40)");
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.ToTable("Category", (string)null);
                 });
 
-            modelBuilder.Entity("QuickServe.Domain.FeedBacks.Entities.FeedBack", b =>
+            modelBuilder.Entity("QuickServe.Domain.IngredientNutritions.Entities.IngredientNutrition", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long?>("AccountId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("IngredientId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<long>("NutritionId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("IngredientId");
 
-                    b.ToTable("FeedBacks");
+                    b.HasIndex("NutritionId");
+
+                    b.ToTable("IngredientNutritions");
                 });
 
             modelBuilder.Entity("QuickServe.Domain.IngredientProducts.Entities.IngredientProduct", b =>
                 {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<long>("IngredientId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Ingredient_id");
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
 
                     b.Property<long>("ProductId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Product_id");
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.HasKey("IngredientId", "ProductId")
-                        .HasName("PK__Ingredie__F080A71ADF39F2B5");
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("IngredientProduct", (string)null);
+                    b.ToTable("IngredientProducts");
+                });
+
+            modelBuilder.Entity("QuickServe.Domain.IngredientSessions.Entities.IngredientSession", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("IngredientId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("SessionId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
+
+                    b.HasIndex("SessionId");
+
+                    b.ToTable("IngredientSessions");
                 });
 
             modelBuilder.Entity("QuickServe.Domain.IngredientTypeTemplateSteps.Entities.IngredientTypeTemplateStep", b =>
@@ -222,26 +259,27 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .HasColumnName("TemplateStep_Id");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
 
                     b.Property<int>("QuantityMax")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("Quantity_Max");
 
                     b.Property<int>("QuantityMin")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("Quantity_Min");
 
                     b.HasKey("IngredientTypeId", "TemplateStepId")
@@ -258,26 +296,30 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(40)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(40)");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("date");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<string>("LastModifiedBy")
                         .HasMaxLength(40)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(40)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -290,27 +332,28 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<int>("Calo")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("Image_Url");
 
                     b.Property<long>("IngredientTypeId")
@@ -320,17 +363,20 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("date");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<string>("LastModifiedBy")
                         .HasMaxLength(255)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(8, 2)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -339,111 +385,78 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.ToTable("Ingredient", (string)null);
                 });
 
-            modelBuilder.Entity("QuickServe.Domain.News.Entities.Newes", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("AccountId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool?>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("News");
-                });
-
             modelBuilder.Entity("QuickServe.Domain.Nutritions.Entities.Nutrition", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(40)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(40)");
 
                     b.Property<string>("Description")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("HealthValue")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("ImageUrl")
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<long?>("IngredientId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Ingredient_id");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("date");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<string>("LastModifiedBy")
                         .HasMaxLength(40)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(40)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasColumnType("character varying(40)");
 
-                    b.Property<string>("Nutrition1")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("Nutrition");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Vitamin")
                         .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasColumnType("character varying(40)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex(new[] { "IngredientId" }, "UQ__Nutritio__C90398E29135F4A4")
-                        .IsUnique()
-                        .HasFilter("[Ingredient_id] IS NOT NULL");
 
                     b.ToTable("Nutrition", (string)null);
                 });
 
             modelBuilder.Entity("QuickServe.Domain.OrderProducts.Entities.OrderProduct", b =>
                 {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint")
                         .HasColumnName("OrderID");
@@ -453,10 +466,11 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .HasColumnName("ProductID");
 
                     b.Property<int?>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.HasKey("OrderId", "ProductId")
-                        .HasName("PK__OrderPro__08D097C182F2AEC7");
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
@@ -469,46 +483,38 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint")
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid")
                         .HasColumnName("Customer_id");
 
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
 
-                    b.Property<long>("PaymentMethodId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Payment_method_id");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<long>("StoreId")
                         .HasColumnType("bigint")
                         .HasColumnName("Store_id");
 
                     b.Property<double>("TotalPrice")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("PaymentMethodId");
 
                     b.HasIndex("StoreId");
 
@@ -521,33 +527,39 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int>("PaymentType")
                         .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("Payment_type");
 
+                    b.Property<long>("RefOrderId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RefOrderId");
 
                     b.ToTable("Payment", (string)null);
                 });
@@ -558,7 +570,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("CategoryId")
                         .HasColumnType("bigint")
@@ -567,82 +579,80 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(40)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(40)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)")
+                        .HasColumnType("text")
                         .HasColumnName("Image_url");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("date");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<string>("LastModifiedBy")
                         .HasMaxLength(40)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(40)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasColumnType("character varying(40)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(8, 2)");
 
                     b.Property<int?>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Size")
                         .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("character varying(255)");
 
-                    b.Property<long>("StoreId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Store_id");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("StoreId");
-
                     b.ToTable("ProductTemplate", (string)null);
                 });
 
-            modelBuilder.Entity("QuickServe.Domain.Products.Entities.ProDucts", b =>
+            modelBuilder.Entity("QuickServe.Domain.Products.Entities.Product", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("date");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<string>("LastModifiedBy")
                         .HasMaxLength(255)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(8, 2)");
@@ -652,7 +662,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .HasColumnName("ProductTemplate_Id");
 
                     b.Property<int?>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -661,93 +671,68 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.ToTable("Product", (string)null);
                 });
 
-            modelBuilder.Entity("QuickServe.Domain.Products.Entities.Product", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("BarCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
-                });
-
             modelBuilder.Entity("QuickServe.Domain.Sessions.Entities.Session", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("time")
+                        .HasColumnType("interval")
                         .HasColumnName("End_Time");
 
-                    b.Property<long>("IngredientId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Ingredient_Id");
-
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(40)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(40)");
+                        .HasColumnType("character varying(40)");
 
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint")
                         .HasColumnName("Order_Id");
 
                     b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time")
+                        .HasColumnType("interval")
                         .HasColumnName("Start_Time");
 
-                    b.Property<long>("StoreId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("Store_Id");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderId");
+
                     b.ToTable("Session", (string)null);
+                });
+
+            modelBuilder.Entity("QuickServe.Domain.Staffs.Entities.Staff", b =>
+                {
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("StoreId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("EmployeeId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("Staff", (string)null);
                 });
 
             modelBuilder.Entity("QuickServe.Domain.Stores.Entities.Store", b =>
@@ -756,31 +741,32 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("date");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<string>("LastModifiedBy")
                         .HasMaxLength(255)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
 
@@ -793,30 +779,34 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("date");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<string>("LastModifiedBy")
                         .HasMaxLength(255)
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<long>("ProductTemplateId")
                         .HasColumnType("bigint")
                         .HasColumnName("ProductTemplate_Id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -832,28 +822,23 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.HasDiscriminator().HasValue("Customer");
                 });
 
-            modelBuilder.Entity("IngredientSession", b =>
+            modelBuilder.Entity("QuickServe.Domain.IngredientNutritions.Entities.IngredientNutrition", b =>
                 {
-                    b.HasOne("QuickServe.Domain.Ingredients.Entities.Ingredient", null)
-                        .WithMany()
+                    b.HasOne("QuickServe.Domain.Ingredients.Entities.Ingredient", "Ingredient")
+                        .WithMany("IngredientNutritions")
                         .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QuickServe.Domain.Nutritions.Entities.Nutrition", "Nutrition")
+                        .WithMany("IngredientNutritions")
+                        .HasForeignKey("NutritionId")
                         .IsRequired()
-                        .HasConstraintName("FK__Ingredien__Ingre__60A75C0F");
+                        .HasConstraintName("FK__Ingredien__Nutri__6A30C649");
 
-                    b.HasOne("QuickServe.Domain.Sessions.Entities.Session", null)
-                        .WithMany()
-                        .HasForeignKey("SessionId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Ingredien__Sessi__619B8048");
-                });
+                    b.Navigation("Ingredient");
 
-            modelBuilder.Entity("QuickServe.Domain.FeedBacks.Entities.FeedBack", b =>
-                {
-                    b.HasOne("QuickServe.Domain.Accounts.Entities.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId");
-
-                    b.Navigation("Account");
+                    b.Navigation("Nutrition");
                 });
 
             modelBuilder.Entity("QuickServe.Domain.IngredientProducts.Entities.IngredientProduct", b =>
@@ -861,18 +846,37 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.HasOne("QuickServe.Domain.Ingredients.Entities.Ingredient", "Ingredient")
                         .WithMany("IngredientProducts")
                         .HasForeignKey("IngredientId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Ingredien__Ingre__5EBF139D");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("QuickServe.Domain.Products.Entities.ProDucts", "Product")
+                    b.HasOne("QuickServe.Domain.Products.Entities.Product", "Product")
                         .WithMany("IngredientProducts")
                         .HasForeignKey("ProductId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Ingredien__Produ__5FB337D6");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Ingredient");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("QuickServe.Domain.IngredientSessions.Entities.IngredientSession", b =>
+                {
+                    b.HasOne("QuickServe.Domain.Ingredients.Entities.Ingredient", "Ingredient")
+                        .WithMany("IngredientSessions")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QuickServe.Domain.Sessions.Entities.Session", "Session")
+                        .WithMany("IngredientSessions")
+                        .HasForeignKey("SessionId")
+                        .IsRequired()
+                        .HasConstraintName("FK__Session__Session__6A30C649");
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("Session");
                 });
 
             modelBuilder.Entity("QuickServe.Domain.IngredientTypeTemplateSteps.Entities.IngredientTypeTemplateStep", b =>
@@ -905,27 +909,6 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.Navigation("IngredientType");
                 });
 
-            modelBuilder.Entity("QuickServe.Domain.News.Entities.Newes", b =>
-                {
-                    b.HasOne("QuickServe.Domain.Accounts.Entities.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("QuickServe.Domain.Nutritions.Entities.Nutrition", b =>
-                {
-                    b.HasOne("QuickServe.Domain.Ingredients.Entities.Ingredient", "Ingredient")
-                        .WithOne("Nutrition")
-                        .HasForeignKey("QuickServe.Domain.Nutritions.Entities.Nutrition", "IngredientId")
-                        .HasConstraintName("FK__Nutrition__Nutri__03F0984C");
-
-                    b.Navigation("Ingredient");
-                });
-
             modelBuilder.Entity("QuickServe.Domain.OrderProducts.Entities.OrderProduct", b =>
                 {
                     b.HasOne("QuickServe.Domain.Orders.Entities.Order", "Order")
@@ -934,7 +917,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("FK__OrderProd__Order__2A164134");
 
-                    b.HasOne("QuickServe.Domain.Products.Entities.ProDucts", "Product")
+                    b.HasOne("QuickServe.Domain.Products.Entities.Product", "Product")
                         .WithMany("OrderProducts")
                         .HasForeignKey("ProductId")
                         .IsRequired()
@@ -947,17 +930,11 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("QuickServe.Domain.Orders.Entities.Order", b =>
                 {
-                    b.HasOne("QuickServe.Domain.Customers.Entities.Customer", "Customer")
+                    b.HasOne("QuickServe.Domain.Accounts.Entities.Account", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .IsRequired()
                         .HasConstraintName("order_customer_id_foreign");
-
-                    b.HasOne("QuickServe.Domain.Payments.Entities.Payment", "PaymentMethod")
-                        .WithMany("Orders")
-                        .HasForeignKey("PaymentMethodId")
-                        .IsRequired()
-                        .HasConstraintName("order_payment_method_id_foreign");
 
                     b.HasOne("QuickServe.Domain.Stores.Entities.Store", "Store")
                         .WithMany("Orders")
@@ -967,9 +944,18 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
 
                     b.Navigation("Customer");
 
-                    b.Navigation("PaymentMethod");
-
                     b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("QuickServe.Domain.Payments.Entities.Payment", b =>
+                {
+                    b.HasOne("QuickServe.Domain.Orders.Entities.Order", "Order")
+                        .WithMany("PaymentMethods")
+                        .HasForeignKey("RefOrderId")
+                        .IsRequired()
+                        .HasConstraintName("order_payment_method_id_foreign");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("QuickServe.Domain.ProductTemplates.Entities.ProductTemplate", b =>
@@ -980,18 +966,10 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("producttemplate_categoryid_foreign");
 
-                    b.HasOne("QuickServe.Domain.Stores.Entities.Store", "Store")
-                        .WithMany("ProductTemplates")
-                        .HasForeignKey("StoreId")
-                        .IsRequired()
-                        .HasConstraintName("producttemplate_store_id_foreign");
-
                     b.Navigation("Category");
-
-                    b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("QuickServe.Domain.Products.Entities.ProDucts", b =>
+            modelBuilder.Entity("QuickServe.Domain.Products.Entities.Product", b =>
                 {
                     b.HasOne("QuickServe.Domain.ProductTemplates.Entities.ProductTemplate", "ProductTemplate")
                         .WithMany("Products")
@@ -1000,6 +978,37 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .HasConstraintName("FK_ProductTemplate_ID");
 
                     b.Navigation("ProductTemplate");
+                });
+
+            modelBuilder.Entity("QuickServe.Domain.Sessions.Entities.Session", b =>
+                {
+                    b.HasOne("QuickServe.Domain.Orders.Entities.Order", "Order")
+                        .WithMany("Sessions")
+                        .HasForeignKey("OrderId")
+                        .IsRequired()
+                        .HasConstraintName("order_session_id_foreign");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("QuickServe.Domain.Staffs.Entities.Staff", b =>
+                {
+                    b.HasOne("QuickServe.Domain.Accounts.Entities.Account", "Account")
+                        .WithOne("Staff")
+                        .HasForeignKey("QuickServe.Domain.Staffs.Entities.Staff", "EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Staff_Account");
+
+                    b.HasOne("QuickServe.Domain.Stores.Entities.Store", "Store")
+                        .WithMany("Staffs")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("QuickServe.Domain.TemplateSteps.Entities.TemplateStep", b =>
@@ -1011,6 +1020,14 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .HasConstraintName("templatestep_proucttemplate_id_foreign");
 
                     b.Navigation("ProductTemplate");
+                });
+
+            modelBuilder.Entity("QuickServe.Domain.Accounts.Entities.Account", b =>
+                {
+                    b.Navigation("Orders");
+
+                    b.Navigation("Staff")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("QuickServe.Domain.Categories.Entities.Category", b =>
@@ -1027,19 +1044,25 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("QuickServe.Domain.Ingredients.Entities.Ingredient", b =>
                 {
+                    b.Navigation("IngredientNutritions");
+
                     b.Navigation("IngredientProducts");
 
-                    b.Navigation("Nutrition");
+                    b.Navigation("IngredientSessions");
+                });
+
+            modelBuilder.Entity("QuickServe.Domain.Nutritions.Entities.Nutrition", b =>
+                {
+                    b.Navigation("IngredientNutritions");
                 });
 
             modelBuilder.Entity("QuickServe.Domain.Orders.Entities.Order", b =>
                 {
                     b.Navigation("OrderProducts");
-                });
 
-            modelBuilder.Entity("QuickServe.Domain.Payments.Entities.Payment", b =>
-                {
-                    b.Navigation("Orders");
+                    b.Navigation("PaymentMethods");
+
+                    b.Navigation("Sessions");
                 });
 
             modelBuilder.Entity("QuickServe.Domain.ProductTemplates.Entities.ProductTemplate", b =>
@@ -1049,28 +1072,28 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.Navigation("TemplateSteps");
                 });
 
-            modelBuilder.Entity("QuickServe.Domain.Products.Entities.ProDucts", b =>
+            modelBuilder.Entity("QuickServe.Domain.Products.Entities.Product", b =>
                 {
                     b.Navigation("IngredientProducts");
 
                     b.Navigation("OrderProducts");
                 });
 
+            modelBuilder.Entity("QuickServe.Domain.Sessions.Entities.Session", b =>
+                {
+                    b.Navigation("IngredientSessions");
+                });
+
             modelBuilder.Entity("QuickServe.Domain.Stores.Entities.Store", b =>
                 {
                     b.Navigation("Orders");
 
-                    b.Navigation("ProductTemplates");
+                    b.Navigation("Staffs");
                 });
 
             modelBuilder.Entity("QuickServe.Domain.TemplateSteps.Entities.TemplateStep", b =>
                 {
                     b.Navigation("IngredientTypeTemplateSteps");
-                });
-
-            modelBuilder.Entity("QuickServe.Domain.Customers.Entities.Customer", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

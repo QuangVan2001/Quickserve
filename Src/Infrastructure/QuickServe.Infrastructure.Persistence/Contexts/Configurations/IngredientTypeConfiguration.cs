@@ -1,6 +1,24 @@
-﻿namespace QuickServe.Infrastructure.Persistence.Contexts.Configurations;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using QuickServe.Domain.IngredientTypes.Entities;
 
-public class IngredientTypeConfiguration
+namespace QuickServe.Infrastructure.Persistence.Contexts.Configurations;
+
+public class IngredientTypeConfiguration  : IEntityTypeConfiguration<IngredientType>
 {
-    
+    public void Configure(EntityTypeBuilder<IngredientType> entity)
+    {
+        entity.ToTable("IngredientType");
+
+        entity.Property(e => e.CreatedBy).HasMaxLength(40);
+
+        entity.Property(e => e.Created).HasColumnType("date");
+
+        
+        entity.Property(e => e.LastModifiedBy).HasMaxLength(40);
+
+        entity.Property(e => e.LastModified).HasColumnType("date");
+
+        entity.Property(e => e.Name).HasMaxLength(40);
+    }
 }

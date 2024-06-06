@@ -1,7 +1,8 @@
 ﻿namespace QuickServe.Domain.Stores.Entities
 {
-    public class Enum
+    public enum Status
     {
-        
+        ACTIVE,
+        UNACTIVE
     }
 }

@@ -1,35 +1,87 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using QuickServe.Infrastructure.Identity.Models;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace QuickServe.Infrastructure.Identity.Seeds
 {
     public static class DefaultBasicUser
     {
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager)
+    {
+        // Seed Default Users
+        var users = new List<ApplicationUser>
         {
-            //Seed Default User
-            var defaultUser = new ApplicationUser
+            new ApplicationUser
             {
                 UserName = "Admin",
-                Email = "Admin@Admin.com",
+                Email = "sysadmin@quickserve.com",
                 Name = "QuangVan",
                 PhoneNumber = "0935182029",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
-            };
-
-            if (!userManager.Users.Any())
+            },
+            new ApplicationUser
             {
-                var user = await userManager.FindByEmailAsync(defaultUser.Email);
-                if (user == null)
-                {
-                    await userManager.CreateAsync(defaultUser, "Van@12345");
-                    await userManager.AddToRoleAsync(defaultUser, "Admin");
-                }
+                UserName = "CustomerUser",
+                Email = "customer@quickserve.com",
+                Name = "Customer Name",
+                PhoneNumber = "0935111111",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            },
+            new ApplicationUser
+            {
+                UserName = "StaffUser",
+                Email = "staff@quickserve.com",
+                Name = "Staff Name",
+                PhoneNumber = "0935222222",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            },
+            new ApplicationUser
+            {
+                UserName = "StoreManagerUser",
+                Email = "storemanager@quickserve.com",
+                Name = "Store Manager Name",
+                PhoneNumber = "0935333333",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            },
+            new ApplicationUser
+            {
+                UserName = "BrandManagerUser",
+                Email = "brandmanager@quickserve.com",
+                Name = "Brand Manager Name",
+                PhoneNumber = "0935444444",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            }
+        };
 
+        var roles = new List<string> { "Admin", "Customer", "Staff", "Store_Manager", "Brand_Manager" };
+        var userPasswords = new Dictionary<string, string>
+        {
+            { "Admin", "Admin@123" },
+            { "CustomerUser", "Customer@123" },
+            { "StaffUser", "Staff@123" },
+            { "StoreManagerUser", "StoreManager@123" },
+            { "BrandManagerUser", "BrandManager@123" }
+        };
+
+        foreach (var user in users)
+        {
+            if (!userManager.Users.Any(u => u.Email == user.Email))
+            {
+                var result = await userManager.CreateAsync(user, userPasswords[user.UserName]);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, roles[users.IndexOf(user)]);
+                }
             }
         }
+    }
     }
 }

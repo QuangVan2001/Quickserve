@@ -7,9 +7,13 @@ namespace QuickServe.Infrastructure.Identity.Models
     {
         public ApplicationUser()
         {
-            Created = DateTime.Now;
+            Created = DateTime.UtcNow;
+
         }
         public string Name { get; set; }
+
         public DateTime Created { get; set; }
+        public string RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
     }
 }

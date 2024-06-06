@@ -3,19 +3,24 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Interfaces\NewFolder\**" />
-	  <EmbeddedResource Remove="Interfaces\NewFolder\**" />
-	  <None Remove="Interfaces\NewFolder\**" />
-	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="FluentValidation" Version="11.9.0" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\QuickServe.Utils\QuickServe.Utils.csproj" />
 		<ProjectReference Include="..\QuickServe.Domain\QuickServe.Domain.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="DTOs\Ingredients\Responses\" />
+	  <Folder Include="DTOs\IngredientTypes\Response\" />
+	  <Folder Include="Features\Accounts\Commands\" />
+	  <Folder Include="DTOs\Ingredients\Responses\" />
+	  <Folder Include="DTOs\IngredientTypes\Request\" />
+	  <Folder Include="DTOs\IngredientTypes\Response\" />
+	  <Folder Include="Features\TemplateSteps\Commands\UpdateTemplateStepStatus\" />
 	</ItemGroup>
 
 </Project>

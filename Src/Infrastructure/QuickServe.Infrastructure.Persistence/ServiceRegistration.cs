@@ -8,6 +8,7 @@ using QuickServe.Infrastructure.Persistence.Repositories;
 using System.Linq;
 using System.Reflection;
 
+
 namespace QuickServe.Infrastructure.Persistence
 {
     public static class ServiceRegistration
@@ -15,12 +16,14 @@ namespace QuickServe.Infrastructure.Persistence
         public static void AddPersistenceInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-           options.UseSqlServer(
-               configuration.GetConnectionString("DefaultConnection"),
+           options.UseNpgsql(
+               configuration.GetConnectionString("PostgresEntity"),//cũ là GetConnectionString("SqlServer")
                b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.RegisterRepositories();
+            
+
 
         }
         private static void RegisterRepositories(this IServiceCollection services)
@@ -38,6 +41,8 @@ namespace QuickServe.Infrastructure.Persistence
                 services.AddTransient(item, implimentation);
 
             }
+
+            services.AddTransient<IStaffRepository, StaffRepository>();
 
         }
     }

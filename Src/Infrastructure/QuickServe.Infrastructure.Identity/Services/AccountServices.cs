@@ -1,25 +1,31 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using QuickServe.Application.DTOs;
 using QuickServe.Application.DTOs.Account.Requests;
 using QuickServe.Application.DTOs.Account.Responses;
 using QuickServe.Application.Helpers;
 using QuickServe.Application.Interfaces;
 using QuickServe.Application.Interfaces.UserInterfaces;
 using QuickServe.Application.Wrappers;
-using QuickServe.Domain.Settings;
+using QuickServe.Domain.Accounts.Dtos;
 using QuickServe.Infrastructure.Identity.Models;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Error = QuickServe.Application.Wrappers.Error;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace QuickServe.Infrastructure.Identity.Services
 {
-    public class AccountServices(UserManager<ApplicationUser> userManager, IAuthenticatedUserService authenticatedUser, SignInManager<ApplicationUser> signInManager, JWTSettings jwtSettings, ITranslator translator) : IAccountServices
+    public class AccountServices(UserManager<ApplicationUser> userManager, IAuthenticatedUserService authenticatedUser, ITranslator translator, IConfiguration configuration) : IAccountServices
     {
+       
         public async Task<BaseResult> ChangePassword(ChangePasswordRequest model)
         {
             var user = await userManager.FindByIdAsync(authenticatedUser.UserId);
@@ -48,27 +54,29 @@ namespace QuickServe.Infrastructure.Identity.Services
             return new BaseResult(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
         }
 
-        public async Task<BaseResult<AuthenticationResponse>> Authenticate(AuthenticationRequest request)
+        public async Task<BaseResult<AuthenticationResponse>> Authenticate(AuthenticationRequest login)
         {
-            var user = await userManager.FindByNameAsync(request.UserName);
+            var user = await userManager.FindByEmailAsync(login.Email);
             if (user == null)
             {
-                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_UserName(request.UserName)), nameof(request.UserName)));
+                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_không_tìm_thấy_với_Email(login.Email)), nameof(login.Email)));
             }
-            var result = await signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
-            if (!result.Succeeded)
+
+            var result = await userManager.CheckPasswordAsync(user, login.Password);
+            if (!result)
             {
-                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.AccountMessages.Invalid_password()), nameof(request.Password)));
+                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.AccountMessages.Mật_khẩu_không_hợp_lệ()), nameof(login.Password)));
             }
 
             var rolesList = await userManager.GetRolesAsync(user).ConfigureAwait(false);
 
-            var jwToken = await GenerateJwtToken(user);
+            var token = await CreateToken(user, true);
 
             AuthenticationResponse response = new AuthenticationResponse()
             {
                 Id = user.Id.ToString(),
-                JWToken = new JwtSecurityTokenHandler().WriteToken(jwToken),
+                AccessToken = token.AccessToken,
+                RefreshToken = token.RefreshToken,
                 Email = user.Email,
                 UserName = user.UserName,
                 Roles = rolesList.ToList(),
@@ -83,17 +91,18 @@ namespace QuickServe.Infrastructure.Identity.Services
             var user = await userManager.FindByNameAsync(username);
             if (user == null)
             {
-                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Account_notfound_with_UserName(username)), nameof(username)));
+                return new BaseResult<AuthenticationResponse>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_không_tìm_thấy_với_UserName(username)), nameof(username)));
             }
 
             var rolesList = await userManager.GetRolesAsync(user).ConfigureAwait(false);
 
-            var jwToken = await GenerateJwtToken(user);
+            var token = await CreateToken(user, true); 
 
             AuthenticationResponse response = new AuthenticationResponse()
             {
                 Id = user.Id.ToString(),
-                JWToken = new JwtSecurityTokenHandler().WriteToken(jwToken),
+                AccessToken = token.AccessToken,
+                RefreshToken = token.RefreshToken,
                 Email = user.Email,
                 UserName = user.UserName,
                 Roles = rolesList.ToList(),
@@ -132,27 +141,224 @@ namespace QuickServe.Infrastructure.Identity.Services
                 return result.ToString();
             }
         }
-        private async Task<JwtSecurityToken> GenerateJwtToken(ApplicationUser user)
+
+        public async Task<TokenDto> CreateToken(ApplicationUser user, bool populateExp)
         {
+            var signingCredentials = GetSigningCredentials();
+            var claims = await GetClaims(user);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddMinutes(double.Parse(configuration["JWTSettings:DurationInMinutes"])),
+                SigningCredentials = signingCredentials,
+                Audience = configuration["JWTSettings:Audience"],
+                Issuer = configuration["JWTSettings:Issuer"],
+                TokenType = "Bearer",
+            };
+
+            var refreshToken = GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            if (populateExp)
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+            await userManager.UpdateAsync(user);
             await userManager.UpdateSecurityStampAsync(user);
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
-            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
-            var jwtSecurityToken = new JwtSecurityToken(
-                issuer: jwtSettings.Issuer,
-                audience: jwtSettings.Audience,
-                claims: await GetClaimsAsync(),
-                expires: DateTime.UtcNow.AddMinutes(jwtSettings.DurationInMinutes),
-                signingCredentials: signingCredentials);
-            return jwtSecurityToken;
-
-            async Task<IList<Claim>> GetClaimsAsync()
+            var tokenHandler = new JsonWebTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return new TokenDto
             {
-                var result = await signInManager.ClaimsFactory.CreateAsync(user);
-                return result.Claims.ToList();
-            }
+                AccessToken = token,
+                RefreshToken = refreshToken
+            };
         }
 
+        private SigningCredentials GetSigningCredentials()
+        {
+            return new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"])), SecurityAlgorithms.HmacSha256);
+        }
+
+        private async Task<List<Claim>> GetClaims(ApplicationUser user)
+        {
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Name, user.UserName),
+                new(ClaimTypes.Email, user.Email),
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Role, string.Join(",", await userManager.GetRolesAsync(user))),
+                new(ClaimTypes.AuthenticationMethod, "Bearer"),
+                new(ClaimTypes.Expiration, DateTime.UtcNow.AddMinutes(double.Parse(configuration["JWTSettings:DurationInMinutes"])).ToString()),
+            };
+
+            return claims;
+        }
+
+
+        private string GenerateRefreshToken()
+        {
+            var random = new byte[32];
+            using var generator = RandomNumberGenerator.Create();
+            generator.GetBytes(random);
+            return Convert.ToBase64String(random);
+        }
+
+        private async Task<ClaimsIdentity> GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"])),
+                ValidateLifetime = true,
+                ValidIssuer = configuration["JWTSettings:Issuer"],
+                ValidAudience = configuration["JWTSettings:Audience"]
+            };
+
+            var tokenHandler = new JsonWebTokenHandler();
+            var securityToken = await tokenHandler.ValidateTokenAsync(token, tokenValidationParameters);
+            if (!securityToken.IsValid)
+            {
+                throw new SecurityTokenException("Invalid token");
+            }
+
+            return securityToken.ClaimsIdentity;
+        }
+
+        public async Task<BaseResult<TokenDto>> RefreshToken(TokenDto token)
+        {
+            try
+            {
+                var principal = await GetPrincipalFromExpiredToken(token.AccessToken);
+
+                var user = await userManager.FindByNameAsync(principal.Name);
+                if (user == null || user.RefreshToken != token.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+                    throw new SecurityTokenException("Invalid token");
+                var newToken = await CreateToken(user, false);
+                return new BaseResult<TokenDto>(newToken);
+            } catch (Exception ex)
+            {
+                return new BaseResult<TokenDto>(new Error(ErrorCode.ErrorInIdentity, ex.Message));
+            }
+
+        }
+
+        public async Task<BaseResult> CreateAccount(CreateAccountRequest request)
+        {
+            // Assgin role to exist account
+            var existUser = await userManager.FindByEmailAsync(request.Email);
+            if (existUser != null)
+            {
+                var roleExist = await userManager.GetRolesAsync(existUser);
+                if (roleExist.Any(p => p == request.Role))
+                    return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_đã_tồn_tại_với_Email(request.Email)), nameof(request.Email)));
+
+                var assignRoleResult = await userManager.AddToRoleAsync(existUser, request.Role);
+                if (assignRoleResult.Succeeded)
+                    return new BaseResult();
+
+                return new BaseResult(assignRoleResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
+            }
+
+            // Create new account
+            var user = new ApplicationUser()
+            {
+                UserName = request.UserName,
+                Email = request.Email
+            };
+            var identityResult = await userManager.CreateAsync(user, request.Password);
+            if (identityResult.Succeeded)
+            {
+                identityResult = await userManager.AddToRoleAsync(user, request.Role);
+            }
+            if (identityResult.Succeeded)
+                return new BaseResult();
+
+            return new BaseResult(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
+        }
+
+        public async Task<PagenationResponseDto<AccountDto>> GetPagedListAsync(int pageNumber, int pageSize, string name, string[] roles)
+        {
+            var listRoles = roles.ToList();
+            var query = userManager.Users.AsQueryable()
+                .Select(c => new AccountDto
+                {
+                    Id = c.Id,
+                    UserName = c.UserName,
+                    Email = c.Email,
+                    Created = c.Created,
+                    PhoneNumber = c.PhoneNumber,
+                    Name = c.Name,
+                    Avatar = null,
+                    Address = null
+                });
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(c => c.UserName.Contains(name) || c.Email.Contains(name));
+            }
+
+            var count = await query.CountAsync();
+
+            var accountInListRoles = new List<AccountDto>();
+            var listAccount = query.ToList();
+            foreach (var item in listAccount)
+            {
+                var user = await userManager.FindByIdAsync(item.Id.ToString());
+                item.Roles = [.. (await userManager.GetRolesAsync(user))];
+                if (listRoles.Any(p => item.Roles.Contains(p)))
+                {
+                    accountInListRoles.Add(item);
+                }
+            }
+
+            var result = listAccount.AsQueryable();
+
+            if (roles != null && roles.Length > 0)
+            {
+                result = accountInListRoles.AsQueryable();
+            }
+
+            return new PagenationResponseDto<AccountDto>(result.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(), count);
+        }
+
+        public async Task<BaseResult<AccountDto>> GetAccountById(Guid id)
+        {
+            var account = await userManager.FindByIdAsync(id.ToString());
+            return new BaseResult<AccountDto>(new AccountDto
+            {
+                Id = account.Id,
+                UserName = account.UserName,
+                Email = account.Email,
+                Created = account.Created,
+                PhoneNumber = account.PhoneNumber,
+                Name = account.Name,
+                Avatar = null,
+                Address = null,
+                Roles = [.. (await userManager.GetRolesAsync(account))]
+            });
+        }
+
+        public async Task<BaseResult<AccountDto>> FindByEmailAsync(string email)
+        {
+            var account = await userManager.FindByEmailAsync(email);
+            if (account == null)
+                return new BaseResult<AccountDto>(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_không_tìm_thấy_với_Email(email)), nameof(email)));
+            return new BaseResult<AccountDto>(new AccountDto
+            {
+                Id = account.Id,
+                UserName = account.UserName,
+                Email = account.Email,
+                Created = account.Created,
+                PhoneNumber = account.PhoneNumber,
+                Name = account.Name,
+                Avatar = null,
+                Address = null,
+                Roles = [.. (await userManager.GetRolesAsync(account))]
+            });
+        }
     }
 }
