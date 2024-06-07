@@ -41,6 +41,10 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 {
                     return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.Bước_mẫu_không_tìm_thấy_với_id(request.TemplateStepId)), nameof(request.TemplateStepId)));
                 }
+                if(templateStep.Status ==(int) TemplateStepStatus.Active)
+                {
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.Bước_mẫu_trạng_thái_không_đúng(templateStep.Status)), nameof(templateStep.Status)));
+                }
                 foreach(var ingreType in request.IngredientType)
                 {
                     var ingredientType = await _context.IngredientTypes.FirstOrDefaultAsync(i => i.Id == ingreType.IngredientTypeId);
@@ -67,7 +71,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
             }
             catch (Exception ex)
             {
-                return new BaseResult($"An error occurred while creating the template: {ex.Message}");
+                return new BaseResult($"Đã xảy ra lỗi khi tạo mẫu: {ex.Message}");
             }
     
         }
@@ -93,7 +97,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 return new BaseResult();
             }
             catch (Exception ex) {
-                return new BaseResult($"An error occurred while delete the template: {ex.Message}");
+                return new BaseResult($"Đã xảy ra lỗi khi xóa mẫu: {ex.Message}");
             }
         }
 
@@ -134,7 +138,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
             }
             catch (Exception ex)
             {
-                return new BaseResult($"An error occurred while get all the template: {ex.Message}");
+                return new BaseResult($"Đã xảy ra lỗi khi lấy tất cả mẫu: {ex.Message}");
             }
         }
 
@@ -162,7 +166,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
             }
             catch (Exception ex)
             {
-                return new BaseResult($"An error occurred while get the template: {ex.Message}");
+                return new BaseResult($"Đã xảy ra lỗi khi lấy mẫu: {ex.Message}");
             }
         }
 
@@ -208,7 +212,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
             }
             catch (Exception ex)
             {
-                return new BaseResult($"An error occurred while Update the template: {ex.Message}");
+                return new BaseResult($"Đã xảy ra lỗi khi cập nhật mẫu: {ex.Message}");
             }
         }
 
@@ -234,7 +238,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
             }
             catch(Exception ex)
             {
-                return new BaseResult($"An error occurred while Update status the template: {ex.Message}");
+                return new BaseResult($"Đã xảy ra lỗi khi cập nhật trạng thái mẫu: {ex.Message}");
             }
         }
     }

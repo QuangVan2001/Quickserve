@@ -41,7 +41,7 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> UpdateIngredientType(UpdateIngredientTypeCommand model)
             => await Mediator.Send(model);
 
-        [HttpPut("updateStatus")]
+        [HttpPut("status")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> UpdateIngredientTypeStatus(UpdateIngredientTypeStatusCommand model)
             => await Mediator.Send(model);

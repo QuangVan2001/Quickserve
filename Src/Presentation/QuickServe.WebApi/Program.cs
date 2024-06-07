@@ -28,6 +28,7 @@ using QuickServe.Application.Interfaces.ImageInterfaces;
 using QuickServe.Application.Interfaces.IProductTemplateServices;
 using QuickServe.Application.Interfaces.IngredientTypeTemplateSteps;
 using QuickServe.Application.Interfaces.Nutritions;
+using QuickServe.Application.Interfaces.IngredientNutritions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +44,7 @@ builder.Services.AddScoped<IIngredientService, IngredientService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IProductTemplateService,  ProductTemplateService>();
 builder.Services.AddScoped<INutritionService, NutritionService>();
+builder.Services.AddScoped<IIngredientNutritionService, IngredientNutritionService>();
 builder.Services.AddScoped<IIngredientTypeTemplateStepService, IngredientTypeTemplateStepService>();
 builder.Services.AddDistributedMemoryCache();
 

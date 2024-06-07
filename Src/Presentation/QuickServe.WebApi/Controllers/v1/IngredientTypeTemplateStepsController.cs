@@ -35,7 +35,7 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> UpdateTemplate(CreateTemplateRequest request)
             => await _service.UpdateTempalte(request);
 
-        [HttpPut("updateStatus")]
+        [HttpPut("status")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> UpdateTemplateStatus(UpdateTemplateStatusRequest request)
             => await _service.UpdateTemplateStatus(request);

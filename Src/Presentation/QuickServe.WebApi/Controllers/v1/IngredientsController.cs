@@ -48,7 +48,7 @@ namespace QuickServe.WebApi.Controllers.v1
             return await Mediator.Send(model);
         }
 
-        [HttpPut("{id}/updateImage")]
+        [HttpPut("{id}/image")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> UpdateIngredientImage(long id, [FromForm] UpdateIngredientImageRequest request)
             => await _ingredientService.UpdateIngredientImageAsync(id, request);

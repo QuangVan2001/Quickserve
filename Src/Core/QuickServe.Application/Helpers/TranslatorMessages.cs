@@ -52,8 +52,12 @@ namespace QuickServe.Application.Helpers
                 => new(nameof(Nguyên_liệu_không_tìm_thấy_với_id), [id.ToString()]);
             public static TranslatorMessageDto Nguyên_liệu_tồn_tại_trong_sản_phẩm_và_phiên_với_id(long id)
                 => new(nameof(Nguyên_liệu_tồn_tại_trong_sản_phẩm_và_phiên_với_id), [id.ToString()]);
+            public static TranslatorMessageDto Nguyên_liệu_tồn_tại_các_dinh_dưỡng(long id)
+                => new(nameof(Nguyên_liệu_tồn_tại_các_dinh_dưỡng), [id.ToString()]);
             public static TranslatorMessageDto Tên_nguyên_liệu_đã_tồn_tại_với_tên(string name)
                 => new(nameof(Tên_nguyên_liệu_đã_tồn_tại_với_tên), [name]);
+            public static TranslatorMessageDto Nguyên_liệu_không_có_các_dinh_dưỡng(long id)
+                => new(nameof(Nguyên_liệu_không_có_các_dinh_dưỡng), [id.ToString()]);
         }
 
         public static class ProductTemplateMessages
@@ -74,6 +78,8 @@ namespace QuickServe.Application.Helpers
                 => new(nameof(Bước_mẫu_không_tìm_thấy_với_id), [id.ToString()]);
             public static TranslatorMessageDto Tên_bước_mẫu_đã_tồn_tại(string name)
                => new(nameof(Tên_bước_mẫu_đã_tồn_tại), [name]);
+            public static TranslatorMessageDto Bước_mẫu_trạng_thái_không_đúng(int status)
+               => new(nameof(Bước_mẫu_trạng_thái_không_đúng), [status.ToString()]);
             public static TranslatorMessageDto Bước_mẫu_tồn_tại_loại_nguyên_liệu(long id)
                => new(nameof(Bước_mẫu_tồn_tại_loại_nguyên_liệu), [id.ToString()]);
         }
