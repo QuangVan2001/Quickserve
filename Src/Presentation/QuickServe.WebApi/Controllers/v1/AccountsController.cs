@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickServe.Application.DTOs.Account.Requests;
@@ -15,9 +14,9 @@ using System.Threading.Tasks;
 namespace QuickServe.WebApi.Controllers.v1
 {
     [ApiVersion("1")]
-    public class AccountController(IAccountServices accountServices) : BaseApiController
+    public class AccountsController(IAccountServices accountServices) : BaseApiController
     {
-        [HttpPost]
+        [HttpPost("authenticate")]
         public async Task<BaseResult<AuthenticationResponse>> Authenticate([FromBody] AuthenticationRequest request)
             => await accountServices.Authenticate(request);
 
@@ -36,7 +35,7 @@ namespace QuickServe.WebApi.Controllers.v1
         //    return await accountServices.AuthenticateByUserName(gostUsername.Data);
         //}
 
-        [HttpPost]
+        [HttpPost("refresh")]
         public async Task<BaseResult<TokenDto>> Refresh([FromBody] TokenDto token)
         {
             var tokenReturn = await accountServices.RefreshToken(token);
@@ -49,11 +48,11 @@ namespace QuickServe.WebApi.Controllers.v1
             => await Mediator.Send(request);
 
         [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpGet]
+        [HttpGet("paged")]
         public async Task<BaseResult> GetPagedListAccountQuery([FromQuery] GetPagedListAccountQuery query)
             => await Mediator.Send(query);
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<BaseResult<AccountDto>> GetAccountById([FromQuery] Guid id)
             => await accountServices.GetAccountById(id);

@@ -9,34 +9,38 @@ using QuickServe.Application.Features.TemplateSteps.Queries.GetPagedListTemplate
 using QuickServe.Application.Features.TemplateSteps.Queries.GetTemplateStepById;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.TemplateSteps.Dtos;
+using System;
 using System.Threading.Tasks;
 
 namespace QuickServe.WebApi.Controllers.v1
 {
-    public class TemplateStepController : BaseApiController
+    public class TemplateStepsController : BaseApiController
     {
-        [HttpGet]
+        [HttpGet("paged")]
         public async Task<PagedResponse<TemplateStepDTO>> GetPagedListTemplateStep([FromQuery] GetPagedListTemplateStepQuery model)
-        => await Mediator.Send(model);
+            => await Mediator.Send(model);
 
-        [HttpGet]
+        [HttpGet("active")]
         public async Task<PagedResponse<TemplateStepDTO>> GetPagedListByActiveStatus([FromQuery] GetPagedListTemplateStepByActiveStatusQuery model)
-        => await Mediator.Send(model);
+            => await Mediator.Send(model);
 
-        [HttpGet]
-        public async Task<BaseResult<TemplateStepDTO>> GetTemplateStepById([FromQuery] GetTemplateStepByIdQuery model)
-        => await Mediator.Send(model);
+        [HttpGet("{id}")]
+        public async Task<BaseResult<TemplateStepDTO>> GetTemplateStepById(long id)
+            => await Mediator.Send(new GetTemplateStepByIdQuery { Id = id });
 
-        [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> CreateTemplateStep(CreateTemplateStepCommand model)
-        => await Mediator.Send(model);
+            => await Mediator.Send(model);
 
-        [HttpPut, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> UpdateTemplateStep(UpdateTemplateStepCommand model)
-        => await Mediator.Send(model);
+            => await Mediator.Send(model);
 
-        [HttpDelete, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> DeleteTemplateStep([FromQuery] DeleteTemplateStepCommand model)
-        => await Mediator.Send(model);
+        [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
+        public async Task<BaseResult> DeleteTemplateStep(long id)
+            => await Mediator.Send(new DeleteTemplateStepCommand { Id = id });
     }
 }

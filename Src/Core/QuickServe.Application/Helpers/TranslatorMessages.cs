@@ -77,5 +77,14 @@ namespace QuickServe.Application.Helpers
             public static TranslatorMessageDto Bước_mẫu_tồn_tại_loại_nguyên_liệu(long id)
                => new(nameof(Bước_mẫu_tồn_tại_loại_nguyên_liệu), [id.ToString()]);
         }
+        public static class NutritionMessages
+        {
+            public static TranslatorMessageDto Không_tìm_tháy_dinh_dưỡng(long id)
+                => new(nameof(Không_tìm_tháy_dinh_dưỡng), [id.ToString()]);
+            public static TranslatorMessageDto Tên_dinh_dưỡng_đã_tồn_tại(string name)
+              => new(nameof(Tên_dinh_dưỡng_đã_tồn_tại), [name]);
+            public static TranslatorMessageDto Dinh_dưỡng_tồn_tại_trong_danh_sách_dinh_dưỡng_của_nguyên_liệu(long id)
+             => new(nameof(Dinh_dưỡng_tồn_tại_trong_danh_sách_dinh_dưỡng_của_nguyên_liệu), [id.ToString()]);
+        }
     }
 }

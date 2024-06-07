@@ -41,7 +41,7 @@ namespace QuickServe.Infrastructure.Persistence.Repositories
         public async Task<PagenationResponseDto<TemplateStepDTO>> GetPagedListAsync(long productTemplateId, int pageNumber, int pageSize, string name)
         {
             if (await productTemlates.AnyAsync(p => p.Id == productTemplateId) == false){
-                throw new Exception("Productemplate not found");
+                throw new Exception("Không tìm thấy sản phẩm mẫu");
             }
             var query = templateSteps.Where(t=> t.ProductTemplateId == productTemplateId)
                 .OrderBy(c => c.Created).AsQueryable();
