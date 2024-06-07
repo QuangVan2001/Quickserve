@@ -23,6 +23,9 @@ namespace QuickServe.Application.DTOs.ProductTemplates.Request
 
             RuleForEach(x => x.IngredientType)
                 .SetValidator(new IngredientTypeTemplateStepsValidator());
+            RuleFor(x => x.IngredientType)
+               .Must(ingredientTypes => ingredientTypes.Select(i => i.IngredientTypeId).Distinct().Count() == ingredientTypes.Count)
+               .WithMessage("Mỗi loại nguyên liệu chỉ được xuất hiện một lần.");
         }
     }
 }

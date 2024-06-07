@@ -10,37 +10,45 @@ using QuickServe.Application.Features.IngredientTypes.Queries.GetPagedListIngred
 using QuickServe.Application.Features.IngredientTypes.Queries.GetPagedListIngredientTypeByActiveStatus;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.IngredientTypes.Dtos;
+using System;
 using System.Threading.Tasks;
 
 namespace QuickServe.WebApi.Controllers.v1
 {
-    public class IngredientTypeController : BaseApiController
+    [ApiController]
+    [Route("api/v1/[controller]")]
+    public class IngredientTypesController : BaseApiController
     {
-        [HttpGet]
+        [HttpGet("paged")]
         public async Task<PagedResponse<IngredientTypeDTO>> GetPagedListIngredientType([FromQuery] GetPagedListIngredientTypeQuery model)
             => await Mediator.Send(model);
-        [HttpGet]
-        public async Task<PagedResponse<IngredientTypeDTO>> GetPagedListByActiveStatus([FromQuery] GetPagedListIngredientTypeByActiveStatusQuery model)
-          => await Mediator.Send(model);
 
-        [HttpGet]
-        public async Task<BaseResult<IngredientTypeDTO>> GetIngredientTypeById([FromQuery] GetIngredientTypeByIdQuery model)
+        [HttpGet("pagedByActiveStatus")]
+        public async Task<PagedResponse<IngredientTypeDTO>> GetPagedListByActiveStatus([FromQuery] GetPagedListIngredientTypeByActiveStatusQuery model)
             => await Mediator.Send(model);
 
-        [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
+        [HttpGet("{id}")]
+        public async Task<BaseResult<IngredientTypeDTO>> GetIngredientTypeById(long id)
+            => await Mediator.Send(new GetIngredientTypeByIdQuery { Id = id });
+
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> CreateIngredientType(CreateIngredientTypeCommand model)
             => await Mediator.Send(model);
 
-        [HttpPut, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> UpdateIngredientType(UpdateIngredientTypeCommand model)
             => await Mediator.Send(model);
 
-        [HttpPut, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
+        [HttpPut("status")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> UpdateIngredientTypeStatus(UpdateIngredientTypeStatusCommand model)
             => await Mediator.Send(model);
 
-        [HttpDelete, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> DeleteIngredientType([FromQuery] DeleteIngredientTypeCommand model)
-            => await Mediator.Send(model);
+        [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
+        public async Task<BaseResult> DeleteIngredientType(long id)
+            => await Mediator.Send(new DeleteIngredientTypeCommand { Id = id });
     }
 }
