@@ -12,6 +12,6 @@ namespace QuickServe.Application.Interfaces.Nutritions
     public interface INutritionService
     {
         Task<BaseResult> CreateNutritionAsync(CreateNutritionRequest request);
-        Task<BaseResult> UpdateNutritionImageAsync(UpdateNutritionImageRequest request);
+        Task<BaseResult> UpdateNutritionImageAsync(long id, UpdateNutritionImageRequest request);
     }
 }

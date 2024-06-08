@@ -36,17 +36,17 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> CreateNutrition([FromForm] CreateNutritionRequest request)
             => await _nutritionService.CreateNutritionAsync(request);
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> UpdateNutrition(UpdateNutritionCommand model)
         {
             return await Mediator.Send(model);
         }
 
-        [HttpPut("image")]
+        [HttpPut("{id}/image")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateNutritionImage([FromForm] UpdateNutritionImageRequest request)
-            => await _nutritionService.UpdateNutritionImageAsync(request);
+        public async Task<BaseResult> UpdateNutritionImage(long id, [FromForm] UpdateNutritionImageRequest request)
+            => await _nutritionService.UpdateNutritionImageAsync(id,  request);
 
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]

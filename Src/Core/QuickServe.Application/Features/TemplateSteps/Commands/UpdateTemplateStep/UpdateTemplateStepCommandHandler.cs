@@ -17,6 +17,10 @@ namespace QuickServe.Application.Features.TemplateSteps.Commands.UpdateTemplateS
     {
         public async Task<BaseResult> Handle(UpdateTemplateStepCommand request, CancellationToken cancellationToken)
         {
+            if (request.Id <= 0)
+            {
+                return new BaseResult(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(request.Id)), nameof(request.Id)));
+            }
             var templateStep = await templateStepRepository.GetByIdAsync(request.Id);
 
             if (templateStep is null)

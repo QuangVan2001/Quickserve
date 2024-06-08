@@ -13,6 +13,10 @@ public class UpdateCategoryCommandHandler(ICategoryRepository categoryRepository
 {
     public async Task<BaseResult> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
+        if(request.Id <= 0)
+        {
+            return new BaseResult(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(request.Id)), nameof(request.Id)));
+        }
         var category = await categoryRepository.GetByIdAsync(request.Id);
 
         if (category is null)

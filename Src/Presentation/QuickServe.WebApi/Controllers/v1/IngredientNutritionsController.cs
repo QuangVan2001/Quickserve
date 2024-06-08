@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using QuickServe.Application.DTOs.IngredientNutrions.Request;
 using QuickServe.Application.Interfaces.IngredientNutritions;
 using QuickServe.Application.Wrappers;
+using QuickServe.Domain.Ingredients.Entities;
 using System.Threading.Tasks;
 
 namespace QuickServe.WebApi.Controllers.v1
@@ -25,10 +26,14 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> CreateIngredientNutrition(CreateIngredientNutritionRequest request)
             => await _service.CreateIngredientNutritionAsync(request);
 
-        [HttpPut]
+        [HttpPut("{ingredientId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateIngredientNutrition(CreateIngredientNutritionRequest request)
-            => await _service.UpdateIngredientNutritionAsync(request);
+        public async Task<BaseResult> UpdateIngredientNutrition(long ingredientId, CreateIngredientNutritionRequest request)
+        {
+           request.IngredientId = ingredientId;
+           return await _service.UpdateIngredientNutritionAsync(request);
+        }
+            
 
         [HttpDelete("{ingredientId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]

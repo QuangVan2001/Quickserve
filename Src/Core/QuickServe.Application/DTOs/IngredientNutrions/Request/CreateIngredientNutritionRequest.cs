@@ -17,10 +17,6 @@ namespace QuickServe.Application.DTOs.IngredientNutrions.Request
     {
         public CreateIngredientNutritionRequestValidator()
         {
-            RuleFor(x => x.IngredientId)
-                .NotEmpty().WithMessage("Id nguyên liệu là bắt buộc.")
-                .GreaterThan(0).WithMessage("Id nguyên liệu phải lớn hơn 0.");
-
             RuleFor(x => x.NutritionIds)
                 .NotEmpty().WithMessage("Danh sách Id dinh dưỡng là bắt buộc.")
                 .Must(nutritionIds => nutritionIds.Distinct().Count() == nutritionIds.Count)

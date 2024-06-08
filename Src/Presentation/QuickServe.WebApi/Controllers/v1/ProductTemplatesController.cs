@@ -43,12 +43,15 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> CreateProductTemplate([FromForm] CreateProductTemplateRequest request)
             => await _productTemplateService.CreateProductTemplateAsync(request);
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateProductTemplate(UpdateProductTemplateCommand model)
-            => await Mediator.Send(model);
+        public async Task<BaseResult> UpdateProductTemplate(long id, UpdateProductTemplateCommand model)
+        {
+            model.Id = id;
+            return await Mediator.Send(model);
+        }
 
-        [HttpPut("image")]
+        [HttpPut("{id}/image")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
         public async Task<BaseResult> UpdateProductTemplateImage([FromQuery] long id, [FromForm] UpdateProductTemplateImageRequest request)
             => await _productTemplateService.UpdateProductTemplateImageAsync(id, request);

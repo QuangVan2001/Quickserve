@@ -41,10 +41,11 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> CreateIngredient([FromForm] CreateIngredientRequest request)
             => await _ingredientService.CreateIngredientAsync(request);
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateIngredient(UpdateIngredientCommand model)
+        public async Task<BaseResult> UpdateIngredient(long id, UpdateIngredientCommand model)
         {
+            model.Id = id;
             return await Mediator.Send(model);
         }
 

@@ -16,6 +16,7 @@ using QuickServe.Application.DTOs.IngredientTypeTemplateSteps.Response;
 using QuickServe.Application.DTOs.IngredientTypeTemplateSteps.Request;
 using QuickServe.Application.Utils.Enums;
 using System.ComponentModel.Design;
+using QuickServe.Infrastructure.Resources.Services;
 
 namespace QuickServe.Infrastructure.Persistence.Services
 {
@@ -35,6 +36,10 @@ namespace QuickServe.Infrastructure.Persistence.Services
         {
             try
             {
+                if (request.TemplateStepId <= 0)
+                {
+                    return new BaseResult(new Error(ErrorCode.FieldDataInvalid, _translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(request.TemplateStepId)), nameof(request.TemplateStepId)));
+                }
                 var templateStep = await _context.TemplateSteps.FirstOrDefaultAsync(c => c.Id == request.TemplateStepId);
 
                 if (templateStep == null)
@@ -174,6 +179,10 @@ namespace QuickServe.Infrastructure.Persistence.Services
         {
             try
             {
+                if (request.TemplateStepId <= 0)
+                {
+                    return new BaseResult(new Error(ErrorCode.FieldDataInvalid, _translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(request.TemplateStepId)), nameof(request.TemplateStepId)));
+                }
                 var templateStep = await _context.TemplateSteps.FirstOrDefaultAsync(c => c.Id == request.TemplateStepId);
 
                 if (templateStep == null)

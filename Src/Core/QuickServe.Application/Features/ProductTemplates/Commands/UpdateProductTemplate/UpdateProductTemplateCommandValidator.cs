@@ -15,12 +15,6 @@ public class UpdateProductTemplateCommandValidator : AbstractValidator<UpdatePro
                  .Must(name => char.IsUpper(name[0])).WithMessage(translator["Chữ cái đầu tiên của tên phải viết hoa"])
                  .WithName(p => translator[nameof(p.Name)]);
 
-        RuleFor(p => p.Id)
-            .NotNull().WithMessage(translator["Id là bắt buộc"])
-            .NotEmpty().WithMessage(translator["Id là bắt buộc"])
-            .WithName(p => translator[nameof(p.Id)]);
-
-
         RuleFor(x => x.Price)
             .GreaterThan(0).WithMessage(translator["Giá phải lớn hơn 0"]);
 

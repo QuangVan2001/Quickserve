@@ -12,8 +12,11 @@ public class UpdateNutritionCommandHandler(INutritionRepository nutritionReposit
 {
     public async Task<BaseResult> Handle(UpdateNutritionCommand request, CancellationToken cancellationToken)
     {
+        if (request.Id <= 0)
+        {
+            return new BaseResult(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(request.Id)), nameof(request.Id)));
+        }
         var nutrition = await nutritionRepository.GetByIdAsync(request.Id);
-
         if (nutrition is null)
         {
             return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_thấy_dinh_dưỡng(request.Id)), nameof(request.Id)));
