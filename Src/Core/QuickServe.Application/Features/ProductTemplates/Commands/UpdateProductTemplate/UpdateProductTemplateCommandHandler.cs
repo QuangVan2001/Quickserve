@@ -13,6 +13,10 @@ public class UpdateProductTemplateCommandHandler(IProductTemplateRepository prod
 {
     public async Task<BaseResult> Handle(UpdateProductTemplateCommand request, CancellationToken cancellationToken)
     {
+        if (request.Id <= 0)
+        {
+            return new BaseResult(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(request.Id)), nameof(request.Id)));
+        }
         var ingredient = await productTemplateRepository.GetByIdAsync(request.Id);
 
         if (ingredient is null)

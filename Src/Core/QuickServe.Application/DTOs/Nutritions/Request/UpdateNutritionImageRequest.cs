@@ -12,16 +12,12 @@ namespace QuickServe.Application.DTOs.Nutritions.Request
 {
     public class UpdateNutritionImageRequest
     {
-        public long Id { get; set; }
         public IFormFile Image { get; set; }
     }
     public class UpdateNutritionImageValidator : AbstractValidator<UpdateNutritionImageRequest>
     {
         public UpdateNutritionImageValidator(ITranslator translator)
         {
-            RuleFor(x => x.Id)
-                 .NotEmpty().WithMessage("Id là bắt buộc.")
-                 .GreaterThan(0).WithMessage("Id phải lớn hơn 0.");
             RuleFor(x => x.Image)
                 .NotNull().WithMessage(translator["Ảnh là bắt buộc."])
                 .Must(BeAValidImage).WithMessage(translator["Chỉ các tệp hình ảnh được phép."])

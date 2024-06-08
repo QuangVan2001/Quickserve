@@ -13,6 +13,10 @@ public class UpdateIngredientCommandHandler(IIngredientRepository ingredientRepo
 {
     public async Task<BaseResult> Handle(UpdateIngredientCommand request, CancellationToken cancellationToken)
     {
+        if (request.Id <= 0)
+        {
+            return new BaseResult(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(request.Id)), nameof(request.Id)));
+        }
         var ingredient = await ingredientRepositiry.GetByIdAsync(request.Id);
 
         if (ingredient is null)

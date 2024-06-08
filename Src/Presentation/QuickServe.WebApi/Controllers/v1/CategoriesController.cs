@@ -34,15 +34,18 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> CreateCategory(CreateCategoryCommand model)
             => await Mediator.Send(model);
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateCategory(UpdateCategoryCommand model)
-            => await Mediator.Send(model);
+        public async Task<BaseResult> UpdateCategory(long id, UpdateCategoryCommand model)
+        {
+            model.Id = id;
+            return await Mediator.Send(model);
+        }
 
-        [HttpPut("status")]
+        [HttpPut("{id}/status")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateStatusCategory(UpdateCategoryStatusCommand model)
-            => await Mediator.Send(model);
+        public async Task<BaseResult> UpdateStatusCategory(long id)
+            => await Mediator.Send(new UpdateCategoryStatusCommand { Id = id });
 
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]

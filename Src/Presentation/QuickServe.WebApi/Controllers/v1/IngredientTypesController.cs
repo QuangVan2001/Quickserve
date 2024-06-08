@@ -36,15 +36,19 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> CreateIngredientType(CreateIngredientTypeCommand model)
             => await Mediator.Send(model);
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateIngredientType(UpdateIngredientTypeCommand model)
-            => await Mediator.Send(model);
+        public async Task<BaseResult> UpdateIngredientType(long id, UpdateIngredientTypeCommand model)
+        {
+            model.Id = id;
+            return await Mediator.Send(model);
+        }
+           
 
-        [HttpPut("status")]
+        [HttpPut("{id}/status")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateIngredientTypeStatus(UpdateIngredientTypeStatusCommand model)
-            => await Mediator.Send(model);
+        public async Task<BaseResult> UpdateIngredientTypeStatus(long id)
+             => await Mediator.Send(new UpdateIngredientTypeStatusCommand { Id = id });
 
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]

@@ -30,15 +30,19 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> CreateTemplate(CreateTemplateRequest request)
             => await _service.CreateTempalte(request);
 
-        [HttpPut]
+        [HttpPut("{templateStepId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateTemplate(CreateTemplateRequest request)
-            => await _service.UpdateTempalte(request);
+        public async Task<BaseResult> UpdateTemplate(long templateStepId, CreateTemplateRequest request)
+        {
+            request.TemplateStepId = templateStepId;
+            return await _service.UpdateTempalte(request);
+        }
+           
 
-        [HttpPut("status")]
+        [HttpPut("{productTemplateId}/status")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateTemplateStatus(UpdateTemplateStatusRequest request)
-            => await _service.UpdateTemplateStatus(request);
+        public async Task<BaseResult> UpdateTemplateStatus(long productTemplateId)
+            => await _service.UpdateTemplateStatus(new UpdateTemplateStatusRequest { ProductTemplateId = productTemplateId});
 
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]

@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using QuickServe.Application.Helpers;
 using QuickServe.Domain.Nutritions.Entities;
 using QuickServe.Utils.Enums;
+using QuickServe.Infrastructure.Resources.Services;
 
 namespace QuickServe.Infrastructure.Persistence.Services
 {
@@ -65,14 +66,18 @@ namespace QuickServe.Infrastructure.Persistence.Services
             }
         }
 
-        public async Task<BaseResult> UpdateNutritionImageAsync(UpdateNutritionImageRequest request)
+        public async Task<BaseResult> UpdateNutritionImageAsync(long id, UpdateNutritionImageRequest request)
         {
             try
             {
-                var nutrition = await _context.Nutritions.FirstOrDefaultAsync(i => i.Id == request.Id);
+                if (id <= 0)
+                {
+                    return new BaseResult(new Error(ErrorCode.FieldDataInvalid, _translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(id)), nameof(id)));
+                }
+                var nutrition = await _context.Nutritions.FirstOrDefaultAsync(i => i.Id == id);
                 if (nutrition == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_thấy_dinh_dưỡng(request.Id)), nameof(request.Id)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_thấy_dinh_dưỡng(id)), nameof(id)));
                 }
                 if (request.Image != null)
                 {

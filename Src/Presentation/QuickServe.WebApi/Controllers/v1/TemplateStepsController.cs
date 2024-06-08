@@ -33,10 +33,13 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> CreateTemplateStep(CreateTemplateStepCommand model)
             => await Mediator.Send(model);
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateTemplateStep(UpdateTemplateStepCommand model)
-            => await Mediator.Send(model);
+        public async Task<BaseResult> UpdateTemplateStep(long id, UpdateTemplateStepCommand model)
+        {
+            model.Id = id;
+            return await Mediator.Send(model);
+        }
 
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
