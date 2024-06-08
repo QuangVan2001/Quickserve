@@ -39,17 +39,17 @@ namespace QuickServe.Infrastructure.Persistence.Services
 
                 if (ingredient == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientMessages.Nguyên_liệu_không_tìm_thấy_với_id(request.IngredientId)), nameof(request.IngredientId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientMessages.Không_tìm_thấy_nguyên_liệu(request.IngredientId)), nameof(request.IngredientId)));
                 }
                 if(ingredient.IngredientNutritions.Count != 0)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientMessages.Nguyên_liệu_tồn_tại_các_dinh_dưỡng(request.IngredientId)), nameof(request.IngredientId)));
+                    return new BaseResult(new Error(ErrorCode.ConstraintViolation, _translator.GetString(TranslatorMessages.IngredientMessages.Nguyên_liệu_tồn_tại_các_dinh_dưỡng(request.IngredientId)), nameof(request.IngredientId)));
                 }
                 foreach (var nutritionId in request.NutritionIds)
                 {
                     if(await _context.Nutritions.AnyAsync(c=> c.Id ==  nutritionId) == false)
                     {
-                        return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_tháy_dinh_dưỡng(nutritionId)), nameof(nutritionId)));
+                        return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_thấy_dinh_dưỡng(nutritionId)), nameof(nutritionId)));
                     }
                     var ingreNutri = new IngredientNutrition
                     {
@@ -95,7 +95,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                     .FirstOrDefaultAsync(c=> c.Id == ingredientId);
                 if (ingredient == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientMessages.Nguyên_liệu_không_tìm_thấy_với_id(ingredientId)), nameof(ingredientId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientMessages.Không_tìm_thấy_nguyên_liệu(ingredientId)), nameof(ingredientId)));
                 }
                 if(ingredient.IngredientNutritions.Count == 0)
                 {
@@ -137,7 +137,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
 
                 if (ingredient == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientMessages.Nguyên_liệu_không_tìm_thấy_với_id(request.IngredientId)), nameof(request.IngredientId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientMessages.Không_tìm_thấy_nguyên_liệu(request.IngredientId)), nameof(request.IngredientId)));
                 }
                 var exists = await _context.IngredientNutritions
                     .Where(c => c.IngredientId == request.IngredientId).ToListAsync();
@@ -149,7 +149,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 {
                     if (await _context.Nutritions.AnyAsync(c => c.Id == nutritionId) == false)
                     {
-                        return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_tháy_dinh_dưỡng(nutritionId)), nameof(nutritionId)));
+                        return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_thấy_dinh_dưỡng(nutritionId)), nameof(nutritionId)));
                     }
                     var ingreNutri = new IngredientNutrition
                     {

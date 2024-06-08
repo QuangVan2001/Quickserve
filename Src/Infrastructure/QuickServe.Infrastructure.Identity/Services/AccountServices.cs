@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using QuickServe.Application.DTOs;
 using QuickServe.Application.DTOs.Account.Requests;
@@ -19,13 +20,12 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Error = QuickServe.Application.Wrappers.Error;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace QuickServe.Infrastructure.Identity.Services
 {
     public class AccountServices(UserManager<ApplicationUser> userManager, IAuthenticatedUserService authenticatedUser, ITranslator translator, IConfiguration configuration) : IAccountServices
     {
-       
+
         public async Task<BaseResult> ChangePassword(ChangePasswordRequest model)
         {
             var user = await userManager.FindByIdAsync(authenticatedUser.UserId);
@@ -96,7 +96,7 @@ namespace QuickServe.Infrastructure.Identity.Services
 
             var rolesList = await userManager.GetRolesAsync(user).ConfigureAwait(false);
 
-            var token = await CreateToken(user, true); 
+            var token = await CreateToken(user, true);
 
             AuthenticationResponse response = new AuthenticationResponse()
             {
@@ -239,7 +239,8 @@ namespace QuickServe.Infrastructure.Identity.Services
                     throw new SecurityTokenException("Invalid token");
                 var newToken = await CreateToken(user, false);
                 return new BaseResult<TokenDto>(newToken);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return new BaseResult<TokenDto>(new Error(ErrorCode.ErrorInIdentity, ex.Message));
             }
@@ -252,15 +253,7 @@ namespace QuickServe.Infrastructure.Identity.Services
             var existUser = await userManager.FindByEmailAsync(request.Email);
             if (existUser != null)
             {
-                var roleExist = await userManager.GetRolesAsync(existUser);
-                if (roleExist.Any(p => p == request.Role))
-                    return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_đã_tồn_tại_với_Email(request.Email)), nameof(request.Email)));
-
-                var assignRoleResult = await userManager.AddToRoleAsync(existUser, request.Role);
-                if (assignRoleResult.Succeeded)
-                    return new BaseResult();
-
-                return new BaseResult(assignRoleResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
+                return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_đã_tồn_tại_với_Email(request.Email)), nameof(request.Email)));
             }
 
             // Create new account

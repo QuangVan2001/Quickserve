@@ -72,7 +72,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 var nutrition = await _context.Nutritions.FirstOrDefaultAsync(i => i.Id == request.Id);
                 if (nutrition == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_tháy_dinh_dưỡng(request.Id)), nameof(request.Id)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_thấy_dinh_dưỡng(request.Id)), nameof(request.Id)));
                 }
                 if (request.Image != null)
                 {

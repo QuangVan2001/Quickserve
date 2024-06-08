@@ -16,11 +16,11 @@ public class UpdateNutritionCommandHandler(INutritionRepository nutritionReposit
 
         if (nutrition is null)
         {
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_tháy_dinh_dưỡng(request.Id)), nameof(request.Id)));
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_thấy_dinh_dưỡng(request.Id)), nameof(request.Id)));
         }
         if (await nutritionRepository.ExistsByNameAsync(request.Name.Trim()))
         {
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.NutritionMessages.Tên_dinh_dưỡng_đã_tồn_tại(request.Name)), nameof(request.Name)));
+            return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.NutritionMessages.Tên_dinh_dưỡng_đã_tồn_tại(request.Name)), nameof(request.Name)));
         }
         nutrition.Update(request.Name.Trim(), request.Description, request.Vitamin, request.HealthValue);
         await unitOfWork.SaveChangesAsync();

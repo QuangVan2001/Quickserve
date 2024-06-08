@@ -20,7 +20,7 @@ public class GetNutritionByIdQueryHandler(INutritionRepository nutritionReposito
         if (nutrition is null)
         {
             return new BaseResult<NutritionDTO>(new Error(ErrorCode.NotFound,
-                translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_tháy_dinh_dưỡng(request.Id)),
+                translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_thấy_dinh_dưỡng(request.Id)),
                 nameof(request.Id)));
         }
 

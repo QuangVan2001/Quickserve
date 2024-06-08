@@ -38,12 +38,12 @@ namespace QuickServe.Infrastructure.Persistence.Services
             {
                 if (await _context.ProductTemplates.AnyAsync(i => i.Name.ToLower() == request.Name.Trim().ToLower()))
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.ProductTemplateMessages.Tên_mẫu_sản_phẩm_đã_tồn_tại_với_tên(request.Name)), nameof(request.Name)));
+                    return new BaseResult(new Error(ErrorCode.Duplicate, _translator.GetString(TranslatorMessages.ProductTemplateMessages.Tên_mẫu_sản_phẩm_đã_tồn_tại(request.Name)), nameof(request.Name)));
                 }
                 var category = await _context.Categories.FirstOrDefaultAsync(i => i.Id == request.CategoryId);
                 if (category == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.CategoryMessages.Danh_mục_không_tìm_thấy_với_id(request.CategoryId)), nameof(request.CategoryId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.CategoryMessages.Không_tìm_thấy_danh_mục(request.CategoryId)), nameof(request.CategoryId)));
                 }
                 var productTemplate = new ProductTemplate
                 {
@@ -81,7 +81,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 var productTemplate = await _context.ProductTemplates.FirstOrDefaultAsync(i => i.Id == id);
                 if (productTemplate == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.ProductTemplateMessages.Mẫu_sản_phẩm_không_tìm_thấy_với_id(id)), nameof(id)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.ProductTemplateMessages.Không_tìm_thấy_mẫu_sản_phẩm(id)), nameof(id)));
                 }
                 if (request.Image != null)
                 {

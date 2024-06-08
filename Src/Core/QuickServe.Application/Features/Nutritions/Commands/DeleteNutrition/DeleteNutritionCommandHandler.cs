@@ -16,11 +16,11 @@ public class DeleteNutritionCommandHandler(INutritionRepository nutritionReposit
 
         if (nutrition is null)
         {
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_tháy_dinh_dưỡng(request.Id)), nameof(request.Id)));
+            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_thấy_dinh_dưỡng(request.Id)), nameof(request.Id)));
         }
         if (nutrition.IngredientNutritions.Count != 0)
         {
-            return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.NutritionMessages.Dinh_dưỡng_tồn_tại_trong_danh_sách_dinh_dưỡng_của_nguyên_liệu(request.Id)), nameof(request.Id)));
+            return new BaseResult(new Error(ErrorCode.ConstraintViolation, translator.GetString(TranslatorMessages.NutritionMessages.Dinh_dưỡng_tồn_tại_trong_danh_sách_dinh_dưỡng_của_nguyên_liệu(request.Id)), nameof(request.Id)));
         }
         nutritionRepository.Delete(nutrition);
         await unitOfWork.SaveChangesAsync();
