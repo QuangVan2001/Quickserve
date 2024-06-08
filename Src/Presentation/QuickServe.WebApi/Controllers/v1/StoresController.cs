@@ -30,10 +30,14 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult<long>> CreateStore(CreateStoreCommand model)
             => await Mediator.Send(model);
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<BaseResult> UpdateStore(UpdateStoreCommand model)
-            => await Mediator.Send(model);
+        public async Task<BaseResult> UpdateStore(long id, UpdateStoreCommand model)
+        {
+            model.Id = id;
+            return await Mediator.Send(model);
+        }
+          
 
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
