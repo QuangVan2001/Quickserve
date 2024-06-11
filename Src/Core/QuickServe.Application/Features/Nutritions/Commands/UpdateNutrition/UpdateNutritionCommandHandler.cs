@@ -21,7 +21,8 @@ public class UpdateNutritionCommandHandler(INutritionRepository nutritionReposit
         {
             return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.NutritionMessages.Không_tìm_thấy_dinh_dưỡng(request.Id)), nameof(request.Id)));
         }
-        if (await nutritionRepository.ExistsByNameAsync(request.Name.Trim()))
+        if (await nutritionRepository.ExistsByNameAsync(request.Name.Trim()) &&
+            nutrition.Name.ToLower() != request.Name.ToLower().Trim())
         {
             return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.NutritionMessages.Tên_dinh_dưỡng_đã_tồn_tại(request.Name)), nameof(request.Name)));
         }
