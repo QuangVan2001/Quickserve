@@ -23,7 +23,8 @@ public class UpdateCategoryCommandHandler(ICategoryRepository categoryRepository
         {
             return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.CategoryMessages.Không_tìm_thấy_danh_mục(request.Id)), nameof(request.Id)));
         }
-        if(await categoryRepository.ExistsCategoryByNameAsync(request.Name.Trim())) { 
+        if (await categoryRepository.ExistsCategoryByNameAsync(request.Name.Trim()) && category.Name.ToLower() != request.Name.Trim().ToLower())
+        {
             return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.CategoryMessages.Tên_danh_mục_đã_tồn_tại(request.Name)), nameof(request.Name)));
         }
         category.Update(request.Name.Trim());

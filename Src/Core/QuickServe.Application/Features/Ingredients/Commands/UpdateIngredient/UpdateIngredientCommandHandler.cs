@@ -23,12 +23,13 @@ public class UpdateIngredientCommandHandler(IIngredientRepository ingredientRepo
         {
             return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.IngredientMessages.Không_tìm_thấy_nguyên_liệu(request.Id)), nameof(request.Id)));
         }
-        if (await ingredientRepositiry.ExistByNameAsync(request.Name.Trim()))
+        if (await ingredientRepositiry.ExistByNameAsync(request.Name.Trim()) && ingredient.Name.ToLower() != request.Name.ToLower().Trim())
         {
             return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.IngredientMessages.Tên_nguyên_liệu_đã_tồn_tại(request.Name)), nameof(request.Name)));
         }
         ingredient.Update(request.Name.Trim(), request.Price, request.Calo, request.Description
-            ,request.IngredientTypeId);
+            , request.IngredientTypeId);
+
         await unitOfWork.SaveChangesAsync();
         return new BaseResult();
     }

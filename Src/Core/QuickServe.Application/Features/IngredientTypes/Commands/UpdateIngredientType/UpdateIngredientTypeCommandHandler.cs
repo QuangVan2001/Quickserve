@@ -23,7 +23,8 @@ public class UpdateIngredientTypeCommandHandler(IIngredientTypeRepository ingred
         {
             return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.IngredientTypeMessages.Không_tìm_thấy_loại_nguyên_liệu(request.Id)), nameof(request.Id)));
         }
-        if (await ingredientTypeRepository.ExistByNameAsync(request.Name.Trim()))
+        if (await ingredientTypeRepository.ExistByNameAsync(request.Name.Trim()) && 
+            ingredientType.Name.ToLower() != request.Name.ToLower().Trim())
         {
             return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.IngredientTypeMessages.Tên_loại_nguyên_liệu_đã_tồn_tại(request.Name)), nameof(request.Name)));
         }

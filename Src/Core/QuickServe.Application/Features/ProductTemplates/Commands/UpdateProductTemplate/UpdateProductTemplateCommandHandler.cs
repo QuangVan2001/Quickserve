@@ -17,17 +17,18 @@ public class UpdateProductTemplateCommandHandler(IProductTemplateRepository prod
         {
             return new BaseResult(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(request.Id)), nameof(request.Id)));
         }
-        var ingredient = await productTemplateRepository.GetByIdAsync(request.Id);
+        var productTemplate = await productTemplateRepository.GetByIdAsync(request.Id);
 
-        if (ingredient is null)
+        if (productTemplate is null)
         {
             return new BaseResult(new Error(ErrorCode.NotFound, translator.GetString(TranslatorMessages.ProductTemplateMessages.Không_tìm_thấy_mẫu_sản_phẩm(request.Id)), nameof(request.Id)));
         }
-        if (await productTemplateRepository.ExistByNameAsync(request.Name.Trim()))
+        if (await productTemplateRepository.ExistByNameAsync(request.Name.Trim()) &&
+            productTemplate.Name.ToLower() != request.Name.ToLower().Trim())
         {
             return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.ProductTemplateMessages.Tên_mẫu_sản_phẩm_đã_tồn_tại(request.Name)), nameof(request.Name)));
         }
-        ingredient.Update(request.Name.Trim(), request.Price, request.Size, request.Description
+        productTemplate.Update(request.Name.Trim(), request.Price, request.Size, request.Description
             , request.CategoryId);
         await unitOfWork.SaveChangesAsync();
         return new BaseResult();
