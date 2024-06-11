@@ -53,7 +53,7 @@ namespace QuickServe.WebApi.Controllers.v1
 
         [HttpPut("{id}/image")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> UpdateProductTemplateImage([FromQuery] long id, [FromForm] UpdateProductTemplateImageRequest request)
+        public async Task<BaseResult> UpdateProductTemplateImage(long id, [FromForm] UpdateProductTemplateImageRequest request)
             => await _productTemplateService.UpdateProductTemplateImageAsync(id, request);
 
         [HttpDelete("{id}")]
