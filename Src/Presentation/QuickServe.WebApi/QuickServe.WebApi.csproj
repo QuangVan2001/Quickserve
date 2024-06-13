@@ -2,8 +2,10 @@
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<UserSecretsId>1e1abaac-12cc-40f7-bef0-7fbc962e2a16</UserSecretsId>
+		
 		<_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+		
+		<UserSecretsId>af2cd69b-b00c-43fb-b4e5-a3968dcedc94</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
