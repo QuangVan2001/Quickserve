@@ -54,7 +54,7 @@ namespace QuickServe.WebApi.Controllers.v1
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<BaseResult<AccountDto>> GetAccountById([FromQuery] Guid id)
+        public async Task<BaseResult<AccountDto>> GetAccountById(Guid id)
             => await accountServices.GetAccountById(id);
     }
 }
