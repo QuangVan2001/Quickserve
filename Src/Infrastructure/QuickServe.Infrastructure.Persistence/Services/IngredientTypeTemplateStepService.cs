@@ -17,6 +17,7 @@ using QuickServe.Application.DTOs.IngredientTypeTemplateSteps.Request;
 using QuickServe.Application.Utils.Enums;
 using System.ComponentModel.Design;
 using QuickServe.Infrastructure.Resources.Services;
+using QuickServe.Application.DTOs.Ingredients.Responses;
 
 namespace QuickServe.Infrastructure.Persistence.Services
 {
@@ -113,6 +114,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 var productTemplate = await _context.ProductTemplates
                     .Include(c=> c.TemplateSteps).ThenInclude(c=> c.IngredientTypeTemplateSteps)
                     .ThenInclude(c=> c.IngredientType)
+                    .ThenInclude(c=> c.Ingredients)
                     .FirstOrDefaultAsync(c => c.Id == request.ProductTemplateId);
                 
                 if (productTemplate == null)
@@ -127,6 +129,12 @@ namespace QuickServe.Infrastructure.Persistence.Services
                     foreach(var it in ts.IngredientTypeTemplateSteps)
                     {
                         var ingreStep = new IngredientTypeResponse(it);
+                        var ingredients = new List<IngredientInfoResponse>();
+                        foreach(var ingredient in it.IngredientType.Ingredients.
+                            Where(c=>c.Status == (int)IngredientStatus.Active)) {
+                            var ingredientRes = new IngredientInfoResponse(ingredient);
+                            ingredients.Add(ingredientRes);
+                        }
                         its.Add(ingreStep);
                     }
                     templateStep.IngredientTypes = its;
