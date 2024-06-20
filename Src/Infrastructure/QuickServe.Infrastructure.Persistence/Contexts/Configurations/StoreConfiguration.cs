@@ -21,5 +21,6 @@ public class StoreConfiguration : IEntityTypeConfiguration<Store>
         entity.Property(e => e.LastModified).HasColumnType("date");
 
         entity.Property(e => e.Name).HasMaxLength(255);
+
     }
 }

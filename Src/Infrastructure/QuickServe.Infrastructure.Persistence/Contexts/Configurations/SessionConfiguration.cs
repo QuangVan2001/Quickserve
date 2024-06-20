@@ -18,7 +18,7 @@ public class SessionConfiguration : IEntityTypeConfiguration<Session>
             .HasMaxLength(40)
             .IsUnicode(false);
 
-        entity.Property(e => e.OrderId).HasColumnName("Order_Id");
+        entity.Property(e => e.StoreId).HasColumnName("Store_Id");
 
         entity.Property(e => e.StartTime).HasColumnName("Start_Time").IsRequired();
 
