@@ -8,17 +8,8 @@ namespace QuickServe.Application.Utils.Enums
 {
     public enum OrderStatus
     {
-        /// <summary>
-        /// 0 Failed
-        /// </summary>
-        Failed,
-        /// <summary>
-        /// 1 Success
-        /// </summary>
-        Success,
-        /// <summary>
-        /// 2 Pending
-        /// </summary>
-        Pending
+        Pending = 1,
+        Failed = 2,
+        Success = 3,
     }
 }
