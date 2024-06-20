@@ -79,7 +79,7 @@ namespace QuickServe.Infrastructure.Identity.Services
                 RefreshToken = token.RefreshToken,
                 Email = user.Email,
                 UserName = user.UserName,
-                Roles = rolesList.ToList(),
+                Roles = rolesList.FirstOrDefault(),
                 IsVerified = user.EmailConfirmed,
             };
 
@@ -105,7 +105,7 @@ namespace QuickServe.Infrastructure.Identity.Services
                 RefreshToken = token.RefreshToken,
                 Email = user.Email,
                 UserName = user.UserName,
-                Roles = rolesList.ToList(),
+                Roles = rolesList.FirstOrDefault(),
                 IsVerified = user.EmailConfirmed,
             };
 

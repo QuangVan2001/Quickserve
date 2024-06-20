@@ -34,7 +34,7 @@ namespace QuickServe.Application.Helpers
                 => new(nameof(Danh_mục_tồn_tại_mẫu_sản_phẩm), [id.ToString()]);
             public static TranslatorMessageDto Tên_danh_mục_đã_tồn_tại(string name)
                 => new(nameof(Tên_danh_mục_đã_tồn_tại), [name]);
-            
+
         }
         public static class RequestMessage
         {

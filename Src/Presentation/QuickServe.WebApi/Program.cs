@@ -29,6 +29,7 @@ using QuickServe.Application.Interfaces.IProductTemplateServices;
 using QuickServe.Application.Interfaces.IngredientTypeTemplateSteps;
 using QuickServe.Application.Interfaces.Nutritions;
 using QuickServe.Application.Interfaces.IngredientNutritions;
+using QuickServe.Application.Interfaces.IOrderServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +47,7 @@ builder.Services.AddScoped<IProductTemplateService,  ProductTemplateService>();
 builder.Services.AddScoped<INutritionService, NutritionService>();
 builder.Services.AddScoped<IIngredientNutritionService, IngredientNutritionService>();
 builder.Services.AddScoped<IIngredientTypeTemplateStepService, IngredientTypeTemplateStepService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddDistributedMemoryCache();
 
 #pragma warning disable CS0618 // Type or member is obsolete
