@@ -109,6 +109,8 @@ namespace QuickServe.Application.Helpers
                 => new(nameof(Ca_làm_việc_tồn_tại_các_nguyên_liệu), [id.ToString()]);
             public static TranslatorMessageDto Thời_gian_bắt_đầu_phải_trước_thời_gian_kết_thúc(long id)
                 => new(nameof(Thời_gian_bắt_đầu_phải_trước_thời_gian_kết_thúc), [id.ToString()]);
+            public static TranslatorMessageDto Ca_làm_việc_không_tồn_tại_các_nguyên_liệu(long id)
+                => new(nameof(Ca_làm_việc_không_tồn_tại_các_nguyên_liệu), [id.ToString()]);
         }
     }
 }

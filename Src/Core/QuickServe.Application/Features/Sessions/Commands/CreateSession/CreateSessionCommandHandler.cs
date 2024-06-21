@@ -1,11 +1,9 @@
 ﻿using MediatR;
-using QuickServe.Application.Features.Categories.Commands.CreateCategory;
 using QuickServe.Application.Helpers;
 using QuickServe.Application.Interfaces.Repositories;
 using QuickServe.Application.Interfaces;
 using QuickServe.Application.Utils.Enums;
 using QuickServe.Application.Wrappers;
-using QuickServe.Domain.Categories.Entities;
 using System.Threading.Tasks;
 using System.Threading;
 using QuickServe.Domain.Sessions.Entities;
