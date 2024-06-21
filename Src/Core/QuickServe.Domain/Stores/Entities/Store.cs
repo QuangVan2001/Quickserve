@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using QuickServe.Domain.Common;
 using QuickServe.Domain.Orders.Entities;
+using QuickServe.Domain.Sessions.Entities;
 using QuickServe.Domain.Staffs.Entities;
 
 namespace QuickServe.Domain.Stores.Entities
@@ -11,12 +12,14 @@ namespace QuickServe.Domain.Stores.Entities
         {
             Orders = new HashSet<Order>();
             Staffs = new HashSet<Staff>();
+            Sessions = new HashSet<Session>();
         }
 
         public Store(string name, string address)
         {
             Orders = new HashSet<Order>();
             Staffs = new HashSet<Staff>();
+            Sessions = new HashSet<Session>();
             Name = name;
             Address = address;
         }
@@ -33,5 +36,6 @@ namespace QuickServe.Domain.Stores.Entities
 
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Staff> Staffs { get; set; }
+        public virtual ICollection<Session> Sessions { get; set; }
     }
 }

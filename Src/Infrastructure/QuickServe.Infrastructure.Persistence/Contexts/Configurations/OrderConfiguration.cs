@@ -35,12 +35,6 @@ public class OrderConfiguration :  IEntityTypeConfiguration<Order>
             .OnDelete(DeleteBehavior.ClientSetNull)
             .HasConstraintName("order_store_id_foreign");
 
-        entity.HasMany(d => d.Sessions)
-            .WithOne(p => p.Order)
-            .HasForeignKey(d => d.OrderId)
-            .OnDelete(DeleteBehavior.ClientSetNull)
-            .HasConstraintName("order_session_id_foreign");
-
         entity.HasOne(d => d.Customer)
             .WithMany(p => p.Orders)
             .HasForeignKey(d => d.CustomerId)

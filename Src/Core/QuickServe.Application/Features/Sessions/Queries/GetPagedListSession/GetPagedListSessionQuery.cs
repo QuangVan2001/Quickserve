@@ -1,6 +1,13 @@
-﻿namespace QuickServe.Application.Features.Sessions.Queries.GetPagedListSession;
+﻿using MediatR;
+using QuickServe.Application.Parameters;
+using QuickServe.Application.Wrappers;
+using QuickServe.Domain.Sessions.Dtos;
 
-public class GetPagedListSessionQuery
+namespace QuickServe.Application.Features.Sessions.Queries.GetPagedListSession;
+
+public class GetPagedListSessionQuery : PagenationRequestParameter, IRequest<PagedResponse<SessionDto>>
 {
-    
+    public long StoreId { get; set; }
+    public string Name { get; set; }
+
 }

@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using QuickServe.Application.DTOs.Ingredients.Request;
 using QuickServe.Application.Interfaces;
 using System;
 using System.Collections.Generic;
