@@ -97,5 +97,18 @@ namespace QuickServe.Application.Helpers
             public static TranslatorMessageDto Dinh_dưỡng_tồn_tại_trong_danh_sách_dinh_dưỡng_của_nguyên_liệu(long id)
              => new(nameof(Dinh_dưỡng_tồn_tại_trong_danh_sách_dinh_dưỡng_của_nguyên_liệu), [id.ToString()]);
         }
+        public static class SessionMessage
+        {
+            public static TranslatorMessageDto Không_tìm_thấy_ca_làm_việc(long id)
+                => new(nameof(Không_tìm_thấy_ca_làm_việc), [id.ToString()]);
+            public static TranslatorMessageDto Tên_ca_làm_việc_đã_tồn_tại(string name)
+              => new(nameof(Tên_ca_làm_việc_đã_tồn_tại), [name]);
+            public static TranslatorMessageDto Thời_gian_làm_việc_đã_có_trong_ca_khác(long id)
+              => new(nameof(Thời_gian_làm_việc_đã_có_trong_ca_khác), [id.ToString()]);
+            public static TranslatorMessageDto Ca_làm_việc_tồn_tại_các_nguyên_liệu(long id)
+                => new(nameof(Ca_làm_việc_tồn_tại_các_nguyên_liệu), [id.ToString()]);
+            public static TranslatorMessageDto Thời_gian_bắt_đầu_phải_trước_thời_gian_kết_thúc(long id)
+                => new(nameof(Thời_gian_bắt_đầu_phải_trước_thời_gian_kết_thúc), [id.ToString()]);
+        }
     }
 }
