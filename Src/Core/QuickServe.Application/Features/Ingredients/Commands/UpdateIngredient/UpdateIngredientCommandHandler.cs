@@ -34,7 +34,7 @@ public class UpdateIngredientCommandHandler(IIngredientRepository ingredientRepo
         {
             foreach (var ingreStep in ingredient.IngredientType.IngredientTypeTemplateSteps)
             {
-                ingreStep.TemplateStep.ProductTemplate.Price += request.Price - ingredient.Price;
+                ingreStep.TemplateStep.ProductTemplate.Price += (request.Price - ingredient.Price)* ingredient.DefaultQuantity;
             }
         }
         await unitOfWork.SaveChangesAsync();
