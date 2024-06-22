@@ -16,7 +16,7 @@ namespace QuickServe.Application.Interfaces.UserInterfaces
         Task<BaseResult<AuthenticationResponse>> Authenticate(AuthenticationRequest login);
         Task<BaseResult<AuthenticationResponse>> AuthenticateByUserName(string username);
         Task<BaseResult<TokenDto>> RefreshToken(TokenDto token);
-        Task<BaseResult> CreateAccount(CreateAccountRequest request);
+        Task<BaseResult<Guid>> CreateAccount(CreateAccountRequest request);
         Task<PagenationResponseDto<AccountDto>> GetPagedListAsync(int pageNumber, int pageSize, string name, string[] roles);
         Task<BaseResult<AccountDto>> GetAccountById(Guid id);
         Task<BaseResult<AccountDto>> FindByEmailAsync(string email);

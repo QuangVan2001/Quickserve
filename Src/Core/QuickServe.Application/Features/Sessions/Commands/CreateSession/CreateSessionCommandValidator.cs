@@ -8,10 +8,6 @@ public class CreateSessionCommandValidator : AbstractValidator<CreateSessionComm
 {
     public CreateSessionCommandValidator(ITranslator translator)
     {
-        RuleFor(p => p.StoreId)
-                .NotNull().WithMessage(translator["StoreId là bắt buộc"])
-                .NotEmpty().WithMessage(translator["StoreId là bắt buộc"])
-                .WithName(p => translator[nameof(p.StoreId)]);
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage(translator["Tên là bắt buộc"])
             .NotNull().WithMessage(translator["Tên là bắt buộc"])
