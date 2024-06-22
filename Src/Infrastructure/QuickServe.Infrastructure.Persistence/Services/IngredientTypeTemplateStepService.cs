@@ -268,7 +268,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                     foreach(var ingreStep in step.IngredientTypeTemplateSteps) {
                         foreach(var ingredient in ingreStep.IngredientType.Ingredients)
                         {
-                            price += ingredient.Price;
+                            price += ingredient.Price * ingredient.DefaultQuantity;
                         }
                     }
                 }
