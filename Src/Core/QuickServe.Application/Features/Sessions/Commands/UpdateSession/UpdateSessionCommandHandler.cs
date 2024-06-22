@@ -36,10 +36,12 @@ public class UpdateSessionCommandHandler(ISessionRepository sessionRepository, I
         {
             return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.SessionMessage.Tên_ca_làm_việc_đã_tồn_tại(request.Name)), nameof(request.Name)));
         }
-        if (await sessionRepository.ExistsByTimeAsync(session.StoreId, startTime, endTime) &&
-            startTime != session.StartTime && endTime != session.EndTime)
+        if (startTime != session.StartTime && endTime != session.EndTime)
         {
-            return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.SessionMessage.Thời_gian_làm_việc_đã_có_trong_ca_khác(request.Id)), nameof(request.Id)));
+            if (await sessionRepository.ExistsByTimeAsync(session.StoreId, startTime, endTime))
+            {
+                return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.SessionMessage.Thời_gian_làm_việc_đã_có_trong_ca_khác(request.Id)), nameof(request.Id)));
+            }
         }
         session.Update(request.Name.Trim(), startTime, endTime);
         await unitOfWork.SaveChangesAsync();
