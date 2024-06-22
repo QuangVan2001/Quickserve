@@ -35,6 +35,9 @@ public class IngredientRepository : GenericRepository<Ingredient>, IIngredientRe
     public async Task<Ingredient> GetIngredientByIdAsync(long id)
     {
         return await ingredients.Include(i=> i.IngredientType)
+            .ThenInclude(i=> i.IngredientTypeTemplateSteps)
+            .ThenInclude(i=> i.TemplateStep)
+            .ThenInclude(i=> i.ProductTemplateId)
             .Include(i=>i.IngredientSessions)
             .Include(i=>i.IngredientNutritions)
             .Include(i=>i.IngredientProducts).ThenInclude(ip=> ip.Product)

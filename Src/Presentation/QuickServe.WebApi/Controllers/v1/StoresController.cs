@@ -45,12 +45,12 @@ namespace QuickServe.WebApi.Controllers.v1
             => await Mediator.Send(new DeleteStoreCommand { Id = id });
 
         [Authorize(Roles = "Admin, Store_Manager")]
-        [HttpGet("/employees/paged")]
+        [HttpGet("employees/paged")]
         public async Task<PagedResponse<EmployeeDto>> GetEmployees([FromQuery] GetPagedListStoreEmployeesQuery model)
             => await Mediator.Send(new GetPagedListStoreEmployeesQuery { PageNumber = model.PageNumber, PageSize = model.PageSize });
 
         [Authorize(Roles = "Admin, Store_Manager")]
-        [HttpPost("/employees")]
+        [HttpPost("employees")]
         public async Task<BaseResult<Guid>> AddEmployee([FromBody] AddEmployeeCommand model)
         {
             return await Mediator.Send(model);

@@ -13,6 +13,7 @@ namespace QuickServe.Application.DTOs.Ingredients.Request
     {
         public string Name { get; set; } = null!;
         public decimal Price { get; set; }
+        public int DefaultQuantity { get; set; }
         public int Calo { get; set; }
         public string Description { get; set; } = null!;
         public IFormFile Image { get; set; }
@@ -28,6 +29,9 @@ namespace QuickServe.Application.DTOs.Ingredients.Request
 
             RuleFor(x => x.Price)
                 .GreaterThan(0).WithMessage(translator["Giá phải lớn hơn 0."]);
+           
+            RuleFor(x => x.DefaultQuantity)
+               .GreaterThan(-1).WithMessage(translator["Giá phải lớn hơn -1."]);
 
             RuleFor(x => x.Calo)
                 .GreaterThanOrEqualTo(0).WithMessage(translator["Calo phải lớn hơn hoặc bằng 0."]);

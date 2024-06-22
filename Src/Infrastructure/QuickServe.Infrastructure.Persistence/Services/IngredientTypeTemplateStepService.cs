@@ -145,6 +145,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 {
                     Id = productTemplate.Id,
                     Name = productTemplate.Name,
+                    Price = productTemplate.Price,
                     Templates = templates,
                 };
 
@@ -167,11 +168,19 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 {
                     return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.Không_tìm_thấy_bước_mẫu(request.TemplateStepId)), nameof(request.TemplateStepId)));
                 }
-                
+
                 var its = new List<IngredientTypeResponse>();
                 foreach (var it in templateStep.IngredientTypeTemplateSteps)
                 {
                     var ingreStep = new IngredientTypeResponse(it);
+                    var ingredients = new List<IngredientInfoResponse>();
+                    foreach (var ingredient in it.IngredientType.Ingredients.
+                        Where(c => c.Status == (int)IngredientStatus.Active))
+                    {
+                        var ingredientRes = new IngredientInfoResponse(ingredient);
+                        ingredients.Add(ingredientRes);
+                    }
+                    ingreStep.Ingredients = ingredients;
                     its.Add(ingreStep);
                 }
                 var resutl = new TemplateResponse(templateStep);
@@ -240,6 +249,9 @@ namespace QuickServe.Infrastructure.Persistence.Services
             {
                 var productTemplate = await _context.ProductTemplates
                                     .Include(c => c.TemplateSteps)
+                                    .ThenInclude(c=> c.IngredientTypeTemplateSteps)
+                                    .ThenInclude(c=> c.IngredientType)
+                                    .ThenInclude(c=> c.Ingredients)
                                     .FirstOrDefaultAsync(c => c.Id == request.ProductTemplateId);
 
                 if (productTemplate == null)
@@ -250,6 +262,17 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 {
                     return new BaseResult(new Error(ErrorCode.Exception, _translator.GetString(TranslatorMessages.ProductTemplateMessages.Mẫu_sản_phẩm_tồn_tại_bước_không_hoạt_động(request.ProductTemplateId)), nameof(request.ProductTemplateId)));
                 }
+                decimal price = 0;
+                foreach(var step in productTemplate.TemplateSteps)
+                {
+                    foreach(var ingreStep in step.IngredientTypeTemplateSteps) {
+                        foreach(var ingredient in ingreStep.IngredientType.Ingredients)
+                        {
+                            price += ingredient.Price;
+                        }
+                    }
+                }
+                productTemplate.Price = price;
                 productTemplate.Status = (int)ProductTemplateStatus.Active;
                 await _unitOfWork.SaveChangesAsync();
                 return new BaseResult();

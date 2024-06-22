@@ -15,12 +15,14 @@ namespace QuickServe.Application.DTOs.Ingredients.Responses
             Name = ingredient.Name;
             Price = ingredient.Price;
             Calo  = ingredient.Calo;
+            DefaultQuantity = ingredient.DefaultQuantity;
             ImageUrl = ingredient.ImageUrl;
         }
         public long Id { get; set; }
         public string Name { get; set; } = null!;
         public decimal Price { get; set; }
         public int Calo { get; set; }
+        public int DefaultQuantity { get; set; }
         public string ImageUrl { get; set; } = null!;
     }
 }

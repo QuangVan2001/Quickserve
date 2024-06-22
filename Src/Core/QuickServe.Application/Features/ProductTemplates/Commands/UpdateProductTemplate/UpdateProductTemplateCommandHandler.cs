@@ -28,7 +28,7 @@ public class UpdateProductTemplateCommandHandler(IProductTemplateRepository prod
         {
             return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.ProductTemplateMessages.Tên_mẫu_sản_phẩm_đã_tồn_tại(request.Name)), nameof(request.Name)));
         }
-        productTemplate.Update(request.Name.Trim(), request.Price, request.Size, request.Description
+        productTemplate.Update(request.Name.Trim(), request.Size, request.Description
             , request.CategoryId);
         await unitOfWork.SaveChangesAsync();
         return new BaseResult();
