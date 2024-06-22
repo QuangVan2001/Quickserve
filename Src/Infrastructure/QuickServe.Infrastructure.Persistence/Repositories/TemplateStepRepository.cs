@@ -44,7 +44,7 @@ namespace QuickServe.Infrastructure.Persistence.Repositories
                 throw new Exception("Không tìm thấy sản phẩm mẫu");
             }
             var query = templateSteps.Where(t=> t.ProductTemplateId == productTemplateId)
-                .OrderBy(c => c.Created).AsQueryable();
+                .OrderByDescending(c => c.Created).AsQueryable();
             if (!string.IsNullOrEmpty(name))
             {
                 query = query.Where(c => c.Name.Contains(name));
