@@ -247,13 +247,13 @@ namespace QuickServe.Infrastructure.Identity.Services
 
         }
 
-        public async Task<BaseResult> CreateAccount(CreateAccountRequest request)
+        public async Task<BaseResult<Guid>> CreateAccount(CreateAccountRequest request)
         {
             // Assgin role to exist account
             var existUser = await userManager.FindByEmailAsync(request.Email);
             if (existUser != null)
             {
-                return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_đã_tồn_tại_với_Email(request.Email)), nameof(request.Email)));
+                return new BaseResult<Guid>(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.AccountMessages.Tài_khoản_đã_tồn_tại_với_Email(request.Email)), nameof(request.Email)));
             }
 
             // Create new account
@@ -268,9 +268,9 @@ namespace QuickServe.Infrastructure.Identity.Services
                 identityResult = await userManager.AddToRoleAsync(user, request.Role);
             }
             if (identityResult.Succeeded)
-                return new BaseResult();
+                return new BaseResult<Guid>(user.Id);
 
-            return new BaseResult(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
+            return new BaseResult<Guid>(identityResult.Errors.Select(p => new Error(ErrorCode.ErrorInIdentity, p.Description)));
         }
 
         public async Task<PagenationResponseDto<AccountDto>> GetPagedListAsync(int pageNumber, int pageSize, string name, string[] roles)

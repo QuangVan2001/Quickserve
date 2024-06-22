@@ -14,10 +14,12 @@ namespace QuickServe.WebApi.Controllers.v1
 {
     public class SessionsController : BaseApiController
     {
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Store_Manager, Staff")]
         [HttpGet("paged")]
         public async Task<PagedResponse<SessionDto>> GetPagedListSessionByStore([FromQuery] GetPagedListSessionQuery model)
             => await Mediator.Send(model);
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Store_Manager, Staff")]
         [HttpGet("{id}")]
         public async Task<BaseResult<SessionDto>> GetSessionById(long id)
             => await Mediator.Send(new GetSessionByIdQuery { Id = id });
@@ -27,6 +29,7 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult> CreateSession(CreateSessionCommand model)
             => await Mediator.Send(model);
 
+
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Store_Manager")]
         public async Task<BaseResult> UpdateSession(long id, UpdateSessionCommand model)
@@ -34,6 +37,7 @@ namespace QuickServe.WebApi.Controllers.v1
             model.Id = id;
             return await Mediator.Send(model);
         }
+
 
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Store_Manager")]
