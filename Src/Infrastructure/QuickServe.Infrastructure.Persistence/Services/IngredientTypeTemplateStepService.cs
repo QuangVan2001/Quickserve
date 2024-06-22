@@ -135,6 +135,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                             var ingredientRes = new IngredientInfoResponse(ingredient);
                             ingredients.Add(ingredientRes);
                         }
+                        ingreStep.Ingredients = ingredients;
                         its.Add(ingreStep);
                     }
                     templateStep.IngredientTypes = its;
