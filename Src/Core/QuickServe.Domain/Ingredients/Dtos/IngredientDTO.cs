@@ -14,6 +14,7 @@ namespace QuickServe.Domain.Ingredients.Dtos
             Name = ingredient.Name;
             Price = ingredient.Price;
             Calo = ingredient.Calo;
+            DefaultQuantity = ingredient.DefaultQuantity;
             Description = ingredient.Description;
             ImageUrl = ingredient.ImageUrl;
             IngredientTypeId = ingredient.IngredientTypeId;
@@ -28,6 +29,7 @@ namespace QuickServe.Domain.Ingredients.Dtos
         public string Name { get; set; } = null!;
         public decimal Price { get; set; }
         public int Calo { get; set; }
+        public int DefaultQuantity { get; set; }
         public string Description { get; set; } = null!;
         public string ImageUrl { get; set; } = null!;
         public long IngredientTypeId { get; set; }

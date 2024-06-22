@@ -48,13 +48,12 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 var productTemplate = new ProductTemplate
                 {
                     Name = request.Name,
-                    Price = request.Price,
+                    Price = 0,
                     Size = request.Size,
                     Description = request.Description,
                     CategoryId = request.CategoryId,
                     Status = (int)ProductTemplateStatus.Inactive,
                     Category = category
-
                 };
 
                 if (request.Image != null)
