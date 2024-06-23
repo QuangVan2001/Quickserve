@@ -50,17 +50,22 @@ namespace QuickServe.Infrastructure.Persistence.Services
                         nameof(request.ProductTemplateId)));
                 }
 
-                foreach(var  template in productTemplate.TemplateSteps) {
+                foreach(var  template in request.TemplateSteps) {
 
                     if (await _context.TemplateSteps
                         .AnyAsync(c => c.Name.ToLower() == template.Name.ToLower().Trim()))
                     {
                         return new BaseResult(new Error(ErrorCode.NotFound,
-                            _translator.GetString(TranslatorMessages.ProductTemplateMessages.Tên_mẫu_sản_phẩm_đã_tồn_tại(template.Name)),
+                            _translator.GetString(TranslatorMessages.TemplateStepMessages.Tên_bước_mẫu_đã_tồn_tại(template.Name)),
                             nameof(template.Name)));
 
                     }
-                    foreach (var ingreType in template.IngredientTypeTemplateSteps)
+                    var result = new TemplateStep
+                    {
+                        Name = template.Name.Trim(),
+                    };
+                    await _context.TemplateSteps.AddAsync(result);
+                    foreach (var ingreType in template.IngredientTypes)
                     {
                         var ingredientType = await _context.IngredientTypes
                             .FirstOrDefaultAsync(i => i.Id == ingreType.IngredientTypeId);
@@ -69,19 +74,22 @@ namespace QuickServe.Infrastructure.Persistence.Services
                             return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.Không_tìm_thấy_loại_nguyên_liệu(ingreType.IngredientTypeId)), nameof(ingreType.IngredientTypeId)));
                         }
                     }
-                    await _context.TemplateSteps.AddAsync(template);
-                    foreach (var newIngredientType in template.IngredientTypeTemplateSteps)
+                    await _context.TemplateSteps.AddAsync(new TemplateStep
+                    {
+                        Name = template.Name.Trim(),
+                    });
+                    foreach (var newIngredientType in template.IngredientTypes)
                     {
                         var ingredientProduct = new IngredientTypeTemplateStep
                         {
-                            TemplateStepId = newIngredientType.TemplateStepId,
+                            TemplateStepId = result.Id,
                             IngredientTypeId = newIngredientType.IngredientTypeId,
                             QuantityMax = newIngredientType.QuantityMax,
                             QuantityMin = newIngredientType.QuantityMin,
                         };
                         await _context.IngredientTypeTemplateSteps.AddAsync(ingredientProduct);
                     }
-                    template.Update((int)TemplateStepStatus.Active);
+                    result.Update((int)TemplateStepStatus.Active);
                 }
                
                
