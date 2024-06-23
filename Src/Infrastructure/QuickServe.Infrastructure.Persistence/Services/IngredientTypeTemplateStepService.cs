@@ -18,6 +18,9 @@ using QuickServe.Application.Utils.Enums;
 using System.ComponentModel.Design;
 using QuickServe.Infrastructure.Resources.Services;
 using QuickServe.Application.DTOs.Ingredients.Responses;
+using QuickServe.Application.Features.TemplateSteps.Commands.CreateTemplateStep;
+using QuickServe.Domain.TemplateSteps.Entities;
+using QuickServe.Domain.IngredientTypes.Entities;
 
 namespace QuickServe.Infrastructure.Persistence.Services
 {
@@ -33,45 +36,55 @@ namespace QuickServe.Infrastructure.Persistence.Services
             _translator = translator;
             _unitOfWork = unitOfWork;
         }
-        public async Task<BaseResult> CreateTempalte(CreateTemplateRequest request)
+        public async Task<BaseResult> CreateTempalte(CreateTemplateStepCommand request)
         {
             try
             {
-                if (request.TemplateStepId <= 0)
+                var productTemplate = await _context.ProductTemplates
+                    .FirstOrDefaultAsync(c=> c.Id == request.ProductTemplateId);
+                if(productTemplate == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.FieldDataInvalid, _translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(request.TemplateStepId)), nameof(request.TemplateStepId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, 
+                        _translator.GetString(TranslatorMessages.ProductTemplateMessages
+                        .Không_tìm_thấy_mẫu_sản_phẩm(request.ProductTemplateId)), 
+                        nameof(request.ProductTemplateId)));
                 }
-                var templateStep = await _context.TemplateSteps.FirstOrDefaultAsync(c => c.Id == request.TemplateStepId);
 
-                if (templateStep == null)
-                {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.Không_tìm_thấy_bước_mẫu(request.TemplateStepId)), nameof(request.TemplateStepId)));
-                }
-                if(templateStep.Status ==(int) TemplateStepStatus.Active)
-                {
-                    return new BaseResult(new Error(ErrorCode.FieldDataInvalid, _translator.GetString(TranslatorMessages.TemplateStepMessages.Bước_mẫu_trạng_thái_không_đúng(templateStep.Status)), nameof(templateStep.Status)));
-                }
-                foreach(var ingreType in request.IngredientType)
-                {
-                    var ingredientType = await _context.IngredientTypes.FirstOrDefaultAsync(i => i.Id == ingreType.IngredientTypeId);
-                    if (ingredientType == null)
+                foreach(var  template in productTemplate.TemplateSteps) {
+
+                    if (await _context.TemplateSteps
+                        .AnyAsync(c => c.Name.ToLower() == template.Name.ToLower().Trim()))
                     {
-                        return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.Không_tìm_thấy_loại_nguyên_liệu(ingreType.IngredientTypeId)), nameof(ingreType.IngredientTypeId)));
+                        return new BaseResult(new Error(ErrorCode.NotFound,
+                            _translator.GetString(TranslatorMessages.ProductTemplateMessages.Tên_mẫu_sản_phẩm_đã_tồn_tại(template.Name)),
+                            nameof(template.Name)));
+
                     }
+                    foreach (var ingreType in template.IngredientTypeTemplateSteps)
+                    {
+                        var ingredientType = await _context.IngredientTypes
+                            .FirstOrDefaultAsync(i => i.Id == ingreType.IngredientTypeId);
+                        if (ingredientType == null)
+                        {
+                            return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.Không_tìm_thấy_loại_nguyên_liệu(ingreType.IngredientTypeId)), nameof(ingreType.IngredientTypeId)));
+                        }
+                    }
+                    await _context.TemplateSteps.AddAsync(template);
+                    foreach (var newIngredientType in template.IngredientTypeTemplateSteps)
+                    {
+                        var ingredientProduct = new IngredientTypeTemplateStep
+                        {
+                            TemplateStepId = newIngredientType.TemplateStepId,
+                            IngredientTypeId = newIngredientType.IngredientTypeId,
+                            QuantityMax = newIngredientType.QuantityMax,
+                            QuantityMin = newIngredientType.QuantityMin,
+                        };
+                        await _context.IngredientTypeTemplateSteps.AddAsync(ingredientProduct);
+                    }
+                    template.Update((int)TemplateStepStatus.Active);
                 }
                
-                foreach (var newIngredientType in request.IngredientType)
-                {
-                    var ingredientProduct = new IngredientTypeTemplateStep
-                    {
-                        TemplateStepId = request.TemplateStepId,
-                        IngredientTypeId = newIngredientType.IngredientTypeId,
-                        QuantityMax = newIngredientType.QuantityMax,
-                        QuantityMin = newIngredientType.QuantityMin,
-                    };
-                    await _context.IngredientTypeTemplateSteps.AddAsync(ingredientProduct);
-                }
-                templateStep.Update((int)TemplateStepStatus.Active);
+               
                 await _unitOfWork.SaveChangesAsync();
                 return new BaseResult();
             }
@@ -80,6 +93,11 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 return new BaseResult($"Đã xảy ra lỗi khi tạo mẫu: {ex.Message}");
             }
     
+        }
+
+        public Task<BaseResult> CreateTempalte(CreateTemplateRequest request)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<BaseResult> DeleteTemplate(DeleteTemplateRequest request)

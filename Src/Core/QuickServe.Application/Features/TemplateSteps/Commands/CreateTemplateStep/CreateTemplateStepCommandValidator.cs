@@ -12,12 +12,13 @@ namespace QuickServe.Application.Features.TemplateSteps.Commands.CreateTemplateS
     {
         public CreateTemplateStepCommandValidator(ITranslator translator)
         {
-            RuleFor(x => x.Name)
-                 .NotEmpty().WithMessage(translator["Tên là bắt buộc."])
-                 .Length(2, 40).WithMessage(translator["Tên phải có độ dài từ 2 đến 40 ký tự."]);
+
             RuleFor(x => x.ProductTemplateId)
                 .NotEmpty().WithMessage(translator["ProductTemplateId là bắt buộc."])
                 .GreaterThan(0).WithMessage(translator["ProductTemplateId phải lớn hơn 0."]);
+            RuleFor(x => x.TemplateSteps)
+              .Must(ingredientTypes => ingredientTypes.Select(i => i.Name).Distinct().Count() == ingredientTypes.Count)
+              .WithMessage("Mỗi bước chỉ được xuất hiện một lần.");
         }
     }
 }
