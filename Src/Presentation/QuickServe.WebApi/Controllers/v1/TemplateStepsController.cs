@@ -37,9 +37,6 @@ namespace QuickServe.WebApi.Controllers.v1
             return await Mediator.Send(model);
         }
 
-        [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> DeleteTemplateStep(long id)
-            => await Mediator.Send(new DeleteTemplateStepCommand { Id = id });
+        
     }
 }
