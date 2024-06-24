@@ -13,7 +13,7 @@ namespace QuickServe.Application.Features.TemplateSteps.Commands.CreateTemplateS
     public class CreateTemplateStepCommand : IRequest<BaseResult>
     {
         public long ProductTemplateId { get; set; }
-        public TemplateStepRequest TemplateSteps { get; set; }
+        public TemplateStepRequest TemplateStep { get; set; }
     }
 
 }

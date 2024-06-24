@@ -53,19 +53,19 @@ namespace QuickServe.Infrastructure.Persistence.Services
 
 
                 if (await _context.TemplateSteps
-                    .AnyAsync(c => c.Name.ToLower() == request.TemplateSteps.Name.ToLower().Trim()))
+                    .AnyAsync(c => c.Name.ToLower() == request.TemplateStep.Name.ToLower().Trim()))
                 {
                     return new BaseResult(new Error(ErrorCode.NotFound,
-                        _translator.GetString(TranslatorMessages.TemplateStepMessages.Tên_bước_mẫu_đã_tồn_tại(request.TemplateSteps.Name)),
-                        nameof(request.TemplateSteps.Name)));
+                        _translator.GetString(TranslatorMessages.TemplateStepMessages.Tên_bước_mẫu_đã_tồn_tại(request.TemplateStep.Name)),
+                        nameof(request.TemplateStep.Name)));
 
                 }
                 var result = new TemplateStep
                 {
-                    Name = request.TemplateSteps.Name.Trim(),
+                    Name = request.TemplateStep.Name.Trim(),
                 };
                 await _context.TemplateSteps.AddAsync(result);
-                foreach (var ingreType in request.TemplateSteps.IngredientTypes)
+                foreach (var ingreType in request.TemplateStep.IngredientTypes)
                 {
                     var ingredientType = await _context.IngredientTypes
                         .FirstOrDefaultAsync(i => i.Id == ingreType.IngredientTypeId);
@@ -75,7 +75,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                     }
                 }
                
-                foreach (var newIngredientType in request.TemplateSteps.IngredientTypes)
+                foreach (var newIngredientType in request.TemplateStep.IngredientTypes)
                 {
                     var ingredientStep = new IngredientTypeTemplateStep
                     {
