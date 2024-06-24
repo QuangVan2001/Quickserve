@@ -21,6 +21,7 @@ using QuickServe.Application.DTOs.Ingredients.Responses;
 using QuickServe.Application.Features.TemplateSteps.Commands.CreateTemplateStep;
 using QuickServe.Domain.TemplateSteps.Entities;
 using QuickServe.Domain.IngredientTypes.Entities;
+using System.Net;
 
 namespace QuickServe.Infrastructure.Persistence.Services
 {
@@ -50,49 +51,44 @@ namespace QuickServe.Infrastructure.Persistence.Services
                         nameof(request.ProductTemplateId)));
                 }
 
-                foreach(var  template in request.TemplateSteps) {
 
-                    if (await _context.TemplateSteps
-                        .AnyAsync(c => c.Name.ToLower() == template.Name.ToLower().Trim()))
-                    {
-                        return new BaseResult(new Error(ErrorCode.NotFound,
-                            _translator.GetString(TranslatorMessages.TemplateStepMessages.Tên_bước_mẫu_đã_tồn_tại(template.Name)),
-                            nameof(template.Name)));
+                if (await _context.TemplateSteps
+                    .AnyAsync(c => c.Name.ToLower() == request.TemplateSteps.Name.ToLower().Trim()))
+                {
+                    return new BaseResult(new Error(ErrorCode.NotFound,
+                        _translator.GetString(TranslatorMessages.TemplateStepMessages.Tên_bước_mẫu_đã_tồn_tại(request.TemplateSteps.Name)),
+                        nameof(request.TemplateSteps.Name)));
 
+                }
+                var result = new TemplateStep
+                {
+                    Name = request.TemplateSteps.Name.Trim(),
+                };
+                await _context.TemplateSteps.AddAsync(result);
+                foreach (var ingreType in request.TemplateSteps.IngredientTypes)
+                {
+                    var ingredientType = await _context.IngredientTypes
+                        .FirstOrDefaultAsync(i => i.Id == ingreType.IngredientTypeId);
+                    if (ingredientType == null)
+                    {
+                        return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.Không_tìm_thấy_loại_nguyên_liệu(ingreType.IngredientTypeId)), nameof(ingreType.IngredientTypeId)));
                     }
-                    var result = new TemplateStep
-                    {
-                        Name = template.Name.Trim(),
-                    };
-                    await _context.TemplateSteps.AddAsync(result);
-                    foreach (var ingreType in template.IngredientTypes)
-                    {
-                        var ingredientType = await _context.IngredientTypes
-                            .FirstOrDefaultAsync(i => i.Id == ingreType.IngredientTypeId);
-                        if (ingredientType == null)
-                        {
-                            return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.Không_tìm_thấy_loại_nguyên_liệu(ingreType.IngredientTypeId)), nameof(ingreType.IngredientTypeId)));
-                        }
-                    }
-                    await _context.TemplateSteps.AddAsync(new TemplateStep
-                    {
-                        Name = template.Name.Trim(),
-                    });
-                    foreach (var newIngredientType in template.IngredientTypes)
-                    {
-                        var ingredientProduct = new IngredientTypeTemplateStep
-                        {
-                            TemplateStepId = result.Id,
-                            IngredientTypeId = newIngredientType.IngredientTypeId,
-                            QuantityMax = newIngredientType.QuantityMax,
-                            QuantityMin = newIngredientType.QuantityMin,
-                        };
-                        await _context.IngredientTypeTemplateSteps.AddAsync(ingredientProduct);
-                    }
-                    result.Update((int)TemplateStepStatus.Active);
                 }
                
-               
+                foreach (var newIngredientType in request.TemplateSteps.IngredientTypes)
+                {
+                    var ingredientStep = new IngredientTypeTemplateStep
+                    {
+                        TemplateStepId = result.Id,
+                        IngredientTypeId = newIngredientType.IngredientTypeId,
+                        QuantityMax = newIngredientType.QuantityMax,
+                        QuantityMin = newIngredientType.QuantityMin,
+                    };
+                    await _context.IngredientTypeTemplateSteps.AddAsync(ingredientStep);
+                }
+                result.Update((int)TemplateStepStatus.Active);
+
+
                 await _unitOfWork.SaveChangesAsync();
                 return new BaseResult();
             }
@@ -103,10 +99,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
     
         }
 
-        public Task<BaseResult> CreateTempalte(CreateTemplateRequest request)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public async Task<BaseResult> DeleteTemplate(DeleteTemplateRequest request)
         {
@@ -123,7 +116,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 {
                     _context.IngredientTypeTemplateSteps.RemoveRange(existsTemplate);
                 }
-                templateStep.Status =(int) TemplateStepStatus.Inactive;
+                _context.TemplateSteps.Remove(templateStep);
                 templateStep.ProductTemplate.Status = (int)ProductTemplateStatus.Inactive;
                 await _unitOfWork.SaveChangesAsync();
                 return new BaseResult();
