@@ -31,6 +31,9 @@ using QuickServe.Application.Interfaces.Nutritions;
 using QuickServe.Application.Interfaces.IngredientNutritions;
 using QuickServe.Application.Interfaces.IOrderServices;
 using QuickServe.Application.Interfaces.IngredientSessions;
+using QuickServe.Application.Utils.Payments;
+using Microsoft.Extensions.Configuration;
+using QuickServe.Domain.Settings;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,12 +47,14 @@ builder.Services.AddResourcesInfrastructure();
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 builder.Services.AddScoped<IIngredientService, IngredientService>();
 builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<IProductTemplateService,  ProductTemplateService>();
+builder.Services.AddScoped<IProductTemplateService, ProductTemplateService>();
 builder.Services.AddScoped<INutritionService, NutritionService>();
 builder.Services.AddScoped<IIngredientNutritionService, IngredientNutritionService>();
 builder.Services.AddScoped<IIngredientTypeTemplateStepService, IngredientTypeTemplateStepService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IIngredientSessionService, IngredientSessionService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IVNPayService, VNPayService>();
 builder.Services.AddDistributedMemoryCache();
 
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -76,8 +81,10 @@ builder.Services.AddCustomLocalization(builder.Configuration);
 //builder.Services.AddHealthChecks();
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
-
 builder.Services.AddJwt(builder.Configuration);
+
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection(nameof(AppSettings)));
+
 
 var app = builder.Build();
 

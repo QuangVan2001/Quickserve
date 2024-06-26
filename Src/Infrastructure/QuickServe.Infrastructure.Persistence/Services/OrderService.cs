@@ -56,7 +56,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                     Name = productTemplate.Name,
                     Quantity = productTemplate.Quantity,
                     ProductTemplateId = productTemplate.Id,
-                    Price = productTemplate.Price
+                    //Price = productTemplate.Price hiện tại ko cộng giá của productTemplate
                 };
 
                 //Tính toán nếu có nguyên liệu được thêm vào
