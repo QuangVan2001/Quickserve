@@ -3,13 +3,14 @@ using QuickServe.Application.Interfaces.Repositories;
 using QuickServe.Application.Interfaces.UserInterfaces;
 using QuickServe.Application.Wrappers;
 using QuickServe.Domain.Accounts.Entities;
+using QuickServe.Utils.Enums;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace QuickServe.Application.Features.Accounts.Commands
 {
-    public class CreateAccountCommandHandler(IAccountServices accountServices, IGenericRepository<Account> accountRepository) : IRequestHandler<CreateAccountCommand, BaseResult<Guid>>
+    public class CreateAccountCommandHandler(IAccountServices accountServices, IStaffRepository staffRepository ,IGenericRepository<Account> accountRepository) : IRequestHandler<CreateAccountCommand, BaseResult<Guid>>
     {
         public async Task<BaseResult<Guid>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
@@ -26,9 +27,16 @@ namespace QuickServe.Application.Features.Accounts.Commands
                 {
                     Email = request.Email,
                     UserName = request.UserName,
-                    Name = request.UserName
+                    Id = result.Data,
+                    Name = ""
                 };
+
                 await accountRepository.AddAsync(account);
+                if (request.Role == AccountRole.Staff.ToString() ||
+                    request.Role == AccountRole.Store_Manager.ToString())
+                {
+                    staffRepository.AddStaffToStore(request.StoreId, account.Id);
+                }
                 return new BaseResult<Guid>(account.Id);
             }
             return new BaseResult<Guid>(result.Errors);

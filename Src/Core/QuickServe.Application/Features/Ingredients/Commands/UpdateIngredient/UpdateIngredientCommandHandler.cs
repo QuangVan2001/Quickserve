@@ -17,7 +17,7 @@ public class UpdateIngredientCommandHandler(IIngredientRepository ingredientRepo
         {
             return new BaseResult(new Error(ErrorCode.FieldDataInvalid, translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(request.Id)), nameof(request.Id)));
         }
-        var ingredient = await ingredientRepositiry.GetByIdAsync(request.Id);
+        var ingredient = await ingredientRepositiry.GetIngredientByIdAsync(request.Id);
 
         if (ingredient is null)
         {
@@ -27,9 +27,16 @@ public class UpdateIngredientCommandHandler(IIngredientRepository ingredientRepo
         {
             return new BaseResult(new Error(ErrorCode.Duplicate, translator.GetString(TranslatorMessages.IngredientMessages.Tên_nguyên_liệu_đã_tồn_tại(request.Name)), nameof(request.Name)));
         }
-        ingredient.Update(request.Name.Trim(), request.Price, request.Calo, request.Description
-            , request.IngredientTypeId);
 
+        ingredient.Update(request.Name.Trim(), request.Price, request.Calo, request.DefaultQuantity, request.Description
+            , request.IngredientTypeId);
+        if(ingredient.Price != request.Price)
+        {
+            foreach (var ingreStep in ingredient.IngredientType.IngredientTypeTemplateSteps)
+            {
+                ingreStep.TemplateStep.ProductTemplate.Price += (request.Price - ingredient.Price)* ingredient.DefaultQuantity;
+            }
+        }
         await unitOfWork.SaveChangesAsync();
         return new BaseResult();
     }

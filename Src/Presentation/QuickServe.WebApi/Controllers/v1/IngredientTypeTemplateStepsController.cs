@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickServe.Application.DTOs.IngredientTypeTemplateSteps.Request;
 using QuickServe.Application.DTOs.ProductTemplates.Request;
+using QuickServe.Application.Features.TemplateSteps.Commands.CreateTemplateStep;
 using QuickServe.Application.Interfaces.IngredientTypeTemplateSteps;
 using QuickServe.Application.Wrappers;
 using System;
@@ -27,7 +28,7 @@ namespace QuickServe.WebApi.Controllers.v1
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> CreateTemplate(CreateTemplateRequest request)
+        public async Task<BaseResult> CreateTemplate(CreateTemplateStepCommand request)
             => await _service.CreateTempalte(request);
 
         [HttpPut("{templateStepId}")]

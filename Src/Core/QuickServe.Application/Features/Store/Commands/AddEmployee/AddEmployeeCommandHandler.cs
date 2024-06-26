@@ -11,14 +11,18 @@ using QuickServe.Application.Features.Accounts.Commands;
 
 namespace QuickServe.Application.Features.Store.Commands.AddEmployee
 {
-    public class AddEmployeeCommandHandler(IStaffRepository staffRepository, IAccountServices accountServices, ITranslator translator, IMediator mediator) : IRequestHandler<AddEmployeeCommand, BaseResult<Guid>>
+    public class AddEmployeeCommandHandler(IAccountRepository accountRepository , ITranslator translator, IMediator mediator, IAuthenticatedUserService authenticatedUserService) : IRequestHandler<AddEmployeeCommand, BaseResult<Guid>>
     {
         public async Task<BaseResult<Guid>> Handle(AddEmployeeCommand request, CancellationToken cancellationToken)
         {
             try
             {
+                var currentUser = await accountRepository.FindByIdAsync(Guid.Parse(authenticatedUserService.UserId));
+                if (currentUser == null)
+                {
+                    return new BaseResult<Guid>(new Error(ErrorCode.NotFound, translator.GetString("Không tim thấy tài khoản"), nameof(authenticatedUserService.UserId)));
+                }
                 var result = await mediator.Send(new CreateAccountCommand { Email = request.Email, UserName = request.UserName, Password = request.Password, Role = AccountRole.Staff.ToString() }, cancellationToken);
-                staffRepository.AddStaffToStore(request.StoreId, result.Data);
                 return new BaseResult<Guid>(result.Data);
             }
             catch (Exception ex)

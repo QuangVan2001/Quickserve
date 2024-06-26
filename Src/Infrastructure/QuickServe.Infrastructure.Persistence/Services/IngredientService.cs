@@ -56,6 +56,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                     Name = request.Name,
                     Price = request.Price,
                     Calo = request.Calo,
+                    DefaultQuantity = request.DefaultQuantity,
                     Description = request.Description,
                     IngredientTypeId = request.IngredientTypeId,
                     Status = (int)IngredientStatus.Active,

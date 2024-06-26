@@ -28,10 +28,6 @@ namespace QuickServe.WebApi.Controllers.v1
         public async Task<BaseResult<TemplateStepDTO>> GetTemplateStepById(long id)
             => await Mediator.Send(new GetTemplateStepByIdQuery { Id = id });
 
-        [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> CreateTemplateStep(CreateTemplateStepCommand model)
-            => await Mediator.Send(model);
 
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
@@ -41,9 +37,6 @@ namespace QuickServe.WebApi.Controllers.v1
             return await Mediator.Send(model);
         }
 
-        [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Brand_Manager")]
-        public async Task<BaseResult> DeleteTemplateStep(long id)
-            => await Mediator.Send(new DeleteTemplateStepCommand { Id = id });
+        
     }
 }

@@ -18,6 +18,10 @@ using QuickServe.Application.Utils.Enums;
 using System.ComponentModel.Design;
 using QuickServe.Infrastructure.Resources.Services;
 using QuickServe.Application.DTOs.Ingredients.Responses;
+using QuickServe.Application.Features.TemplateSteps.Commands.CreateTemplateStep;
+using QuickServe.Domain.TemplateSteps.Entities;
+using QuickServe.Domain.IngredientTypes.Entities;
+using System.Net;
 
 namespace QuickServe.Infrastructure.Persistence.Services
 {
@@ -33,45 +37,58 @@ namespace QuickServe.Infrastructure.Persistence.Services
             _translator = translator;
             _unitOfWork = unitOfWork;
         }
-        public async Task<BaseResult> CreateTempalte(CreateTemplateRequest request)
+        public async Task<BaseResult> CreateTempalte(CreateTemplateStepCommand request)
         {
             try
             {
-                if (request.TemplateStepId <= 0)
+                var productTemplate = await _context.ProductTemplates
+                    .FirstOrDefaultAsync(c=> c.Id == request.ProductTemplateId);
+                if(productTemplate == null)
                 {
-                    return new BaseResult(new Error(ErrorCode.FieldDataInvalid, _translator.GetString(TranslatorMessages.RequestMessage.Trường_id_không_hợp_lệ(request.TemplateStepId)), nameof(request.TemplateStepId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound, 
+                        _translator.GetString(TranslatorMessages.ProductTemplateMessages
+                        .Không_tìm_thấy_mẫu_sản_phẩm(request.ProductTemplateId)), 
+                        nameof(request.ProductTemplateId)));
                 }
-                var templateStep = await _context.TemplateSteps.FirstOrDefaultAsync(c => c.Id == request.TemplateStepId);
 
-                if (templateStep == null)
+
+                if (await _context.TemplateSteps
+                    .AnyAsync(c => c.Name.ToLower() == request.Name.ToLower().Trim()))
                 {
-                    return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.Không_tìm_thấy_bước_mẫu(request.TemplateStepId)), nameof(request.TemplateStepId)));
+                    return new BaseResult(new Error(ErrorCode.NotFound,
+                        _translator.GetString(TranslatorMessages.TemplateStepMessages.Tên_bước_mẫu_đã_tồn_tại(request.Name)),
+                        nameof(request.Name)));
+
                 }
-                if(templateStep.Status ==(int) TemplateStepStatus.Active)
+                var result = new TemplateStep
                 {
-                    return new BaseResult(new Error(ErrorCode.FieldDataInvalid, _translator.GetString(TranslatorMessages.TemplateStepMessages.Bước_mẫu_trạng_thái_không_đúng(templateStep.Status)), nameof(templateStep.Status)));
-                }
-                foreach(var ingreType in request.IngredientType)
+                    Name = request.Name.Trim(),
+                };
+                await _context.TemplateSteps.AddAsync(result);
+                foreach (var ingreType in request.IngredientTypes)
                 {
-                    var ingredientType = await _context.IngredientTypes.FirstOrDefaultAsync(i => i.Id == ingreType.IngredientTypeId);
+                    var ingredientType = await _context.IngredientTypes
+                        .FirstOrDefaultAsync(i => i.Id == ingreType.IngredientTypeId);
                     if (ingredientType == null)
                     {
                         return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.IngredientTypeMessages.Không_tìm_thấy_loại_nguyên_liệu(ingreType.IngredientTypeId)), nameof(ingreType.IngredientTypeId)));
                     }
                 }
                
-                foreach (var newIngredientType in request.IngredientType)
+                foreach (var newIngredientType in request.IngredientTypes)
                 {
-                    var ingredientProduct = new IngredientTypeTemplateStep
+                    var ingredientStep = new IngredientTypeTemplateStep
                     {
-                        TemplateStepId = request.TemplateStepId,
+                        TemplateStepId = result.Id,
                         IngredientTypeId = newIngredientType.IngredientTypeId,
                         QuantityMax = newIngredientType.QuantityMax,
                         QuantityMin = newIngredientType.QuantityMin,
                     };
-                    await _context.IngredientTypeTemplateSteps.AddAsync(ingredientProduct);
+                    await _context.IngredientTypeTemplateSteps.AddAsync(ingredientStep);
                 }
-                templateStep.Update((int)TemplateStepStatus.Active);
+                result.Update((int)TemplateStepStatus.Active);
+
+
                 await _unitOfWork.SaveChangesAsync();
                 return new BaseResult();
             }
@@ -81,6 +98,8 @@ namespace QuickServe.Infrastructure.Persistence.Services
             }
     
         }
+
+       
 
         public async Task<BaseResult> DeleteTemplate(DeleteTemplateRequest request)
         {
@@ -97,7 +116,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 {
                     _context.IngredientTypeTemplateSteps.RemoveRange(existsTemplate);
                 }
-                templateStep.Status =(int) TemplateStepStatus.Inactive;
+                _context.TemplateSteps.Remove(templateStep);
                 templateStep.ProductTemplate.Status = (int)ProductTemplateStatus.Inactive;
                 await _unitOfWork.SaveChangesAsync();
                 return new BaseResult();
@@ -135,6 +154,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                             var ingredientRes = new IngredientInfoResponse(ingredient);
                             ingredients.Add(ingredientRes);
                         }
+                        ingreStep.Ingredients = ingredients;
                         its.Add(ingreStep);
                     }
                     templateStep.IngredientTypes = its;
@@ -144,6 +164,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 {
                     Id = productTemplate.Id,
                     Name = productTemplate.Name,
+                    Price = productTemplate.Price,
                     Templates = templates,
                 };
 
@@ -166,11 +187,19 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 {
                     return new BaseResult(new Error(ErrorCode.NotFound, _translator.GetString(TranslatorMessages.TemplateStepMessages.Không_tìm_thấy_bước_mẫu(request.TemplateStepId)), nameof(request.TemplateStepId)));
                 }
-                
+
                 var its = new List<IngredientTypeResponse>();
                 foreach (var it in templateStep.IngredientTypeTemplateSteps)
                 {
                     var ingreStep = new IngredientTypeResponse(it);
+                    var ingredients = new List<IngredientInfoResponse>();
+                    foreach (var ingredient in it.IngredientType.Ingredients.
+                        Where(c => c.Status == (int)IngredientStatus.Active))
+                    {
+                        var ingredientRes = new IngredientInfoResponse(ingredient);
+                        ingredients.Add(ingredientRes);
+                    }
+                    ingreStep.Ingredients = ingredients;
                     its.Add(ingreStep);
                 }
                 var resutl = new TemplateResponse(templateStep);
@@ -239,6 +268,9 @@ namespace QuickServe.Infrastructure.Persistence.Services
             {
                 var productTemplate = await _context.ProductTemplates
                                     .Include(c => c.TemplateSteps)
+                                    .ThenInclude(c=> c.IngredientTypeTemplateSteps)
+                                    .ThenInclude(c=> c.IngredientType)
+                                    .ThenInclude(c=> c.Ingredients)
                                     .FirstOrDefaultAsync(c => c.Id == request.ProductTemplateId);
 
                 if (productTemplate == null)
@@ -249,6 +281,17 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 {
                     return new BaseResult(new Error(ErrorCode.Exception, _translator.GetString(TranslatorMessages.ProductTemplateMessages.Mẫu_sản_phẩm_tồn_tại_bước_không_hoạt_động(request.ProductTemplateId)), nameof(request.ProductTemplateId)));
                 }
+                decimal price = 0;
+                foreach(var step in productTemplate.TemplateSteps)
+                {
+                    foreach(var ingreStep in step.IngredientTypeTemplateSteps) {
+                        foreach(var ingredient in ingreStep.IngredientType.Ingredients)
+                        {
+                            price += ingredient.Price * ingredient.DefaultQuantity;
+                        }
+                    }
+                }
+                productTemplate.Price = price;
                 productTemplate.Status = (int)ProductTemplateStatus.Active;
                 await _unitOfWork.SaveChangesAsync();
                 return new BaseResult();

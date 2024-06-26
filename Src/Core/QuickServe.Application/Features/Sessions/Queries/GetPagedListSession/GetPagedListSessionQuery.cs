@@ -7,7 +7,5 @@ namespace QuickServe.Application.Features.Sessions.Queries.GetPagedListSession;
 
 public class GetPagedListSessionQuery : PagenationRequestParameter, IRequest<PagedResponse<SessionDto>>
 {
-    public long StoreId { get; set; }
     public string Name { get; set; }
-
 }

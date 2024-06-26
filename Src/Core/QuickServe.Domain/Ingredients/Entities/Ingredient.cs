@@ -15,11 +15,12 @@ namespace QuickServe.Domain.Ingredients.Entities
             IngredientSessions = new HashSet<IngredientSession>();
             IngredientNutritions = new HashSet<IngredientNutrition>();
         }
-        public Ingredient(string name, decimal price, int calo, string description, string imageUrl, long ingredientTypeId, int status, IngredientType ingredientType)
+        public Ingredient(string name, decimal price, int calo, int defaultQuantity,string description, string imageUrl, long ingredientTypeId, int status, IngredientType ingredientType)
         {
             Name = name;
             Price = price;
             Calo = calo;
+            DefaultQuantity = defaultQuantity;
             Description = description;
             ImageUrl = imageUrl;
             IngredientTypeId = ingredientTypeId;
@@ -29,11 +30,12 @@ namespace QuickServe.Domain.Ingredients.Entities
             IngredientProducts = new HashSet<IngredientProduct>();
             IngredientSessions = new HashSet<IngredientSession>(); 
         }
-        public void Update(string name, decimal price, int calo, string description, long ingredientTypeId)
+        public void Update(string name, decimal price, int calo,int defaultQuantity, string description, long ingredientTypeId)
         {
             Name = name;
             Price = price;
             Calo = calo;
+            DefaultQuantity = defaultQuantity;
             Description = description;
             IngredientTypeId = ingredientTypeId;
         }
@@ -44,6 +46,7 @@ namespace QuickServe.Domain.Ingredients.Entities
         }
         public string Name { get; set; } = null!;
         public decimal Price { get; set; }
+        public int DefaultQuantity { get; set; }
         public int Calo { get; set; }
         public string Description { get; set; } = null!;
         public string ImageUrl { get; set; } = null!;

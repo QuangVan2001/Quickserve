@@ -9,6 +9,7 @@ public class UpdateIngredientCommand : IRequest<BaseResult>
     public string Name { get; set; }
     public decimal Price { get; set; }
     public int Calo { get; set; }
+    public int DefaultQuantity { get; set; }
     public string Description { get; set; } 
     public long IngredientTypeId { get; set; }
 }
