@@ -260,7 +260,8 @@ namespace QuickServe.Infrastructure.Identity.Services
             var user = new ApplicationUser()
             {
                 UserName = request.UserName,
-                Email = request.Email
+                Email = request.Email,
+                Name = request.Name
             };
             var identityResult = await userManager.CreateAsync(user, request.Password);
             if (identityResult.Succeeded)

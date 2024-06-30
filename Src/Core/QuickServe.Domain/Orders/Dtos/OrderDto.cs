@@ -11,12 +11,12 @@ namespace QuickServe.Domain.Orders.Dtos
         {
             Id = order.Id;
             CustomerId = order.CustomerId;
-            TotalPrice = order.TotalPrice;
+            TotalPrice = order.Amount;
             Status = order.Status;
             StoreId = order.StoreId;
         }
         public long Id { get; set; }
-        public Guid CustomerId { get; set; }
+        public Guid? CustomerId { get; set; }
         public double TotalPrice { get; set; }
         public int Status { get; set; }
         public long StoreId { get; set; }

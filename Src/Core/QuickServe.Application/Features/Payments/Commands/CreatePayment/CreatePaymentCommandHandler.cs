@@ -19,7 +19,7 @@ public class CreatePaymentCommandHandler(IPaymentService paymentService, IOrderR
         if (order == null)
             return new BaseResult<PaymentResponse>(new Error(ErrorCode.NotFound, "Order not found"));
 
-        if (order.TotalPrice != request.TotalPrice)
+        if (order.Amount != request.TotalPrice)
             return new BaseResult<PaymentResponse>(new Error(ErrorCode.NotFound, "Price not valid"));
 
         request.VNPayBankCode = "VNBANK";
