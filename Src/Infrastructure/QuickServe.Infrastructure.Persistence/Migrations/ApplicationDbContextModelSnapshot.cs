@@ -464,6 +464,9 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("OrderID");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(8, 2)");
+
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint")
                         .HasColumnName("ProductID");
@@ -488,6 +491,9 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("date");
 
@@ -495,7 +501,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid?>("CustomerId")
                         .HasColumnType("uuid")
                         .HasColumnName("Customer_id");
 
@@ -505,15 +511,15 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<long>("StoreId")
                         .HasColumnType("bigint")
                         .HasColumnName("Store_id");
-
-                    b.Property<double>("TotalPrice")
-                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -774,6 +780,9 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<string>("StoreManager")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Store", (string)null);
@@ -938,9 +947,7 @@ namespace QuickServe.Infrastructure.Persistence.Migrations
                 {
                     b.HasOne("QuickServe.Domain.Accounts.Entities.Account", "Customer")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .IsRequired()
-                        .HasConstraintName("order_customer_id_foreign");
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("QuickServe.Domain.Stores.Entities.Store", "Store")
                         .WithMany("Orders")

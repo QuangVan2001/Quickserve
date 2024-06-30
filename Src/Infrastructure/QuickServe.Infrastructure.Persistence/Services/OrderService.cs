@@ -88,7 +88,7 @@ namespace QuickServe.Infrastructure.Persistence.Services
                 orderProducts.Add(orderProuct);
 
                 //Tính cộng dồn thông tin order (giá sp sau khi thêm thành phần * số lượng)
-                order.TotalPrice += (double)product.Price * obj.Quantity;
+                order.Amount += (double)product.Price * obj.Quantity;
                 order.Status = (int)OrderStatus.Pending;
             }
 

@@ -26,7 +26,7 @@ namespace QuickServe.Domain.Stores.Entities
 
         public string Name { get; set; } = null!;
         public string Address { get; set; } = null!;
-
+        public string? StoreManager { get; set; }
         public void Update(string name, string address)
         {
             Name = name;
