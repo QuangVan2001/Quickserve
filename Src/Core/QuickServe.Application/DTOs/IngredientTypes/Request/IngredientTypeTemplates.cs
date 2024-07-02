@@ -25,6 +25,7 @@ namespace QuickServe.Application.DTOs.IngredientTypes.Request
                 .GreaterThanOrEqualTo(0).WithMessage("Số lượng tối thiểu phải lớn hơn hoặc bằng 0.");
 
             RuleFor(x => x.QuantityMax)
+                .GreaterThan(0).WithMessage("Số lượng tối đa phải lớn hơn 0.")
                 .GreaterThanOrEqualTo(x => x.QuantityMin).WithMessage("Số lượng tối đa phải lớn hơn hoặc bằng số lượng tối thiểu.");
         }
     }
